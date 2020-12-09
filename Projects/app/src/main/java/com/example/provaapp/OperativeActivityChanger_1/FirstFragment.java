@@ -9,17 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.provaapp.ModeCreate_2_1.CreateActivity;
 import com.example.provaapp.ModeJoin_2_0.JoinActivity;
 import com.example.provaapp.R;
-import com.google.android.material.snackbar.Snackbar;
 
 public class FirstFragment extends Fragment {
 
-    public static final String EXTRA_MESSAGE = "JoinNickName";
-
+    public static final String JoinKey = "JoinNickName";
+    public static final String CreateKey = "CreateNickName";
+    public String NickName;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -36,33 +37,29 @@ public class FirstFragment extends Fragment {
         Button Create = view.findViewById(R.id.Create);
         final EditText NickNameInput = view.findViewById(R.id.NickNameInput);
 
-
         Join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               String NickName = NickNameInput.getText().toString();
-
-                /*Snackbar.make(view, "Joino con nome: " + NickName, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-
-                sendMessage(NickName);
+               NickName = NickNameInput.getText().toString();
+               sendMessage(NickName , JoinKey , JoinActivity.class);
             }
         });
 
-        /*Create.setOnClickListener(new View.OnClickListener() {
+        Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String NickName = NickNameInput.getText().toString();
-                Snackbar.make(view, "Creo una stanza e il mio nome è: "+  NickNameInput.getText(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                NickName = NickNameInput.getText().toString();
+                /*Snackbar.make(view, "Creo una stanza e il mio nome è: "+  NickNameInput.getText(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                sendMessage(NickName , CreateKey , CreateActivity.class);
             }
-        });*/
+        });
     }
 
     /** Called when the user taps the Send button */
-    public void sendMessage(String s) {
-        Intent intent = new Intent(getContext() , JoinActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, s);
+    public void sendMessage(String s , String Key , Class<? extends AppCompatActivity> nextActivity) {
+        Intent intent = new Intent(getContext() , nextActivity);
+        intent.putExtra(Key, s);
         startActivity(intent);
     }
 }

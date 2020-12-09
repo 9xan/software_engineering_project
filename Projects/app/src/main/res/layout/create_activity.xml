@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ModeJoin_2_0.JoinActivity">
+    tools:context=".ModeCreate_2_1.CreateActivity">
+
+
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarJoin"
+        android:id="@+id/toolbarCreate"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#ee6055"
@@ -16,15 +18,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/NickViewJoin"
+        android:id="@+id/NickViewCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="@string/Join"
+        android:text="@string/Create"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarJoin" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCreate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
