@@ -41,7 +41,7 @@
         android:layout_width="160dp"
         android:layout_height="59dp"
         android:backgroundTint="#ee6055"
-        android:text="@string/Join"
+        android:text="@string/Joìn"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/Create"
