@@ -10,7 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+/*
 import android.net.wifi.WifiManager;
+
+ */
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
@@ -26,12 +29,23 @@ import com.example.provaapp.UsefulClasses.WiFiDirectBroadcastReceiver;
 
 import java.security.Permission;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static android.os.Looper.getMainLooper;
 
 public class JoinActivity extends AppCompatActivity {
 
-    public WifiManager wifi;
+    public final String[] permissionsList = {
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.CHANGE_NETWORK_STATE,
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+    };
+
     public WifiP2pManager manager;
     public WifiP2pManager.Channel channel;
     public WiFiDirectBroadcastReceiver receiver;
@@ -42,6 +56,7 @@ public class JoinActivity extends AppCompatActivity {
     public TextView status_text;
     public TextView testo;
     private ArrayList<String> permissions = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,20 +69,15 @@ public class JoinActivity extends AppCompatActivity {
         String message = intent.getStringExtra(FirstFragment.JoinKey);
 
         //ADDING PERMISSIONS
-        permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
-        permissions.add(Manifest.permission.CHANGE_WIFI_STATE);
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.CHANGE_NETWORK_STATE);
-        permissions.add(Manifest.permission.INTERNET);
-        permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        this.permissions.addAll(Arrays.asList(permissionsList));
 
         // Capture the layout's TextView and set the string as its text
         TextView NickViewJoin = findViewById(R.id.NickViewJoin);
         NickViewJoin.setText(message);
 
-        wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        channel = manager.initialize(this , getMainLooper(), null);
+        channel = manager.initialize(this, getMainLooper(), null);
         receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
         testo = (TextView) findViewById(R.id.ricercaText);
 
@@ -84,10 +94,8 @@ public class JoinActivity extends AppCompatActivity {
         config = new WifiP2pConfig();
         config.deviceAddress = devices[0];
 
-        //TODO:DA FARE ALLA FINE ME RACCOMANDO
-        for (String i : permissions) {
-            //connect richiede il channel, config che non è altro che peer trovato nella lista e il listener per dire cosa fare in caso di successo o meno
-            if (ActivityCompat.checkSelfPermission(this, i) != PackageManager.PERMISSION_GRANTED) {
+        for (String permission : this.permissions) {
+            if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -98,6 +106,7 @@ public class JoinActivity extends AppCompatActivity {
                 return;
             }
         }
+
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
@@ -111,15 +120,6 @@ public class JoinActivity extends AppCompatActivity {
         });
     }
 
-
-    //semplicemente uso un oggetto WifiManager per accendere e spegnere il wifi dal bottone che ho messo
-    public void gestisciWifi(View v) {
-        if (wifi.getWifiState() > 0) {
-            wifi.setWifiEnabled(false);
-        } else {
-            wifi.setWifiEnabled(true);
-        }
-    }
 
 
     //metodo collegato al bottone di ricerca, quello che fa è usare il metodo del manager per iniziare a vedere se ci sono peer vicino, onSuccess e onFailure dicono solo se la ricerca è partita o meno!

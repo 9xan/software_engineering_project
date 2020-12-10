@@ -29,21 +29,6 @@
 
 
     <Button
-        android:id="@+id/wifibtn"
-        android:layout_width="161dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginBottom="25dp"
-        android:onClick="gestisciWifi"
-        android:text="Wifi-Button"
-        app:layout_constraintBottom_toTopOf="@+id/connectionbtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NickViewJoin" />
-
-    <Button
         android:id="@+id/ricercabtn"
         android:layout_width="148dp"
         android:layout_height="70dp"
@@ -52,11 +37,12 @@
         android:layout_marginEnd="132dp"
         android:layout_marginBottom="45dp"
         android:onClick="ricercaPeers"
-        android:text="Ricerca Peers"
-        app:layout_constraintBottom_toTopOf="@+id/ricercaText"
+        android:text="Search for a peer"
+        app:layout_constraintBottom_toTopOf="@+id/connectionbtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectionbtn" />
+        app:layout_constraintTop_toBottomOf="@+id/NickViewJoin" />
+
 
     <Button
         android:id="@+id/connectionbtn"
@@ -67,11 +53,12 @@
         android:layout_marginEnd="121dp"
         android:layout_marginBottom="26dp"
         android:onClick="connectionStart"
-        android:text="Peer Connection"
-        app:layout_constraintBottom_toTopOf="@+id/ricercabtn"
+        android:text="Connect to a peer"
+        app:layout_constraintBottom_toTopOf="@+id/ricercaText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wifibtn" />
+        app:layout_constraintTop_toBottomOf="@+id/ricercabtn" />
+
 
     <TextView
         android:id="@+id/ricercaText"
@@ -80,14 +67,14 @@
         android:layout_marginStart="92dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="92dp"
-        android:layout_marginBottom="137dp"
-        android:text="@string/Pippo"
+        android:layout_marginBottom="100dp"
+        android:text="@string/PeerSearch"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ricercabtn" />
+        app:layout_constraintTop_toBottomOf="@+id/connectionbtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
