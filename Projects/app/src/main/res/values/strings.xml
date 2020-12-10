@@ -20,4 +20,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="myFragment1">com.example.provaapp.OperativeActivityChanger_1.FirstFragment</string>
 
+    <string name="create_your_room_title">Create your room</string>
+
 </resources>
