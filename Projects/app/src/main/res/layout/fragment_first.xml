@@ -4,63 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D2F8F0"
+    android:background="#FFFFFF"
     tools:context=".OperativeActivityChanger_1.FirstFragment">
 
-    <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="363dp"
-        android:layout_height="53dp"
-        android:text="Insert your Nickname here:"
-        android:textColor="#474646"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@id/NickNameInput"
+    <LinearLayout
+        android:id="@+id/NicknameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/rounded_nickname_background"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/Join"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/NickNameInput"
-        android:layout_width="370dp"
-        android:layout_height="52dp"
-        android:ems="10"
-        android:hint="NickName"
-        android:inputType="textPersonName"
-        android:textColor="#5E5B5B"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/Join"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        <TextView
+            android:id="@+id/textview_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="Insert your nickname:"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+
+            app:layout_constraintBottom_toTopOf="@+id/NickNameInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/NickNameInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="nickname"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_first" />
+
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/Join"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="160dp"
         android:layout_height="59dp"
-        android:backgroundTint="#ee6055"
+        android:background="@drawable/rounded_nickname_background"
+        android:backgroundTint="#0F6FFF"
         android:text="@string/Joìn"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/Create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/NickNameInput" />
+        app:layout_constraintTop_toBottomOf="@id/NicknameLayout" />
 
     <Button
         android:id="@+id/Create"
         android:layout_width="160dp"
         android:layout_height="59dp"
-        android:backgroundTint="#ee6055"
+        android:background="@drawable/rounded_nickname_background"
+        android:backgroundTint="#0F6FFF"
         android:text="@string/Create"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/NickNameInput" />
+        app:layout_constraintTop_toBottomOf="@id/Join" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

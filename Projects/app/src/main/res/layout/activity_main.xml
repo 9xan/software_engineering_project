@@ -9,7 +9,7 @@
         android:id="@+id/toolbarActivityChanger"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ee6055"
+        android:background="#3DCBFF"
         app:layout_constraintBottom_toTopOf="@+id/first_page_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarActivityChanger"/>-->
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/first_page_fragment"
         android:name="com.example.provaapp.OperativeActivityChanger_1.FirstFragment"
         android:layout_width="match_parent"
