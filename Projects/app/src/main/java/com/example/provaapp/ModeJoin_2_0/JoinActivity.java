@@ -1,5 +1,6 @@
 package com.example.provaapp.ModeJoin_2_0;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -46,6 +47,7 @@ public class JoinActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_NETWORK_STATE,
     };
 
+    public static final int ACCESS_FINE_LOCATION_CODE = 100;
     public WifiP2pManager manager;
     public WifiP2pManager.Channel channel;
     public WiFiDirectBroadcastReceiver receiver;
@@ -121,23 +123,41 @@ public class JoinActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,  @NonNull int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+
+        switch(requestCode){
+            case 100:{
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "Location permission granted",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),
+                            "Location permission denied",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+    }
 
     //metodo collegato al bottone di ricerca, quello che fa è usare il metodo del manager per iniziare a vedere se ci sono peer vicino, onSuccess e onFailure dicono solo se la ricerca è partita o meno!
     public void ricercaPeers(View v) {
         //TODO:DA FARE ALLA FINE ME RACCOMANDO
-        for (String i : permissions) {
-            //connect richiede il channel, config che non è altro che peer trovato nella lista e il listener per dire cosa fare in caso di successo o meno
-            if (ActivityCompat.checkSelfPermission(this, i) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
+        //connect richiede il channel, config che non è altro che peer trovato nella lista e il listener per dire cosa fare in caso di successo o meno
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION_CODE);
         }
+
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {

@@ -6,10 +6,11 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="Joìn">Join</string>
-    <string name="Create">Create</string>
-    <string name="PeerSearch"></string>
-
+    <string name="join">Join</string>
+    <string name="create">Create</string>
+    <string name="peer_search"></string>
+    <string name="create_room_title">Create your room</string>
+    <string name="continue_button_text">Continue</string>
 
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_join">JoinActivity</string>

@@ -17,7 +17,6 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/Join"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -63,7 +62,7 @@
         android:layout_height="59dp"
         android:background="@drawable/rounded_nickname_background"
         android:backgroundTint="#0F6FFF"
-        android:text="@string/Joìn"
+        android:text="@string/join"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/Create"
@@ -77,7 +76,7 @@
         android:layout_height="59dp"
         android:background="@drawable/rounded_nickname_background"
         android:backgroundTint="#0F6FFF"
-        android:text="@string/Create"
+        android:text="@string/create"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
