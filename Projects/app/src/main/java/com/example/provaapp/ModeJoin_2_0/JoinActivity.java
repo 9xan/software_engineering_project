@@ -93,21 +93,14 @@ public class JoinActivity extends AppCompatActivity {
 
     //metodo del bottone per provare a collegarsi al secondo telefono
     public void connectionStart(View v) {
+        String requestedPermission = Manifest.permission.ACCESS_FINE_LOCATION;
         config = new WifiP2pConfig();
         config.deviceAddress = devices[0];
 
-        for (String permission : this.permissions) {
-            if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
+        if (ActivityCompat.checkSelfPermission(this, requestedPermission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{requestedPermission}, ACCESS_FINE_LOCATION_CODE);
         }
+
 
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
@@ -123,20 +116,20 @@ public class JoinActivity extends AppCompatActivity {
     }
 
 
+    // called when a user grant or reject the permission for a functionality
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,  @NonNull int[] grantResults){
-        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch(requestCode){
-            case 100:{
+        switch (requestCode) {
+            case ACCESS_FINE_LOCATION_CODE: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getApplicationContext(),
                             "Location permission granted",
                             Toast.LENGTH_SHORT)
                             .show();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(),
                             "Location permission denied",
                             Toast.LENGTH_SHORT)
@@ -144,18 +137,19 @@ public class JoinActivity extends AppCompatActivity {
                 }
                 break;
             }
-            default:{
+            default: {
                 break;
             }
         }
     }
 
-    //metodo collegato al bottone di ricerca, quello che fa è usare il metodo del manager per iniziare a vedere se ci sono peer vicino, onSuccess e onFailure dicono solo se la ricerca è partita o meno!
+    // called when "search for a peer" button is clicked
     public void ricercaPeers(View v) {
-        //TODO:DA FARE ALLA FINE ME RACCOMANDO
-        //connect richiede il channel, config che non è altro che peer trovato nella lista e il listener per dire cosa fare in caso di successo o meno
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION_CODE);
+        String requestedPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+        // check if the requested permission has already be granted or not. If not, enter the 'if' body
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), requestedPermission) != PackageManager.PERMISSION_GRANTED) {
+            // spawn a dialog with the specified permission. As soon as the user grant or deny the permission, onRequestPermissionsResult will be called
+            ActivityCompat.requestPermissions(this, new String[]{requestedPermission}, ACCESS_FINE_LOCATION_CODE);
         }
 
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
