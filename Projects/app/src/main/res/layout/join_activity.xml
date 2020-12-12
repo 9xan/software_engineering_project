@@ -29,14 +29,13 @@
 
 
     <Button
-        android:id="@+id/ricercabtn"
+        android:id="@+id/researcbtn"
         android:layout_width="148dp"
         android:layout_height="70dp"
         android:layout_marginStart="131dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="132dp"
         android:layout_marginBottom="45dp"
-        android:onClick="ricercaPeers"
         android:text="Search for a peer"
         app:layout_constraintBottom_toTopOf="@+id/connectionbtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,35 +45,78 @@
 
     <Button
         android:id="@+id/connectionbtn"
-        android:layout_width="170dp"
-        android:layout_height="64dp"
+        android:layout_width="147dp"
+        android:layout_height="62dp"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="121dp"
-        android:layout_marginBottom="26dp"
-        android:onClick="connectionStart"
         android:text="Connect to a peer"
-        app:layout_constraintBottom_toTopOf="@+id/ricercaText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ricercabtn" />
-
+        app:layout_constraintTop_toBottomOf="@+id/researcbtn" />
 
     <TextView
-        android:id="@+id/ricercaText"
+        android:id="@+id/ricerca_view"
         android:layout_width="227dp"
         android:layout_height="47dp"
         android:layout_marginStart="92dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="92dp"
-        android:layout_marginBottom="100dp"
         android:text="@string/peer_search"
         android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transferbtn" />
+
+    <TextView
+        android:id="@+id/wifi_view"
+        android:layout_width="69dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="8dp"
+        android:text="WIFI OFF"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarJoin" />
+
+    <Button
+        android:id="@+id/transferbtn"
+        android:layout_width="163dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="32dp"
+        android:text="transfer data to peer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectionbtn" />
+
+    <TextView
+        android:id="@+id/data_text"
+        android:layout_width="240dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="24dp"
+        android:text="qui apparirà la stringa inviata da peer a peer"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ricerca_view" />
+
+    <TextView
+        android:id="@+id/clienthostView"
+        android:layout_width="104dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="24dp"
+        android:text="CLIENT/HOST"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/data_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
