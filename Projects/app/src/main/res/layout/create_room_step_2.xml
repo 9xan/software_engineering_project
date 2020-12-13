@@ -5,80 +5,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/createRoomStep2Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/create_your_room_title"
-        android:textAlignment="center"
-        android:textSize="30sp"
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressBar2" />
 
-        app:layout_constraintBottom_toTopOf="@+id/createRoomStep2Step"
+    <TextView
+        android:id="@+id/TextFunctionMaster"
+        android:layout_width="330dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="65dp"
+        android:text="Seleziona la tua funzione:"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TextFunctionMaster">
+
+
+        <RadioButton
+            android:id="@+id/radioVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="62dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="220dp"
+            android:text="Video Recorder"
+            android:textSize="14sp"
+            android:theme="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/radioGroup" />
+
+
+        <RadioButton
+            android:id="@+id/radioAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="62dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="220dp"
+            android:text="Audio Recorder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioVideo" />
+
+        <RadioButton
+            android:id="@+id/radioNone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="62dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="284dp"
+            android:text="None"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioAudio" />
+
+    </RadioGroup>
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="28dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <Button
+        android:id="@+id/Next2"
+        android:layout_width="150dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="130dp"
+        android:text="Next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:progressTint="#4CAF50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/createRoomStep2Step"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:text="Step 2"
-        android:textAlignment="center"
-        android:textSize="15sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/createRoomStep2InsertRoomName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createRoomStep2Title" />
-
-    <TextView
-        android:id="@+id/createRoomStep2InsertRoomName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:text="Insert the name of the room"
-        android:textAlignment="center"
-        android:textSize="15sp"
-
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createRoomStep2Step" />
-
-    <EditText
-        android:id="@+id/createRoomStep2RoomName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:hint="room name"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createRoomStep2InsertRoomName"
-        app:layout_constraintVertical_bias="0.009" />
-
-    <Button
-        android:id="@+id/Join"
-        android:layout_width="110dp"
-        android:layout_height="48dp"
-        android:background="@drawable/rounded_nickname_background"
-        android:backgroundTint="#0F6FFF"
-        android:text="@string/continue_button_text"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/createRoomStep2RoomName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -28,12 +27,8 @@ import com.example.provaapp.OperativeActivityChanger_1.FirstFragment;
 import com.example.provaapp.R;
 import com.example.provaapp.UsefulClasses.WiFiDirectBroadcastReceiver;
 
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-
-import static android.os.Looper.getMainLooper;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -108,35 +103,37 @@ public class JoinActivity extends AppCompatActivity {
                 return;
             }
         }
+        if (devices.length == 0) {
+            Toast.makeText(getApplicationContext(), "No devices available", Toast.LENGTH_SHORT).show();
+        } else {
+            manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(), "connessione a peer riuscita", Toast.LENGTH_SHORT).show();
+                }
 
-        manager.connect(channel, config, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(getApplicationContext(), "connessione a peer riuscita", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(int reason) {
-                Toast.makeText(getApplicationContext(), "connessione a peer fallita", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(int reason) {
+                    Toast.makeText(getApplicationContext(), "connessione a peer fallita", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,  @NonNull int[] grantResults){
-        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch(requestCode){
-            case 100:{
+        switch (requestCode) {
+            case 100: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getApplicationContext(),
                             "Location permission granted",
                             Toast.LENGTH_SHORT)
                             .show();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(),
                             "Location permission denied",
                             Toast.LENGTH_SHORT)
@@ -144,7 +141,7 @@ public class JoinActivity extends AppCompatActivity {
                 }
                 break;
             }
-            default:{
+            default: {
                 break;
             }
         }

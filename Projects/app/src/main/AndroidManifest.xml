@@ -41,6 +41,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".OperativeActivityChanger_1.MainActivity" />
         </activity>
+        <activity
+            android:name=".ModeCreate_2_1.QRCreationActivity"
+            android:parentActivityName=".ModeCreate_2_1.CreateActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ModeCreate_2_1.CreateActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

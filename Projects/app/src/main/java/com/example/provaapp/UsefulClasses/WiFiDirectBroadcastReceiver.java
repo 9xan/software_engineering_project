@@ -1,7 +1,6 @@
 package com.example.provaapp.UsefulClasses;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +13,6 @@ import androidx.core.app.ActivityCompat;
 import com.example.provaapp.ModeJoin_2_0.JoinActivity;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 

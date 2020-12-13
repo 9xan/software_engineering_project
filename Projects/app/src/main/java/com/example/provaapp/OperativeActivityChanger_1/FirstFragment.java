@@ -1,18 +1,12 @@
 package com.example.provaapp.OperativeActivityChanger_1;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.wifi.WifiManager;
-import android.net.wifi.p2p.WifiP2pConfig;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,9 +15,6 @@ import androidx.fragment.app.Fragment;
 import com.example.provaapp.ModeCreate_2_1.CreateActivity;
 import com.example.provaapp.ModeJoin_2_0.JoinActivity;
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.WiFiDirectBroadcastReceiver;
-
-import static android.os.Looper.getMainLooper;
 
 public class FirstFragment extends Fragment {
 
