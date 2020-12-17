@@ -27,24 +27,30 @@ public class CreateRoomStep2 extends Fragment {
     public ProgressBar step;
     public String checkedRadio;
     public Bundle args;
+    public Button prev;
+
 
     public CreateRoomStep2() {
         super(R.layout.create_room_step_2);
     }
 
+
     @Override
     public void onViewCreated(@NonNull final View view, Bundle savedInstanceState) {
 
-        FragmentManager childFragmentManager = getParentFragmentManager();
+        args = this.getArguments();
+
+        final FragmentManager childFragmentManager = getParentFragmentManager();
         if (savedInstanceState == null) {
             radioGroup = view.findViewById(R.id.radioGroup);
             step = view.findViewById(R.id.progressBar2);
             step.setMax(4);
             step.setProgress(2);
+            prev = view.findViewById(R.id.Back2);
             next = view.findViewById(R.id.Next2);
+        } else {
+            //TODO fixxare i ruoli in caso di ricaricamento
         }
-
-        args = this.getArguments();
 
         assert args != null;
         videoN = args.getInt("videoN");
@@ -60,7 +66,6 @@ public class CreateRoomStep2 extends Fragment {
                 checkedRadio = ((RadioButton) view.findViewById(checkedId)).getText().toString();
                 //Log.d("step2 -> radio selected :", ((Integer) checkedId).toString());
                 Log.d("step2 -> radio selected :", checkedRadio);
-
             }
         });
 
@@ -84,22 +89,32 @@ public class CreateRoomStep2 extends Fragment {
                             break;
 
                     }
-                }else{
+                    Log.d("My Values", args.toString());
+                    // sendMessage(Room, "Name", QRCreationActivity.class);  //at end of the creation phase we call another activity to generate the QR
+                    CreateRoomStep3 nextFragment = new CreateRoomStep3();
+                    nextFragment.setArguments(args);
+                    childFragmentManager.beginTransaction()
+                            .replace(R.id.room_parent_fragment_container, nextFragment)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("step2") // name can be null
+                            .commit();
+                } else {
                     Toast.makeText(getContext(),
                             "Please select a function",
                             Toast.LENGTH_SHORT)
                             .show();
                 }
 
-                Log.d("My Values", args.toString());
-                // sendMessage(Room, "Name", QRCreationActivity.class);  //at end of the creation phase we call another activity to generate the QR
             }                                                                                                       //for the slaves connection
         });
+
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                childFragmentManager.popBackStack();
+            }
+        });
+
     }
 
-    public void sendMessage(String s, String Key, Class<? extends AppCompatActivity> nextActivity) {
-        Intent intent = new Intent(getContext(), nextActivity);
-        intent.putExtra(Key, s);
-        startActivity(intent);
-    }
 }

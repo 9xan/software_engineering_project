@@ -8,15 +8,14 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="289dp"
-        android:layout_height="23dp"
+        android:layout_width="343dp"
+        android:layout_height="33dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="106dp"
+        android:layout_marginEnd="52dp"
         android:text="Seleziona il numero di Video Recorders:"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/upperDivider" />
 
@@ -47,15 +46,15 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="289dp"
-        android:layout_height="23dp"
+        android:layout_width="352dp"
+        android:layout_height="31dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="106dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="43dp"
+
         android:text="Seleziona il numero di Audio Recorders:"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
@@ -65,7 +64,7 @@
         android:layout_width="382dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="33dp"
         android:layout_marginEnd="13dp"
         android:max="2"
         android:progress="0"
@@ -88,20 +87,31 @@
         android:id="@+id/Next1"
         android:layout_width="150dp"
         android:layout_height="47dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="130dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="40dp"
         android:text="Next"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <Button
+        android:id="@+id/Back1"
+        android:layout_width="150dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="69dp"
+        android:text="Back"
+        app:layout_constraintEnd_toStartOf="@+id/Next1"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBarAudio" />
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="43dp"
+        android:layout_marginTop="16dp"
         android:progressTint="#4CAF50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

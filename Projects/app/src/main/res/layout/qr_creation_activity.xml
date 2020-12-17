@@ -19,7 +19,7 @@
         android:id="@+id/RoomNameView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/join"
+        android:text="QR creation Page"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"

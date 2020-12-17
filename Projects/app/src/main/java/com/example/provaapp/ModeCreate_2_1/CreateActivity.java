@@ -18,24 +18,24 @@ public class CreateActivity extends AppCompatActivity { //HOST ACTIVITY
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
 
-        if (savedInstanceState == null) { //ritorna un manager per la creazione di transizioni
-            /*Bundle c = new Bundle();
-            c.putInt("2" , 3);*/
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.room_creation_fragment_container, RoomParentFragment.class, null)
-                    .commit();
-        }
 
         Toolbar toolbar = findViewById(R.id.toolbarCreate);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         String message = intent.getStringExtra(FirstFragment.CreateKey);
         // Capture the layout's TextView and set the string as its text
-        TextView NickViewCreate = findViewById(R.id.NickViewCreate);
-        NickViewCreate.setText(message);
+        //TextView NickViewCreate = findViewById(R.id.NickViewCreate);
+        //NickViewCreate.setText(message);
 
 
 
+        if (savedInstanceState == null) { //ritorna un manager per la creazione di transizioni
+            Bundle args = new Bundle();
+            args.putString("NickName", message);
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.room_creation_fragment_container, RoomParentFragment.class, args)
+                    .commit();
+        }
     }
 }
