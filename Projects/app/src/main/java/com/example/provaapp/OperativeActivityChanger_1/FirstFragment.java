@@ -22,14 +22,11 @@ public class FirstFragment extends Fragment {
     public static final String JoinKey = "JoinNickName";
     public static final String CreateKey = "CreateNickName";
     public String NickName;
+    private Bundle args;
 
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-
-    ) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first, container, false);
     }
@@ -38,6 +35,7 @@ public class FirstFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button Join = view.findViewById(R.id.Join);
         Button Create = view.findViewById(R.id.Create);
+        args = new Bundle();
         final EditText NickNameInput = view.findViewById(R.id.NickNameInput);
 
         Join.setOnClickListener(new View.OnClickListener() {
@@ -46,8 +44,8 @@ public class FirstFragment extends Fragment {
 
                 NickName = NickNameInput.getText().toString();
                 //sendMessage(NickName , JoinKey , JoinActivity.class); LA PARTE DELL'INGE LA COMMENTO
-
-                sendMessage(NickName, JoinKey, QRReaderActivity.class);
+                args.putString("NickName", NickName);
+                sendMessage(args, JoinKey, QRReaderActivity.class);
 
 
             }
@@ -60,7 +58,8 @@ public class FirstFragment extends Fragment {
                 /*Snackbar.make(view, "Creo una stanza e il mio nome è: "+  NickNameInput.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
 
-                sendMessage(NickName, CreateKey, CreateActivity.class);
+                args.putString("NickName", NickName);
+                sendMessage(args, CreateKey, CreateActivity.class);
             }
         });
     }
@@ -68,9 +67,10 @@ public class FirstFragment extends Fragment {
     /**
      * Called when the user taps the Send button
      */
-    public void sendMessage(String s, String Key, Class<? extends AppCompatActivity> nextActivity) {
+    public void sendMessage(Bundle s, String Key, Class<? extends AppCompatActivity> nextActivity) {
         Intent intent = new Intent(getContext(), nextActivity);
         intent.putExtra(Key, s);
         startActivity(intent);
     }
+
 }

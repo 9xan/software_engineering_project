@@ -13,25 +13,25 @@ import com.example.provaapp.R;
 
 public class CreateActivity extends AppCompatActivity { //HOST ACTIVITY
 
+    private Bundle args;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
 
-
-        Toolbar toolbar = findViewById(R.id.toolbarCreate);
-        setSupportActionBar(toolbar);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(FirstFragment.CreateKey);
+        //String message = intent.getStringExtra(FirstFragment.CreateKey);
         // Capture the layout's TextView and set the string as its text
         //TextView NickViewCreate = findViewById(R.id.NickViewCreate);
         //NickViewCreate.setText(message);
 
 
-
         if (savedInstanceState == null) { //ritorna un manager per la creazione di transizioni
-            Bundle args = new Bundle();
-            args.putString("NickName", message);
+
+            Toolbar toolbar = findViewById(R.id.toolbarCreate);
+            setSupportActionBar(toolbar);
+            Intent intent = getIntent();
+            args = intent.getBundleExtra(FirstFragment.CreateKey);
+
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.room_creation_fragment_container, RoomParentFragment.class, args)

@@ -19,6 +19,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +54,7 @@ public class JoinActivity extends AppCompatActivity {
     public TextView status_text;
     public TextView testo;
     private ArrayList<String> permissions = new ArrayList<>();
-
+    private Bundle args;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +64,18 @@ public class JoinActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarJoin);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        String message = intent.getStringExtra(FirstFragment.JoinKey);
+        args = intent.getBundleExtra(FirstFragment.JoinKey);
+
+
+        assert args != null;
+        Log.d("nel bundle della join c'è ", args.getString("QRData"));
 
         //ADDING PERMISSIONS
         this.permissions.addAll(Arrays.asList(permissionsList));
 
         // Capture the layout's TextView and set the string as its text
         TextView NickViewJoin = findViewById(R.id.NickViewJoin);
-        NickViewJoin.setText(message);
+        NickViewJoin.setText(args.getString("NickName"));
 
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
