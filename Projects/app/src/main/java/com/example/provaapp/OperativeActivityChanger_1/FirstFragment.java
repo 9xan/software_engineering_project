@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.provaapp.ModeCreate_2_1.CreateActivity;
 import com.example.provaapp.ModeJoin_2_0.JoinActivity;
+import com.example.provaapp.ModeJoin_2_0.QRReaderActivity;
 import com.example.provaapp.R;
 
 public class FirstFragment extends Fragment {
@@ -42,8 +43,13 @@ public class FirstFragment extends Fragment {
         Join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               NickName = NickNameInput.getText().toString();
-               sendMessage(NickName , JoinKey , JoinActivity.class);
+
+                NickName = NickNameInput.getText().toString();
+                //sendMessage(NickName , JoinKey , JoinActivity.class); LA PARTE DELL'INGE LA COMMENTO
+
+                sendMessage(NickName, JoinKey, QRReaderActivity.class);
+
+
             }
         });
 
@@ -53,14 +59,17 @@ public class FirstFragment extends Fragment {
                 NickName = NickNameInput.getText().toString();
                 /*Snackbar.make(view, "Creo una stanza e il mio nome è: "+  NickNameInput.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                sendMessage(NickName , CreateKey , CreateActivity.class);
+
+                sendMessage(NickName, CreateKey, CreateActivity.class);
             }
         });
     }
 
-    /** Called when the user taps the Send button */
-    public void sendMessage(String s , String Key , Class<? extends AppCompatActivity> nextActivity) {
-        Intent intent = new Intent(getContext() , nextActivity);
+    /**
+     * Called when the user taps the Send button
+     */
+    public void sendMessage(String s, String Key, Class<? extends AppCompatActivity> nextActivity) {
+        Intent intent = new Intent(getContext(), nextActivity);
         intent.putExtra(Key, s);
         startActivity(intent);
     }
