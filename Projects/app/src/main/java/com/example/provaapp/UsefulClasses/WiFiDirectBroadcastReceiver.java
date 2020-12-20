@@ -5,24 +5,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.provaapp.ModeCreate_2_1.MasterCreationActivity;
 import com.example.provaapp.ModeJoin_2_0.JoinActivity;
 
 import java.util.ArrayList;
-
 public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 
     private WifiP2pManager manager;
     private WifiP2pManager.Channel channel;
-    private JoinActivity activity;
+    private ExtendsForWifiDirectBroadcastReceiver activity;
     private ArrayList<String> permissions = new ArrayList<>();
 
 
-    public WiFiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, JoinActivity activity) {
+    public WiFiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, ExtendsForWifiDirectBroadcastReceiver activity) {
         super();
         this.manager = manager;
         this.channel = channel;
@@ -67,9 +68,21 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 }
                 manager.requestPeers(channel, activity.myPeerListListener);
             }
+
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
             // Respond to new connection or disconnections
-            // mo non mi interessa per provare
+            if(manager!=null){
+                NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
+                assert networkInfo != null;
+                if(networkInfo.isConnected()){
+                    manager.requestConnectionInfo(channel,activity.connectionInfoListener);
+                    manager.requestGroupInfo(channel, activity.groupInfoListener);
+                }
+            }
+
+            else
+                return;
+
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
             // Respond to this device's wifi state changing
             // manco questo mi interessa adesso

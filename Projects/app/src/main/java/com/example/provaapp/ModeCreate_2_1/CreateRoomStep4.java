@@ -63,7 +63,10 @@ public class CreateRoomStep4 extends Fragment {
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Bundle object :" , args.toString());
+
+                Log.d(" VISUALIZZAZIONE DATI NELL'ARGOMENTO 1:" ,  "videoN -> " + args.getString("videoN") + " audioN -> " +args.getString("audioN") +
+                        " masterRole -> " + args.getString("masterRole") + " RoomName -> " + args.getString("RoomName") + " MyNick -> "+ args.getString("NickName"));
+
                 sendMessage(args , RoomData , QRCreationActivity.class);
             }
         });

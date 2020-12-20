@@ -26,12 +26,13 @@ import android.widget.Toast;
 
 import com.example.provaapp.OperativeActivityChanger_1.FirstFragment;
 import com.example.provaapp.R;
+import com.example.provaapp.UsefulClasses.ExtendsForWifiDirectBroadcastReceiver;
 import com.example.provaapp.UsefulClasses.WiFiDirectBroadcastReceiver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class JoinActivity extends AppCompatActivity {
+public class JoinActivity extends ExtendsForWifiDirectBroadcastReceiver {
 
     public final String[] permissionsList = {
             Manifest.permission.ACCESS_WIFI_STATE,
