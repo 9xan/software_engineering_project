@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.provaapp.R;
+import com.example.provaapp.UsefulClasses.Permissions;
 import com.example.provaapp.UsefulClasses.WiFiBroadcastMaster;
 
 import java.io.IOException;
@@ -40,10 +42,11 @@ public class MasterCreationActivity extends AppCompatActivity {
     public Bundle message;
 
     public TextView peer1,peer2, peer3, peer4, peer5, peer6;
-    public static ArrayList<TextView> peers;
+    public ArrayList<TextView> peers;
     public Button finishButton;
     private String masterRole;
     public static int peerNumber;
+    private ProgressBar pr;
 
     private Collection<SendReceive> serverSocketList;
     private SendReceive sendReceive;
@@ -119,22 +122,22 @@ public class MasterCreationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.QRToolbar);
         setSupportActionBar(toolbar);
 
-        startXML();
-
         Intent intent = getIntent();
         message = intent.getBundleExtra(QRCreationActivity.forMasterCreation); //tutti i dati della stanza sono qui
         finishButton = findViewById(R.id.finishSetupButton);
         assert message != null;
         masterRole = message.getString("masterRole");
         peerNumber = message.getInt("audioN") + message.getInt("videoN");
+        peers = new ArrayList<>();
 
+        startXML(peers , peerNumber);
 
 
         //da vedere se serve, lo scopo di wifi sarebbe solo gestire i servizi inerenti al wifi, ma se mettiamo avvisi prima di creare la room oppure quando si apre l'app allora qui non serve più
         //wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
        // serverSocketList = new ArrayList<>();
-
+/*
         //manager e channel per wifi direct, usati in WiFiDirectBroadcastReceiver
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null); //qui sarebbe da aggiungere un listener in caso di disconnessione del channel e che riprova subito a connettere
@@ -145,16 +148,10 @@ public class MasterCreationActivity extends AppCompatActivity {
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);*/
 
-        //check permissions
-        for(int i = 0 ; i < permissionsList.length ;i++){
-            if (ContextCompat.checkSelfPermission(this, permissionsList[i]) == PackageManager.PERMISSION_GRANTED) {
-            }else {
-                ActivityCompat.requestPermissions(this, permissionsList, i);
-            }
-        }
-
+        Permissions.requestPermissions(this  , permissionsList , 101);
+      /*
         //Cancel any ongoing p2p group negotiation
         manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
             @Override
@@ -222,26 +219,13 @@ public class MasterCreationActivity extends AppCompatActivity {
                 //si ricade qui principalmente perchè non è acceso il WIFI, bisogna vedere se mettere un avviso prima oppure avvisare e dare la possibilità di far ripartire la ricerca senza rifare la room!
             }
         });
-
+*/
 
     }
 
-    public static void onPeerConnectedChangeView(Collection<WifiP2pDevice> peersName){
-        int i = 1;
-        for(WifiP2pDevice p : peersName){
-            MasterCreationActivity.peers.get(i).setVisibility(View.VISIBLE);
-            MasterCreationActivity.peers.get(i).setText(p.deviceName);
-            i++;
-        }
-    }
-
-
-    private void startXML(){
-
-        peers = new ArrayList<>();
+    private void startXML(ArrayList<TextView> peers  , int peerNum){
 
         peer1 = findViewById(R.id.peer1);
-        peer1.setVisibility(View.VISIBLE);
         peers.add(peer1);
 
         peer2 = findViewById(R.id.peer2);
@@ -259,10 +243,9 @@ public class MasterCreationActivity extends AppCompatActivity {
         peer6 = findViewById(R.id.peer6);
         peers.add(peer6);
 
-        for (int i = 1; i < 7 ; i++) { //Mettiamo tutti su invisible tranne il primo, quando si collega il prossimo peer allora cambiamo nome e settiamo come visibile
+        for (int i = 5; i >= peerNum ; i--) { //Mettiamo tutti su invisible tranne il primo, quando si collega il prossimo peer allora cambiamo nome e settiamo come visibile
             peers.get(i).setVisibility(View.INVISIBLE);
         }
-
     }
 
 
@@ -342,13 +325,13 @@ public class MasterCreationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(receiver, intentFilter);
+        //registerReceiver(receiver, intentFilter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+        //unregisterReceiver(receiver);
     }
 
 }
