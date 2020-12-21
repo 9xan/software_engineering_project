@@ -28,44 +28,11 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbarJoin" />
 
 
-    <Button
-        android:id="@+id/ricercabtn"
-        android:layout_width="148dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="132dp"
-        android:layout_marginBottom="45dp"
-        android:onClick="ricercaPeers"
-        android:text="Search for a peer"
-        app:layout_constraintBottom_toTopOf="@+id/connectionbtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NickViewJoin" />
-
-
-    <Button
-        android:id="@+id/connectionbtn"
-        android:layout_width="170dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="121dp"
-        android:layout_marginBottom="26dp"
-        android:onClick="connectionStart"
-        android:text="Connect to a peer"
-        app:layout_constraintBottom_toTopOf="@+id/ricercaText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ricercabtn" />
-
-
     <TextView
-        android:id="@+id/ricercaText"
+        android:id="@+id/connectionText"
         android:layout_width="227dp"
         android:layout_height="47dp"
         android:layout_marginStart="92dp"
-        android:layout_marginTop="44dp"
         android:layout_marginEnd="92dp"
         android:layout_marginBottom="100dp"
         android:text="@string/peer_search"
@@ -73,8 +40,20 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBarConnection"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="120dp"
+        android:layout_height="118dp"
+        android:layout_marginStart="146dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="146dp"
+        android:progressTint="#E91E63"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectionbtn" />
+        app:layout_constraintTop_toBottomOf="@+id/NickViewJoin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,22 +12,25 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 import com.example.provaapp.ModeCreate_2_1.MasterCreationActivity;
-import com.example.provaapp.ModeJoin_2_0.JoinActivity;
 
 import java.util.ArrayList;
-public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
+
+public class WiFiBroadcastMaster extends BroadcastReceiver {
+
+    //RECEIVER PER IL MASTER
 
     private WifiP2pManager manager;
     private WifiP2pManager.Channel channel;
-    private ExtendsForWifiDirectBroadcastReceiver activity;
+    private MasterCreationActivity activity;
     private ArrayList<String> permissions = new ArrayList<>();
+    private int peers2Connect;
 
-
-    public WiFiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, ExtendsForWifiDirectBroadcastReceiver activity) {
+    public WiFiBroadcastMaster(WifiP2pManager manager, WifiP2pManager.Channel channel, MasterCreationActivity activity, int nPeers) {
         super();
         this.manager = manager;
         this.channel = channel;
         this.activity = activity;
+        peers2Connect= nPeers;
     }
 
     @Override
@@ -41,18 +44,20 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
         permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
 
         String action = intent.getAction();
-
         if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
-            // Check to see if Wi-Fi is enabled and notify appropriate activity
+            // Check to see if Wi-Fi is enabled and notify with toast
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
             if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                Toast.makeText(context, "WIFI ACCESO", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "WIFI ON", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, "WIFI SPENTO", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "WIFI OFF", Toast.LENGTH_SHORT).show();
             }
-        } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-            // Call WifiP2pManager.requestPeers() to get a list of current peers
-            if (manager != null) {
+
+        }else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
+            // Respond to new connection or disconnections
+            // si ricade qui in caso di connessione
+
+            if(manager != null){
                 for (String i : permissions) {
 
                     if (ActivityCompat.checkSelfPermission(activity, i) != PackageManager.PERMISSION_GRANTED) {
@@ -66,27 +71,33 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                         return;
                     }
                 }
-                manager.requestPeers(channel, activity.myPeerListListener);
-            }
-
-        } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
-            // Respond to new connection or disconnections
-            if(manager!=null){
                 NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
                 assert networkInfo != null;
-                if(networkInfo.isConnected()){
-                    manager.requestConnectionInfo(channel,activity.connectionInfoListener);
-                    manager.requestGroupInfo(channel, activity.groupInfoListener);
+                if (networkInfo.isConnected()) {
+                    peers2Connect--;
+                    manager.requestConnectionInfo(channel, activity.connectionInfoListener);
                 }
+                //controllo se è stato raggiunto il numero di peers connessi, se si allora termino la ricerca, bisogna provare se per caso sta roba fa cadere tutte le connessioni!!
+                if(peers2Connect==0) {
+
+                    manager.requestGroupInfo(channel, activity.groupInfoListener);
+                    manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
+                        @Override
+                        public void onSuccess() {
+                            //blablabla magari una call back o metodo statico che avvisa che tutti si sono connessi
+                        }
+
+                        @Override
+                        public void onFailure(int reason) {
+                            //blablabla
+                        }
+                    });
+                }
+
             }
 
-            else
-                return;
 
-        } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
-            // Respond to this device's wifi state changing
-            // manco questo mi interessa adesso
         }
-    }
 
+    }
 }
