@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 package com.example.provaapp.UsefulClasses;
 
-=======
-package com.example.cameraxtesting.usefulclasses;
->>>>>>> d6ff33b9b582ebd52bf02a6c0542936c6372a06c
 
 import android.content.pm.PackageManager;
 
@@ -15,10 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Permissions {
-<<<<<<< HEAD
 
-=======
->>>>>>> d6ff33b9b582ebd52bf02a6c0542936c6372a06c
     public static class PermissionDeniedException extends Exception {
         public PermissionDeniedException(String message) {
             super(message);
@@ -61,8 +54,4 @@ public class Permissions {
         }
         return result;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d6ff33b9b582ebd52bf02a6c0542936c6372a06c
