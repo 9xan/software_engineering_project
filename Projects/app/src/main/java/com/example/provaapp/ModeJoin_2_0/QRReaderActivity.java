@@ -87,13 +87,13 @@ public class QRReaderActivity extends AppCompatActivity {
     protected void onPause() {
         //Log.d("stop" , "recording");
         mCodeScanner.stopPreview();
-        mCodeScanner.releaseResources();
+       // mCodeScanner.releaseResources();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        // mCodeScanner.releaseResources();
+        mCodeScanner.releaseResources();
         super.onDestroy();
     }
 
