@@ -58,8 +58,18 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NickName = NickNameInput.getText().toString();
-                args.putString("NickName", NickName);
-                sendMessage(args, CreateKey, CreateActivity.class);
+
+
+                if (NickName.compareTo("") == 0) {
+                    Toast.makeText(getContext(),
+                            "Please insert a name!",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    args.putString("NickName", NickName);
+                    sendMessage(args, CreateKey, CreateActivity.class);
+                }
+
             }
         });
     }

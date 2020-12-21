@@ -32,13 +32,11 @@ public class QRReaderActivity extends AppCompatActivity {
 
 
     private CodeScanner mCodeScanner;
-    private TextView qRResult;
     public CodeScannerView scannerView;
     private Bundle args;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_reader_activity);
         Intent intent = getIntent();
@@ -51,12 +49,8 @@ public class QRReaderActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //Toast.makeText(scannerView.getContext(), result.getText(), Toast.LENGTH_SHORT).show();
-                        //mCodeScanner.stopPreview();
                         args.putString("QRData", result.getText());
-                        //qRResult.setText(result.toString());
                         sendMessage(args, FirstFragment.JoinKey, JoinActivity.class);
-
                     }
                 });
             }
@@ -73,22 +67,8 @@ public class QRReaderActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            //Log.d("start" , "recording");
-            //mCodeScanner.setCamera(0);
-            mCodeScanner.setAutoFocusEnabled(true);
-            mCodeScanner.startPreview();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-
-            try {
-                wait(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mCodeScanner.setAutoFocusEnabled(true);
-            mCodeScanner.startPreview();
-        }
+        mCodeScanner.setAutoFocusEnabled(true);
+        mCodeScanner.startPreview();
     }
 
     @Override
