@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.budiyev.android.codescanner.ErrorCallback;
 import com.example.provaapp.OperativeActivityChanger_1.FirstFragment;
 import com.example.provaapp.R;
 import com.google.zxing.Result;
@@ -38,13 +39,10 @@ public class QRReaderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.qr_reader_activity);
-        Intent intent = getIntent();
-        args = intent.getBundleExtra(FirstFragment.JoinKey);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.qr_reader_activity);
+            Intent intent = getIntent();
+            args = intent.getBundleExtra(FirstFragment.JoinKey);
             scannerView = findViewById(R.id.scanner_view);
             mCodeScanner = new CodeScanner(this, scannerView);
             mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -54,39 +52,48 @@ public class QRReaderActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             //Toast.makeText(scannerView.getContext(), result.getText(), Toast.LENGTH_SHORT).show();
+                            //mCodeScanner.stopPreview();
                             args.putString("QRData", result.getText());
                             //qRResult.setText(result.toString());
                             sendMessage(args, FirstFragment.JoinKey, JoinActivity.class);
+
                         }
                     });
                 }
             });
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-        }
+            mCodeScanner.setErrorCallback(new ErrorCallback() {
+                @Override
+                public void onError(@NonNull Exception error) {
+                    Log.d("error opening camera" , error.toString());
+                }
+            });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            Log.d("start" , "recording");
+            //Log.d("start" , "recording");
+            //mCodeScanner.setCamera(0);
+            mCodeScanner.setAutoFocusEnabled(true);
             mCodeScanner.startPreview();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }
     }
 
     @Override
     protected void onPause() {
-        Log.d("stop" , "recording");
+        //Log.d("stop" , "recording");
+        mCodeScanner.stopPreview();
         mCodeScanner.releaseResources();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        //mCodeScanner.releaseResources();
+        // mCodeScanner.releaseResources();
         super.onDestroy();
     }
 

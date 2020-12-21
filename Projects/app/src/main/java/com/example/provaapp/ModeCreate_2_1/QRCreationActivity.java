@@ -76,7 +76,6 @@ public class QRCreationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 /*Log.d(" VISUALIZZAZIONE DATI NELL'ARGOMENTO 2 : " ,  "videoN -> " + message.getInt("videoN") + " audioN -> " +message.getInt("audioN") +
                         " masterRole -> " + message.getString("masterRole") + " RoomName -> " + message.getString("RoomName") + " MyNick -> "+ message.getString("NickName"));*/
-
                 message.putString("secureHash" , hashSecCode);
                 message.putString("myDeviceMAC" , myDeviceMAC);
                 sendMessage(message , forMasterCreation , MasterCreationActivity.class);
