@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ public class QRReaderActivity extends AppCompatActivity {
 
     private CodeScanner mCodeScanner;
     private TextView qRResult;
+    public CodeScannerView scannerView;
     private Bundle args;
 
     @Override
@@ -41,11 +43,9 @@ public class QRReaderActivity extends AppCompatActivity {
         Intent intent = getIntent();
         args = intent.getBundleExtra(FirstFragment.JoinKey);
 
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 
-            final CodeScannerView scannerView = findViewById(R.id.scanner_view);
-
+            scannerView = findViewById(R.id.scanner_view);
             mCodeScanner = new CodeScanner(this, scannerView);
             mCodeScanner.setDecodeCallback(new DecodeCallback() {
                 @Override
@@ -54,24 +54,15 @@ public class QRReaderActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             //Toast.makeText(scannerView.getContext(), result.getText(), Toast.LENGTH_SHORT).show();
-                            args.putString("QRData" , result.getText());
+                            args.putString("QRData", result.getText());
                             //qRResult.setText(result.toString());
-                            sendMessage(args , FirstFragment.JoinKey , JoinActivity.class);
+                            sendMessage(args, FirstFragment.JoinKey, JoinActivity.class);
                         }
                     });
                 }
             });
-            scannerView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mCodeScanner.startPreview();
-                }
-            });
-
         } else {
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
-
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }
     }
 
@@ -79,6 +70,7 @@ public class QRReaderActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            Log.d("start" , "recording");
             mCodeScanner.startPreview();
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
@@ -87,19 +79,19 @@ public class QRReaderActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        Log.d("stop" , "recording");
         mCodeScanner.releaseResources();
         super.onPause();
     }
 
-
     @Override
     protected void onDestroy() {
-        mCodeScanner.releaseResources();
+        //mCodeScanner.releaseResources();
         super.onDestroy();
     }
 
     public void sendMessage(Bundle s, String Key, Class<? extends AppCompatActivity> nextActivity) {
-        Intent intent = new Intent(this , nextActivity);
+        Intent intent = new Intent(this, nextActivity);
         intent.putExtra(Key, s);
         startActivity(intent);
     }

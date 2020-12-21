@@ -35,6 +35,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -125,10 +126,13 @@ public class JoinActivity extends AppCompatActivity {
         args = intent.getBundleExtra(FirstFragment.JoinKey);
 
         assert args != null;
-        Log.d("nel bundle della join c'è ", args.getString("QRData"));
-
-        qrData = args.getString("QRData").split("||");
-
+        //Log.d("nel bundle della join c'è ", Objects.requireNonNull(args.getString("QRData")));
+        qrData = Objects.requireNonNull(args.getString("QRData")).split("//" , 0);
+        int i = 0;
+        for (String s : qrData){
+            Log.d("contenuto" + i , s);
+            i++;
+        }
 
 
         //ADDING PERMISSIONS
