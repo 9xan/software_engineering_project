@@ -39,34 +39,34 @@ public class QRReaderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.qr_reader_activity);
-            Intent intent = getIntent();
-            args = intent.getBundleExtra(FirstFragment.JoinKey);
-            scannerView = findViewById(R.id.scanner_view);
-            mCodeScanner = new CodeScanner(this, scannerView);
-            mCodeScanner.setDecodeCallback(new DecodeCallback() {
-                @Override
-                public void onDecoded(@NonNull final Result result) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Toast.makeText(scannerView.getContext(), result.getText(), Toast.LENGTH_SHORT).show();
-                            //mCodeScanner.stopPreview();
-                            args.putString("QRData", result.getText());
-                            //qRResult.setText(result.toString());
-                            sendMessage(args, FirstFragment.JoinKey, JoinActivity.class);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.qr_reader_activity);
+        Intent intent = getIntent();
+        args = intent.getBundleExtra(FirstFragment.JoinKey);
+        scannerView = findViewById(R.id.scanner_view);
+        mCodeScanner = new CodeScanner(this, scannerView);
+        mCodeScanner.setDecodeCallback(new DecodeCallback() {
+            @Override
+            public void onDecoded(@NonNull final Result result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Toast.makeText(scannerView.getContext(), result.getText(), Toast.LENGTH_SHORT).show();
+                        //mCodeScanner.stopPreview();
+                        args.putString("QRData", result.getText());
+                        //qRResult.setText(result.toString());
+                        sendMessage(args, FirstFragment.JoinKey, JoinActivity.class);
 
-                        }
-                    });
-                }
-            });
-            mCodeScanner.setErrorCallback(new ErrorCallback() {
-                @Override
-                public void onError(@NonNull Exception error) {
-                    Log.d("error opening camera" , error.toString());
-                }
-            });
+                    }
+                });
+            }
+        });
+        mCodeScanner.setErrorCallback(new ErrorCallback() {
+            @Override
+            public void onError(@NonNull Exception error) {
+                Log.d("error opening camera", error.toString());
+            }
+        });
 
     }
 
@@ -80,14 +80,20 @@ public class QRReaderActivity extends AppCompatActivity {
             mCodeScanner.startPreview();
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
+
+            try {
+                wait(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mCodeScanner.setAutoFocusEnabled(true);
+            mCodeScanner.startPreview();
         }
     }
 
     @Override
     protected void onPause() {
-        //Log.d("stop" , "recording");
         mCodeScanner.stopPreview();
-       // mCodeScanner.releaseResources();
         super.onPause();
     }
 
@@ -102,5 +108,4 @@ public class QRReaderActivity extends AppCompatActivity {
         intent.putExtra(Key, s);
         startActivity(intent);
     }
-
 }
