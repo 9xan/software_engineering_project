@@ -3,6 +3,7 @@ package com.example.provaapp.ModeJoin_2_0;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
@@ -35,6 +37,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -57,6 +60,7 @@ public class JoinActivity extends AppCompatActivity {
     private ProgressBar pr;
     private TextView connectionText;
     private String[] qrData;
+    private String myNicknameDevice;
 
     private ArrayList<String> permissions = new ArrayList<>();
     private Bundle args;
@@ -64,8 +68,8 @@ public class JoinActivity extends AppCompatActivity {
     private ClientClass clientClass;
     private SendReceive sendReceive;
 
-    public String[] nameDevices; //lista dei NOMI dei peers trovati
-    public String[] devices;    //lista dei MAC address dei peers trovati, serve per connettere ad un determinato peer
+    private String[] nameDevices; //lista dei NOMI dei peers trovati
+    private String[] devices;    //lista dei MAC address dei peers trovati, serve per connettere ad un determinato peer
 
 
 
@@ -75,17 +79,61 @@ public class JoinActivity extends AppCompatActivity {
         @Override
         public void onPeersAvailable(WifiP2pDeviceList peers) {
 
-            //ogni volta creo l'array
             nameDevices = new String[(peers.getDeviceList().size())];
             devices = new String[(peers.getDeviceList().size())];
             //salvo tutti i peerAddress e nomi sui vettori
-            int i =0;
+            int l = 0;
             for(WifiP2pDevice dev : peers.getDeviceList()){
-                nameDevices[i]=dev.deviceName;
-                devices[i]=dev.deviceAddress;
-                i++;
+                nameDevices[l]=dev.deviceName;
+                devices[l]=dev.deviceAddress;
+                l++;
             }
-            //Toast.makeText(getApplicationContext(), "peers trovati ("+nameDevices.length+")", Toast.LENGTH_SHORT).show();
+            for(WifiP2pDevice dev : peers.getDeviceList()){
+
+                //controllo se è stata trovato il peer master a cui connettere, se si termino la ricerca peers e avvio la connection mandando come stringa la key di sicurezza letta nel qr
+                if(dev.deviceAddress == qrData[2]){
+
+                    manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
+                        @Override
+                        public void onSuccess() {
+                            //blablabla
+                        }
+
+                        @Override
+                        public void onFailure(int reason) {
+                            //blablabla
+                        }
+                    });
+
+                    for (String i : permissions) {
+                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), i) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                    }
+
+                    //creo al volo la configurazione per la connect, setto il mac address a cui collegarsi e groupOwnerIntent = 1 per essere sicuri che il peer che si collega al master non cerchi di diventare owner
+                    WifiP2pConfig config = new WifiP2pConfig();
+                    config.groupOwnerIntent = 1;
+                    config.deviceAddress = dev.deviceAddress;
+                    manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+                        @Override
+                        public void onFailure(int reason) {
+
+                        }
+                    });
+                }
+            }
         }
     };
 
@@ -95,22 +143,27 @@ public class JoinActivity extends AppCompatActivity {
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo info) {
 
-            final InetAddress inetAddress = info.groupOwnerAddress;
+            final InetAddress groupOwnerAddress = info.groupOwnerAddress;
 
             if(info.groupFormed){
 
-                //collegamento al servershish per inviare i bytes
-                //qui ci sarà solo UNA CONNESSIONE!!! poichè il collegamento è 1-Server a N-Peers
-                //connessione riuscita, parte per il client
                 pr.setVisibility(View.INVISIBLE);
-                connectionText.setText("Connection to  established");
+                connectionText.setText("Connection to room "+ qrData[0] +" established");
 
-                clientClass = new ClientClass(inetAddress);
+                clientClass = new ClientClass(groupOwnerAddress);
                 clientClass.start();
+
+                try {
+                    String mess = qrData[1]+"//"+myNicknameDevice;
+
+                    sendReceive.myWrite(mess.getBytes()); //SI PUò ANCHE MANDARE IL NICKNAME
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     };
-
 
     /*********************************************************************************************************/
 
@@ -123,67 +176,32 @@ public class JoinActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         args = intent.getBundleExtra(FirstFragment.JoinKey);
+        myNicknameDevice = args.getString("NickName");
 
         assert args != null;
-        Log.d("nel bundle della join c'è ", args.getString("QRData"));
-
-        qrData = args.getString("QRData").split("||");
-
-
+        //Log.d("nel bundle della join c'è ", Objects.requireNonNull(args.getString("QRData")));
+        qrData = Objects.requireNonNull(args.getString("QRData")).split("//" , 0);
+        int i = 0;
+        for (String s : qrData){
+            Log.d("contenuto" + i , s);
+            i++;
+        }
 
         //ADDING PERMISSIONS
         this.permissions.addAll(Arrays.asList(permissionsList));
 
         // Capture the layout's TextView and set the string as its text
         TextView NickViewJoin = findViewById(R.id.NickViewJoin);
-        NickViewJoin.setText(args.getString("NickName"));
+        NickViewJoin.setText(myNicknameDevice);
 
         pr = findViewById(R.id.progressBarConnection);
         pr.setIndeterminate(true);
         connectionText = findViewById(R.id.connectionText);
-        connectionText.setText("Connessione a stanza...");
+        connectionText.setText("Connessione a stanza "+ qrData[0]);
 
-        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        channel = manager.initialize(this, getMainLooper(), null);
-        receiver = new WiFiBroadcastPeer(manager, channel, this);
-
-
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
+        startP2P();//qui inizializzo manager, channel e receiver, poi aggiungo i filter di interesse
 
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case 100: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "Location permission granted",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Location permission denied",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
 
     /*********************************************************************************************************/
 
@@ -248,7 +266,7 @@ public class JoinActivity extends AppCompatActivity {
     }
 
     /*********************************************************************************************************/
-    //handler sarebbe per ricevere un messaggio... viene chiamato quando c'è
+    //handler sarebbe per ricevere un messaggio... viene chiamato quando c'è un messaggio da ricevere
     public Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
@@ -259,6 +277,46 @@ public class JoinActivity extends AppCompatActivity {
         }
     });
 
+    /*********************************************************************************************************/
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 100: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "Location permission granted",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Location permission denied",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    /*********************************************************************************************************/
+
+    public void startP2P(){
+        manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        channel = manager.initialize(this, getMainLooper(), null);
+        receiver = new WiFiBroadcastPeer(manager, channel, this);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+    }
 
     /*********************************************************************************************************/
 

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.widget.Toast;
 
@@ -69,6 +70,18 @@ public class WiFiBroadcastPeer extends BroadcastReceiver {
             }
 
 
+        } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
+
+            // Respond to new connection or disconnections
+
+            if (manager == null) {
+                return;
+            }
+            NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
+            if (networkInfo.isConnected()) {
+                manager.requestConnectionInfo(channel, activity.connectionInfoListener);
+                //non serve fare stop discovery perchè già fatta quando trovo il peer tramite peerListListener
+            }
         }
     }
 }
