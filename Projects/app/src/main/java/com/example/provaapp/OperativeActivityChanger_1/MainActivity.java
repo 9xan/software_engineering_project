@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Permissions.requestPermissions( this , new String[]{Manifest.permission.CAMERA} , 100);
+
     }
 
     @Override
