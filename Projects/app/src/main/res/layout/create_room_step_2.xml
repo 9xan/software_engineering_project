@@ -40,7 +40,7 @@
 
         <RadioButton
             android:id="@+id/radioVideo"
-            android:layout_width="wrap_content"
+            android:layout_width="271dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="62dp"
             android:layout_marginTop="20dp"
@@ -55,7 +55,7 @@
 
         <RadioButton
             android:id="@+id/radioAudio"
-            android:layout_width="wrap_content"
+            android:layout_width="271dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="62dp"
             android:layout_marginTop="16dp"
@@ -67,7 +67,7 @@
 
         <RadioButton
             android:id="@+id/radioNone"
-            android:layout_width="wrap_content"
+            android:layout_width="271dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="62dp"
             android:layout_marginTop="16dp"
