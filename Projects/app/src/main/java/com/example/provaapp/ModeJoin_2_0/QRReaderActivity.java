@@ -21,6 +21,7 @@ public class QRReaderActivity extends AppCompatActivity {
     private CodeScanner mCodeScanner;
     public CodeScannerView scannerView;
     private Bundle args;
+    public static final String NextToRoomInfoKey = "NextToRoomInfo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class QRReaderActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         args.putString("QRData", result.getText());
-                        sendMessage(args, FirstFragment.JoinKey, JoinActivity.class);
+                        sendMessage(args, NextToRoomInfoKey , RoomInfoActivity.class);
                     }
                 });
             }

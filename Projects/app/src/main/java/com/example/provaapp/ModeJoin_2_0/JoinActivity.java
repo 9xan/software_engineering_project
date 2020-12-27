@@ -90,7 +90,7 @@ public class JoinActivity extends AppCompatActivity {
             for (WifiP2pDevice dev : peers.getDeviceList()) {
 
                 //controllo se è stata trovato il peer master a cui connettere, se si termino la ricerca peers e avvio la connection mandando come stringa la key di sicurezza letta nel qr
-                if (dev.deviceAddress == qrData[2]) {
+                if (dev.deviceAddress.compareTo(qrData[2]) == 0) {
 
                     manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
                         @Override
@@ -121,7 +121,8 @@ public class JoinActivity extends AppCompatActivity {
                     WifiP2pConfig config = new WifiP2pConfig();
                     config.groupOwnerIntent = 1;
                     config.deviceAddress = dev.deviceAddress;
-                    manager.connect(channel, config, new WifiP2pManager.ActionListener() {
+
+                    /*manager.connect(channel, config, new WifiP2pManager.ActionListener() {
                         @Override
                         public void onSuccess() {
 
@@ -131,7 +132,7 @@ public class JoinActivity extends AppCompatActivity {
                         public void onFailure(int reason) {
 
                         }
-                    });
+                    });*/
                 }
             }
         }
@@ -177,7 +178,7 @@ public class JoinActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarJoin);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        args = intent.getBundleExtra(FirstFragment.JoinKey);
+        args = intent.getBundleExtra(RoomInfoActivity.NextToJoinKey);
         myNicknameDevice = args.getString("NickName");
 
         assert args != null;
