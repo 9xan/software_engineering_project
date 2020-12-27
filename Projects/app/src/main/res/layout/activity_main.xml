@@ -3,41 +3,120 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarActivityChanger"
+
+    <VideoView
+        android:id="@+id/myVideo"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#3DCBFF"
-        app:layout_constraintBottom_toTopOf="@+id/first_page_fragment"
+        android:layout_height="253dp"
+        app:layout_constraintBottom_toTopOf="@+id/myVideo2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- res/layout/example_activity.xml -->
-    <!--
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:name="com.example.provaapp.OperativeActivityChanger_1.FirstFragment"
+    <VideoView
+        android:id="@+id/myVideo2"
+        android:layout_width="206dp"
+        android:layout_height="253dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myVideo" />
+
+    <VideoView
+        android:id="@+id/myVideo3"
+        android:layout_width="205dp"
+        android:layout_height="253dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/myVideo2"
+        app:layout_constraintTop_toBottomOf="@+id/myVideo" />
+
+    <Button
+        android:id="@+id/myButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Launch media player"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarActivityChanger"/>-->
+        app:layout_constraintTop_toBottomOf="@+id/myVideo2"
+        app:layout_constraintVertical_bias="0.067" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/first_page_fragment"
-        android:name="com.example.provaapp.OperativeActivityChanger_1.FirstFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarActivityChanger" />
+        app:layout_constraintTop_toBottomOf="@+id/myButton"
+        app:layout_constraintVertical_bias="0.188" />
 
+    <Button
+        android:id="@+id/pauseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/restartButton"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toEndOf="@+id/playButton"
+        app:layout_constraintTop_toBottomOf="@+id/myButton"
+        app:layout_constraintVertical_bias="0.191" />
+
+    <Button
+        android:id="@+id/restartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:text="Restart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myButton"
+        app:layout_constraintVertical_bias="0.188" />
+
+    <Button
+        android:id="@+id/backwardButton"
+        android:layout_width="59dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="108dp"
+        android:text="-1s"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/myButton"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myVideo2"
+        app:layout_constraintVertical_bias="0.176" />
+
+    <Button
+        android:id="@+id/forwardButton"
+        android:layout_width="59dp"
+        android:layout_height="47dp"
+        android:text="+1s"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.379"
+        app:layout_constraintStart_toEndOf="@+id/myButton"
+        app:layout_constraintTop_toBottomOf="@+id/myVideo3"
+        app:layout_constraintVertical_bias="0.065" />
+
+    <Button
+        android:id="@+id/switchActivityButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to files list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pauseButton"
+        app:layout_constraintVertical_bias="0.361" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
