@@ -1,8 +1,10 @@
 package com.example.provaapp.OperativeActivityChanger_1;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import com.example.provaapp.R;
+import com.example.provaapp.UsefulClasses.Permissions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarActivityChanger);
         setSupportActionBar(toolbar);
+
+        Permissions.requestPermissions( this , new String[]{Manifest.permission.CAMERA} , 100);
     }
 
     @Override
@@ -42,4 +46,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
