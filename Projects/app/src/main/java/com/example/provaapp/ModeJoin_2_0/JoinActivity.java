@@ -72,7 +72,6 @@ public class JoinActivity extends AppCompatActivity {
     private String[] devices;    //lista dei MAC address dei peers trovati, serve per connettere ad un determinato peer
 
 
-
     /*********************************************************************************************************/
 
     public WifiP2pManager.PeerListListener myPeerListListener = new WifiP2pManager.PeerListListener() {
@@ -83,15 +82,15 @@ public class JoinActivity extends AppCompatActivity {
             devices = new String[(peers.getDeviceList().size())];
             //salvo tutti i peerAddress e nomi sui vettori
             int l = 0;
-            for(WifiP2pDevice dev : peers.getDeviceList()){
-                nameDevices[l]=dev.deviceName;
-                devices[l]=dev.deviceAddress;
+            for (WifiP2pDevice dev : peers.getDeviceList()) {
+                nameDevices[l] = dev.deviceName;
+                devices[l] = dev.deviceAddress;
                 l++;
             }
-            for(WifiP2pDevice dev : peers.getDeviceList()){
+            for (WifiP2pDevice dev : peers.getDeviceList()) {
 
                 //controllo se è stata trovato il peer master a cui connettere, se si termino la ricerca peers e avvio la connection mandando come stringa la key di sicurezza letta nel qr
-                if(dev.deviceAddress == qrData[2]){
+                if (dev.deviceAddress == qrData[2]) {
 
                     manager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
                         @Override
@@ -127,6 +126,7 @@ public class JoinActivity extends AppCompatActivity {
                         public void onSuccess() {
 
                         }
+
                         @Override
                         public void onFailure(int reason) {
 
@@ -145,16 +145,18 @@ public class JoinActivity extends AppCompatActivity {
 
             final InetAddress groupOwnerAddress = info.groupOwnerAddress;
 
-            if(info.groupFormed){
+            if (info.groupFormed) {
 
                 pr.setVisibility(View.INVISIBLE);
-                connectionText.setText("Connection to room "+ qrData[0] +" established");
+                connectionText.setText("Connection to room " + qrData[0] + " established");
 
                 clientClass = new ClientClass(groupOwnerAddress);
                 clientClass.start();
 
+                //TODO: SWITCHARE ACTIVITY QUANDO SONO CONNESSO
+                //sendMessage();
                 try {
-                    String mess = qrData[1]+"//"+myNicknameDevice;
+                    String mess = qrData[1] + "//" + myNicknameDevice;
 
                     sendReceive.myWrite(mess.getBytes()); //SI PUò ANCHE MANDARE IL NICKNAME
                 } catch (IOException e) {
@@ -180,10 +182,10 @@ public class JoinActivity extends AppCompatActivity {
 
         assert args != null;
         //Log.d("nel bundle della join c'è ", Objects.requireNonNull(args.getString("QRData")));
-        qrData = Objects.requireNonNull(args.getString("QRData")).split("//" , 0);
+        qrData = Objects.requireNonNull(args.getString("QRData")).split("//", 0);
         int i = 0;
-        for (String s : qrData){
-            Log.d("contenuto" + i , s);
+        for (String s : qrData) {
+            Log.d("contenuto" + i, s);
             i++;
         }
 
@@ -197,7 +199,7 @@ public class JoinActivity extends AppCompatActivity {
         pr = findViewById(R.id.progressBarConnection);
         pr.setIndeterminate(true);
         connectionText = findViewById(R.id.connectionText);
-        connectionText.setText("Connessione a stanza "+ qrData[0]);
+        connectionText.setText("Connessione a stanza " + qrData[0]);
 
         startP2P();//qui inizializzo manager, channel e receiver, poi aggiungo i filter di interesse
 
@@ -205,16 +207,16 @@ public class JoinActivity extends AppCompatActivity {
 
     /*********************************************************************************************************/
 
-    private class SendReceive extends Thread{
+    private class SendReceive extends Thread {
         private Socket socket;
         private InputStream inputStream;
         private OutputStream outputStream;
 
-        public SendReceive(Socket skt){
-            socket=skt;
+        public SendReceive(Socket skt) {
+            socket = skt;
             try {
-                inputStream=socket.getInputStream();
-                outputStream=socket.getOutputStream();
+                inputStream = socket.getInputStream();
+                outputStream = socket.getOutputStream();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -224,11 +226,11 @@ public class JoinActivity extends AppCompatActivity {
         public void run() {
             byte[] buffer = new byte[1024];
             int bytes;
-            while(socket!=null){
+            while (socket != null) {
                 try {
-                    bytes=inputStream.read(buffer);
-                    if(bytes>0){
-                        handler.obtainMessage(1, bytes,-1, buffer).sendToTarget();
+                    bytes = inputStream.read(buffer);
+                    if (bytes > 0) {
+                        handler.obtainMessage(1, bytes, -1, buffer).sendToTarget();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -236,6 +238,7 @@ public class JoinActivity extends AppCompatActivity {
 
             }
         }
+
         public void myWrite(byte[] bytes) throws IOException {
             outputStream.write(bytes);
         }
@@ -243,23 +246,23 @@ public class JoinActivity extends AppCompatActivity {
 
     /*********************************************************************************************************/
 
-    public class ClientClass extends Thread{
+    public class ClientClass extends Thread {
         Socket socket;
         String hostAdd;
 
-        public ClientClass(InetAddress hostAddress){
-            hostAdd=hostAddress.getHostAddress();
-            socket=new Socket();
+        public ClientClass(InetAddress hostAddress) {
+            hostAdd = hostAddress.getHostAddress();
+            socket = new Socket();
         }
 
         @Override
         public void run() {
             try {
-                socket.connect(new InetSocketAddress(hostAdd,8888),500);
-                sendReceive=new SendReceive(socket);
+                socket.connect(new InetSocketAddress(hostAdd, 8888), 500);
+                sendReceive = new SendReceive(socket);
                 sendReceive.start();
                 //
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -271,7 +274,7 @@ public class JoinActivity extends AppCompatActivity {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
             byte[] readBuff = (byte[]) msg.obj;
-            String tempMsg = new String(readBuff,0,msg.arg1);
+            String tempMsg = new String(readBuff, 0, msg.arg1);
             //tempMsg è il messaggio arrivato
             return true;
         }
@@ -307,7 +310,7 @@ public class JoinActivity extends AppCompatActivity {
 
     /*********************************************************************************************************/
 
-    public void startP2P(){
+    public void startP2P() {
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = manager.initialize(this, getMainLooper(), null);
         receiver = new WiFiBroadcastPeer(manager, channel, this);
@@ -330,6 +333,12 @@ public class JoinActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+    }
+
+    public void sendMessage(Bundle s, String Key, Class<? extends AppCompatActivity> nextActivity) {
+        Intent intent = new Intent(this, nextActivity);
+        intent.putExtra(Key, s);
+        startActivity(intent);
     }
 
 

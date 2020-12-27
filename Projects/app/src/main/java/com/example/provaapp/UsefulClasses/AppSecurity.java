@@ -14,6 +14,4 @@ public class AppSecurity {
         byte[] digest = md.digest();
         return String.format( "%064x", new BigInteger( 1, digest ) );
     }
-
-
 }

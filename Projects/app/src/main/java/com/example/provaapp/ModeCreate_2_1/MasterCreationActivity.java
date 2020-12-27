@@ -14,7 +14,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,10 +42,14 @@ public class MasterCreationActivity extends AppCompatActivity {
     public Bundle message;
 
     public TextView peer1, peer2, peer3, peer4, peer5, peer6;
+    public TextView myName;
     public ArrayList<TextView> peers;
     public static ArrayList<TextView> staticPeers;
     public Button finishButton;
+    public ProgressBar peerL1, peerL2, peerL3, peerL4, peerL5, peerL6;
+    private ArrayList<ProgressBar> peerLoaders;
     private String masterRole;
+    private int setReadyDevices;
     public static int peerNumber;
 
     private Collection<SendReceive> socketCollection;
@@ -85,6 +91,12 @@ public class MasterCreationActivity extends AppCompatActivity {
                 serverClass = new ServerClass(); //Devo mandare l'address per mantere un collegamento socket-peer per distinguere le connessioni
                 serverClass.start();
 
+                if (setReadyDevices > 0) {
+                    peers.get(setReadyDevices).setText("Ready");
+                    peerLoaders.get(setReadyDevices).setVisibility(View.INVISIBLE);
+                    setReadyDevices--;
+                }
+                //TODO: CANAGLIA AL CRISTO 2
             }
         }
     };
@@ -97,7 +109,13 @@ public class MasterCreationActivity extends AppCompatActivity {
         public void onGroupInfoAvailable(WifiP2pGroup group) {
             Collection<WifiP2pDevice> listClient = group.getClientList();
 
+            //TODO: CANAGLIA IL CRISTO
             onPeersConnectedChangeView(listClient);
+
+            if (setReadyDevices == 0) {
+                finishButton.setVisibility(View.VISIBLE);
+                finishButton.setClickable(true);
+            }
             //vediamo dopo se c'è da aggiungere altro
 
         }
@@ -109,20 +127,36 @@ public class MasterCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.master_creation_activity);
 
-        Toolbar toolbar = findViewById(R.id.QRToolbar);
+        Toolbar toolbar = findViewById(R.id.ConnToolbar);
         setSupportActionBar(toolbar);
+        myName = findViewById(R.id.textViewMasterName);
 
         permissions.addAll(Arrays.asList(permissionsList));
+
 
         Intent intent = getIntent();
         message = intent.getBundleExtra(QRCreationActivity.forMasterCreation); //tutti i dati della stanza sono qui
         finishButton = findViewById(R.id.finishSetupButton);
+        finishButton.setVisibility(View.INVISIBLE);
+
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: START THE NEXT ACTIVITY
+            }
+        });
+
         assert message != null;
         masterRole = message.getString("masterRole");
         peerNumber = message.getInt("audioN") + message.getInt("videoN");
-        peers = new ArrayList<>();
+        myName.setText(message.getString("RoomName"));
 
-        startXML(peers, peerNumber);
+        setReadyDevices = peerNumber - 1;
+        peers = new ArrayList<>();
+        peerLoaders = new ArrayList<>();
+
+
+        startXML(peers, peerNumber, peerLoaders); // questa funzione preapara l'interfaccia iniziale
 
         //da vedere se serve, lo scopo di wifi sarebbe solo gestire i servizi inerenti al wifi, ma se mettiamo avvisi prima di creare la room oppure quando si apre l'app allora qui non serve più
         //wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -234,8 +268,6 @@ public class MasterCreationActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     public void onPeersConnectedChangeView(Collection<WifiP2pDevice> peersName) {
@@ -248,36 +280,55 @@ public class MasterCreationActivity extends AppCompatActivity {
     }
 
 
-    private void startXML(ArrayList<TextView> peers, int peerNum) {
+    private void startXML(ArrayList<TextView> peers, int peerNum, ArrayList<ProgressBar> loaders) {
 
         staticPeers = new ArrayList<>();
 
+        peerL1 = findViewById(R.id.progressBarPeer1);
+        peerL1.setIndeterminate(true);
+        loaders.add(peerL1);
         peer1 = findViewById(R.id.peer1);
         peers.add(peer1);
         MasterCreationActivity.staticPeers.add(peer1);
 
+        peerL2 = findViewById(R.id.progressBarPeer2);
+        peerL2.setIndeterminate(true);
+        loaders.add(peerL2);
         peer2 = findViewById(R.id.peer2);
         peers.add(peer2);
         MasterCreationActivity.staticPeers.add(peer2);
 
+        peerL3 = findViewById(R.id.progressBarPeer3);
+        peerL3.setIndeterminate(true);
+        loaders.add(peerL3);
         peer3 = findViewById(R.id.peer3);
         peers.add(peer3);
         MasterCreationActivity.staticPeers.add(peer3);
 
+        peerL4 = findViewById(R.id.progressBarPeer4);
+        peerL4.setIndeterminate(true);
+        loaders.add(peerL4);
         peer4 = findViewById(R.id.peer4);
         peers.add(peer4);
         MasterCreationActivity.staticPeers.add(peer4);
 
+        peerL5 = findViewById(R.id.progressBarPeer5);
+        peerL5.setIndeterminate(true);
+        loaders.add(peerL5);
         peer5 = findViewById(R.id.peer5);
         peers.add(peer5);
         MasterCreationActivity.staticPeers.add(peer5);
 
+        peerL6 = findViewById(R.id.progressBarPeer6);
+        peerL6.setIndeterminate(true);
+        loaders.add(peerL6);
         peer6 = findViewById(R.id.peer6);
         peers.add(peer6);
         MasterCreationActivity.staticPeers.add(peer6);
 
         for (int i = 5; i >= peerNum; i--) { //Mettiamo tutti su invisible tranne il primo, quando si collega il prossimo peer allora cambiamo nome e settiamo come visibile
             peers.get(i).setVisibility(View.INVISIBLE);
+            loaders.get(i).setVisibility(View.INVISIBLE);
         }
     }
 
