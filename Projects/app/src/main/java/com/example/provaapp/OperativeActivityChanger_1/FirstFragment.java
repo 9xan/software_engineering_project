@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +28,6 @@ public class FirstFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_first, container, false);
     }
 
@@ -37,17 +37,20 @@ public class FirstFragment extends Fragment {
         Button Create = view.findViewById(R.id.Create);
         args = new Bundle();
         final EditText NickNameInput = view.findViewById(R.id.NickNameInput);
-
         Join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 NickName = NickNameInput.getText().toString();
-                //sendMessage(NickName , JoinKey , JoinActivity.class); LA PARTE DELL'INGE LA COMMENTO
-                args.putString("NickName", NickName);
-                sendMessage(args, JoinKey, QRReaderActivity.class);
-
-
+                if (NickName.compareTo("") == 0) {
+                    Toast.makeText(getContext(),
+                            "Please insert a name!",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    args.putString("NickName", NickName);
+                    sendMessage(args, JoinKey, QRReaderActivity.class);
+                }
             }
         });
 
@@ -55,18 +58,22 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NickName = NickNameInput.getText().toString();
-                /*Snackbar.make(view, "Creo una stanza e il mio nome è: "+  NickNameInput.getText(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
 
-                args.putString("NickName", NickName);
-                sendMessage(args, CreateKey, CreateActivity.class);
+
+                if (NickName.compareTo("") == 0) {
+                    Toast.makeText(getContext(),
+                            "Please insert a name!",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    args.putString("NickName", NickName);
+                    sendMessage(args, CreateKey, CreateActivity.class);
+                }
+
             }
         });
     }
 
-    /**
-     * Called when the user taps the Send button
-     */
     public void sendMessage(Bundle s, String Key, Class<? extends AppCompatActivity> nextActivity) {
         Intent intent = new Intent(getContext(), nextActivity);
         intent.putExtra(Key, s);
