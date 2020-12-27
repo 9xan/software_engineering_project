@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!--this is for qr-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!--this is for qr-->
 
     <application
         android:allowBackup="true"
@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ModeCreate_2_1.CreateActivity"
+        <activity
+            android:name=".ModeCreate_2_1.CreateActivity"
             android:parentActivityName=".OperativeActivityChanger_1.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -43,6 +44,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".OperativeActivityChanger_1.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ModeJoin_2_0.RoomInfoActivity"
+            android:parentActivityName=".ModeJoin_2_0.QRReaderActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ModeJoin_2_0.QRReaderActivity" />
+        </activity>
+
         <activity
             android:name=".ModeCreate_2_1.QRCreationActivity"
             android:parentActivityName=".ModeCreate_2_1.CreateActivity">
