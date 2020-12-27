@@ -1,7 +1,11 @@
 package com.example.provaapp.ModeCreate_2_1;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +33,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 public class QRCreationActivity extends AppCompatActivity {
 
     public String roomNameQR;
-    public String myDeviceMAC = "nexus5x";
+    private String myDeviceMAC = "nexus5x";
     private String QRString;
     private String secCode;
     private String hashSecCode;
@@ -40,6 +44,7 @@ public class QRCreationActivity extends AppCompatActivity {
     public Bundle message;
     public static final String forMasterCreation = "forMasterCreation";
 
+    @SuppressLint("HardwareIds")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +53,24 @@ public class QRCreationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.QRToolbar);
         setSupportActionBar(toolbar);
 
+        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = manager.getConnectionInfo();
+        myDeviceMAC = info.getMacAddress();
+
         toCreateMaster = findViewById(R.id.closeQRButton);
         QrView = findViewById(R.id.QrView);
         RoomName = findViewById(R.id.RoomNameView);
         Intent intent = getIntent();
         message = intent.getBundleExtra(CreateRoomStep4.RoomData); //tutti i dati della stanza sono qui
         assert message != null;
-        RoomName.setText(message.getString("NickName", "an error has occurred"));
+        RoomName.setText(message.getString("RoomName", "an error has occurred"));
         roomNameQR = message.getString("RoomName");
 
         RandomString rs = new RandomString(10);  //generating a secure random string
         secCode = rs.nextString();
 
         try {     //generating hash starting from a random string
+
             hashSecCode = AppSecurity.StringToHashSHA512(secCode, algorithm);
             QRString = roomNameQR + "//" + hashSecCode + "//" + myDeviceMAC + "//" + new RandomString(300).nextString();
             QRGEncoder qrgEncoder = new QRGEncoder(QRString, null, QRGContents.Type.TEXT, QRString.length());
