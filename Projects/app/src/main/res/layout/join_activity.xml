@@ -36,6 +36,7 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="92dp"
         android:text="@string/peer_search"
+        android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,8 +50,26 @@
         android:layout_marginStart="146dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="146dp"
+        android:indeterminateOnly="true"
         android:progressTint="#E91E63"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NickViewJoin" />
+
+    <Button
+        android:id="@+id/connectBtn"
+        android:layout_width="222dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="112dp"
+        android:text="Connect2Master"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NickViewJoin" />
 
