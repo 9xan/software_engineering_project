@@ -36,6 +36,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+//TODO: REINSERIRE QUESTO CODICE ->
+//QUANDO TI SI CONNETTONO TUTTI I DISPOSITIVI :
+
+           /* if (setReadyDevices == 0) {
+                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setClickable(true);
+                    }*/
+//QUANDO TI SI CONNETTE UN SINGOLO DISPOSITIVO:
+
+                /*if (setReadyDevices > 0) {
+                        peers.get(setReadyDevices).setText("Ready");
+                        peerLoaders.get(setReadyDevices).setVisibility(View.INVISIBLE);
+                        setReadyDevices--;
+                        }*/
+
 
 public class MasterCreationActivity extends AppCompatActivity {
 
@@ -91,11 +106,7 @@ public class MasterCreationActivity extends AppCompatActivity {
                 serverClass = new ServerClass(); //Devo mandare l'address per mantere un collegamento socket-peer per distinguere le connessioni
                 serverClass.start();
 
-                if (setReadyDevices > 0) {
-                    peers.get(setReadyDevices).setText("Ready");
-                    peerLoaders.get(setReadyDevices).setVisibility(View.INVISIBLE);
-                    setReadyDevices--;
-                }
+
                 //TODO: CANAGLIA AL CRISTO 2
             }
         }
