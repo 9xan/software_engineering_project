@@ -38,11 +38,19 @@
         </activity>
 
         <activity
-            android:name=".ModeJoin_2_0.JoinActivity"
-            android:parentActivityName=".OperativeActivityChanger_1.MainActivity">
+            android:name=".ModeJoin_2_0.JoinSelectRoleActivity"
+            android:parentActivityName=".ModeJoin_2_0.JoinActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".OperativeActivityChanger_1.MainActivity" />
+                android:value=".ModeJoin_2_0.JoinActivity" />
+        </activity>
+
+        <activity
+            android:name=".ModeJoin_2_0.JoinActivity"
+            android:parentActivityName=".ModeJoin_2_0.RoomInfoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ModeJoin_2_0.RoomInfoActivity" />
         </activity>
 
         <activity
@@ -71,6 +79,7 @@
 
         <activity
             android:name=".ModeCreate_2_1.MasterCreationActivity"
+            android:parentActivityName=".ModeCreate_2_1.QRCreationActivity"
             android:label="@string/app_name">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
