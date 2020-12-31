@@ -17,14 +17,16 @@ public class FileListActivity extends AppCompatActivity {
     /* TODO modify dirPath to change source directory*/
     final String dirPath = "/storage/emulated/0/DCIM/EpVideos/";
     ListView myListView;
-    List<String> selectedVideos;
+    List<String> selectedVideosName;
+    List<String> selectedVideosPath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fileslist);
 
-        selectedVideos = new ArrayList<>();
+        selectedVideosPath = new ArrayList<>();
+        selectedVideosName = new ArrayList<>();
         myListView = findViewById(R.id.myListView);
 
         List<String> filePaths = MediaCreator.getFilesNameFromDirPath(dirPath);
@@ -38,12 +40,13 @@ public class FileListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemValue = (String) myListView.getItemAtPosition(position);
-                if (MediaCreator.addOrRemoveElement(selectedVideos, itemValue)) {
+                MediaCreator.addOrRemoveElement(selectedVideosPath, dirPath + itemValue);
+                if (MediaCreator.addOrRemoveElement(selectedVideosName, itemValue)) {
                     view.setBackgroundColor(0xFF00FF00);
                 } else {
                     view.setBackgroundColor(0xFFFFFFFF);
                 }
-                Log.d("selectedVideos", selectedVideos.toString());
+                Log.d("selectedVideos", selectedVideosPath.toString());
             }
         });
     }
