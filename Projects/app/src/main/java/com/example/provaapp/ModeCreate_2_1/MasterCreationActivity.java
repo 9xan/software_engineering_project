@@ -26,11 +26,23 @@ import java.util.Arrays;
                     }*/
 //QUANDO TI SI CONNETTE UN SINGOLO DISPOSITIVO:
 
-                /*if(setReadyDevices > 0) {
-                        staticPeers.get(setReadyDevices).setText("Ready");
-                        peerLoaders.get(setReadyDevices).setVisibility(View.INVISIBLE);
-                        setReadyDevices--;
+                /*if(tmpCounter == peerNumber) {
+                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setClickable(true);
                         }*/
+
+                /*if(tmpCounter <= peerNumber){
+                *       staticPeers.get(peersCounter).setText("Ready");
+                        peerLoaders.get(peersCounter).setVisibility(View.INVISIBLE);
+                        * if(tmpCounter == peerNumber){
+                            finishButton.setVisibility(View.VISIBLE);
+                            finishButton.setClickable(true);
+                        * }
+                        tmpCounter++;
+                        peersCounter++;
+                        *
+                * }
+                * */
    /* for (String i : permissions) {
 
             if (ActivityCompat.checkSelfPermission(this, i) != PackageManager.PERMISSION_GRANTED) {
@@ -48,7 +60,6 @@ import java.util.Arrays;
 public class MasterCreationActivity extends AppCompatActivity {
 
 
-
     public Bundle message;
 
     public TextView peer1, peer2, peer3, peer4, peer5, peer6;
@@ -59,7 +70,7 @@ public class MasterCreationActivity extends AppCompatActivity {
     public ProgressBar peerL1, peerL2, peerL3, peerL4, peerL5, peerL6;
     public ArrayList<ProgressBar> peerLoaders;
     private String masterRole;
-    public int setReadyDevices;
+    public int tmpCounter = 1, peersCounter = tmpCounter - 1;
     public static int peerNumber;
     public P2PStarConnection managerConnection;
     public String myNickName, secureCode;
@@ -96,7 +107,7 @@ public class MasterCreationActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: START THE NEXT ACTIVITY
+
             }
         });
 
@@ -105,27 +116,19 @@ public class MasterCreationActivity extends AppCompatActivity {
         peerNumber = message.getInt("audioN") + message.getInt("videoN");
         myName.setText(message.getString("RoomName"));
 
-
-        setReadyDevices = peerNumber - 1;
         peers = new ArrayList<>();
         peerLoaders = new ArrayList<>();
 
-        myNickName=message.getString("NickName");
+        myNickName = message.getString("NickName");
         secureCode = message.getString("secureHash");
 
         startXML(peers, peerNumber, peerLoaders); // questa funzione preapara l'interfaccia iniziale
 
-
         managerConnection = new P2PStarConnection(this, myNickName, secureCode);
+
         managerConnection.startAdvertising();
 
-
-
-
-
     }
-
-
 
 
     private void startXML(ArrayList<TextView> peers, int peerNum, ArrayList<ProgressBar> loaders) {

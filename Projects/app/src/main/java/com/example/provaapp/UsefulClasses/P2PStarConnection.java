@@ -30,7 +30,6 @@ public class P2PStarConnection {
     private String securityCode;
 
 
-
     public P2PStarConnection(MasterCreationActivity act, String n, String secureIdCode) {
 
         activity = act;
@@ -50,16 +49,13 @@ public class P2PStarConnection {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
                         Log.d("Advertising", "Start_Advertising_Result: SUCCESS");
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
-                        Log.e("Advertising", "Start_Advertising_Result: FAILURE");
+                        Log.e("Advertising", "Start_Advertising_Result: FAILURE" + e.toString());
                     }
                 });
     }
@@ -79,14 +75,15 @@ public class P2PStarConnection {
                 case ConnectionsStatusCodes.STATUS_OK:
                     // We're connected! Can now start sending and receiving data.
                     Log.d("CONNECTION", "ConnectionsStatusCodes=STATUS_OK");
-
-                    if(activity.setReadyDevices>0){
-                        activity.peers.get(activity.setReadyDevices).setText(s+" is Ready!");
-                        activity.peerLoaders.get(activity.setReadyDevices).setVisibility(View.INVISIBLE);
-                        activity.setReadyDevices--;
-                    }else if(activity.setReadyDevices==0){
-                        activity.finishButton.setVisibility(View.VISIBLE);
-                        activity.finishButton.setClickable(true);
+                    if (activity.tmpCounter <= MasterCreationActivity.peerNumber) {
+                        MasterCreationActivity.staticPeers.get(activity.peersCounter).setText(s + " is Ready!");
+                        activity.peerLoaders.get(activity.peersCounter).setVisibility(View.INVISIBLE);
+                        if (activity.tmpCounter == MasterCreationActivity.peerNumber) {
+                            activity.finishButton.setVisibility(View.VISIBLE);
+                            activity.finishButton.setClickable(true);
+                        }
+                        activity.tmpCounter++;
+                        activity.peersCounter++;
                     }
                     break;
                 case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
@@ -124,7 +121,6 @@ public class P2PStarConnection {
             //out sarà il messaggio ricevuto
 
 
-
             //File payloadFile = payload.asFile().asJavaFile();
 
             //Rename the file.
@@ -136,7 +132,7 @@ public class P2PStarConnection {
         public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
             // Bytes payloads are sent as a single chunk, so you'll receive a SUCCESS update immediately
             // after the call to onPayloadReceived().
-           // if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+            // if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
 
             //}
         }
