@@ -1,18 +1,13 @@
 package com.example.provaapp.OperativeActivityChanger_1;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import com.example.provaapp.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.provaapp.UsefulClasses.Permissions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarActivityChanger);
         setSupportActionBar(toolbar);
+
+        Permissions.requestPermissions( this , new String[]{Manifest.permission.CAMERA} , 100);
+
     }
 
     @Override
@@ -49,4 +47,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

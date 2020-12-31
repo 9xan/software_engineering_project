@@ -21,7 +21,7 @@
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="com.example.provaapp.OperativeActivityChanger_1.FirstFragment"
+        android:name="OperativeActivityChanger_111.FirstFragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
