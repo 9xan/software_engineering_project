@@ -20,7 +20,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     final int READ_EXTERNAL_STORAGE_CODE = 101;
-    
+
     /* TODO modify dirPath to change source directory*/
     final String dirPath = "/storage/emulated/0/DCIM/EpVideos/";
     final String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent myIntent = getIntent();
+
+        videoViewPaths = myIntent.getStringArrayListExtra("videospath");
         getMediaButton = findViewById(R.id.myButton);
         startPlaybackButton = findViewById(R.id.playButton);
         pausePlaybackButton = findViewById(R.id.pauseButton);
@@ -58,13 +61,9 @@ public class MainActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(ctx, new String[]{permissions[0]}, READ_EXTERNAL_STORAGE_CODE);
 
                 } else {
-                    Integer[] ids = {R.id.myVideo, R.id.myVideo2, R.id.myVideo3};
+                    Integer[] ids = {R.id.myVideo2, R.id.myVideo3};
                     videoViewIds = Arrays.asList(ids);
-                    /*
-                    videoViewPaths = MediaCreator.getFilesPathFromDirPath(dirPath);
-                     */
-                    String path = "/storage/emulated/0/DCIM/EpVideos/video1.mp4";
-                    videoViewPaths = new ArrayList<>(Arrays.asList(path, path, path));
+
                     videoViews = MediaCreator.createVideoViews(ctx, videoViewIds, videoViewPaths, null);
                 }
             }
@@ -125,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

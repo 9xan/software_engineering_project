@@ -6,44 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <VideoView
-        android:id="@+id/myVideo"
-        android:layout_width="match_parent"
-        android:layout_height="253dp"
-        app:layout_constraintBottom_toTopOf="@+id/myVideo2"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/myFragmentContainer"
+        android:name="com.example.videoplayer.TwoVideoFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/myButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <VideoView
-        android:id="@+id/myVideo2"
-        android:layout_width="206dp"
-        android:layout_height="253dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myVideo" />
-
-    <VideoView
-        android:id="@+id/myVideo3"
-        android:layout_width="205dp"
-        android:layout_height="253dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/myVideo2"
-        app:layout_constraintTop_toBottomOf="@+id/myVideo" />
 
     <Button
         android:id="@+id/myButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="176dp"
         android:text="Launch media player"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myVideo2"
         app:layout_constraintVertical_bias="0.067" />
 
     <Button
@@ -74,36 +56,35 @@
         android:id="@+id/restartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="32dp"
         android:text="Restart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myButton"
-        app:layout_constraintVertical_bias="0.188" />
+        app:layout_constraintVertical_bias="0.187" />
 
     <Button
         android:id="@+id/backwardButton"
         android:layout_width="59dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="196dp"
         android:text="-1s"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/myButton"
-        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myVideo2"
         app:layout_constraintVertical_bias="0.176" />
 
     <Button
         android:id="@+id/forwardButton"
         android:layout_width="59dp"
         android:layout_height="47dp"
+        android:layout_marginBottom="196dp"
         android:text="+1s"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.379"
+        app:layout_constraintHorizontal_bias="0.396"
         app:layout_constraintStart_toEndOf="@+id/myButton"
-        app:layout_constraintTop_toBottomOf="@+id/myVideo3"
         app:layout_constraintVertical_bias="0.065" />
 
     <Button
