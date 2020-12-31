@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ProvaApp</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="join">Join</string>
+    <string name="create">Create</string>
+    <string name="peer_search"></string>
+    <string name="create_room_title">Create your room</string>
+    <string name="continue_button_text">Continue</string>
+
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_join">JoinActivity</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="title_activity_creation">CreationActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="myFragment1">com.example.provaapp.OperativeActivityChanger_1.FirstFragment</string>
+
+    <string name="create_your_room_title">Create your room</string>
+
+</resources>
