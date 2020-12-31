@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         final AppCompatActivity ctx = this;
 
+        // TODO prepare video automatically instead of pressing button
         getMediaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
