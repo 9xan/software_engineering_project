@@ -111,7 +111,6 @@ public class P2PClientConnection {
                             });
                 }
             });
-
         }
 
         @Override
