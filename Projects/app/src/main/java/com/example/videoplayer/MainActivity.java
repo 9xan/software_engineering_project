@@ -3,8 +3,11 @@ package com.example.videoplayer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
 
         videoViewPaths = myIntent.getStringArrayListExtra("videospath");
+
+        assert videoViewPaths != null;
+        videoViewIds = startVideoFragmentBy(videoViewPaths.size(), R.id.myFragmentContainer);
+
         getMediaButton = findViewById(R.id.myButton);
         startPlaybackButton = findViewById(R.id.playButton);
         pausePlaybackButton = findViewById(R.id.pauseButton);
@@ -51,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
         forwardPlaybackButton = findViewById(R.id.forwardButton);
         switchActivityButton = findViewById(R.id.switchActivityButton);
 
-
         final AppCompatActivity ctx = this;
 
+
         // TODO prepare video automatically instead of pressing button
+
         getMediaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,13 +70,11 @@ public class MainActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(ctx, new String[]{permissions[0]}, READ_EXTERNAL_STORAGE_CODE);
 
                 } else {
-                    Integer[] ids = {R.id.myVideo2, R.id.myVideo3};
-                    videoViewIds = Arrays.asList(ids);
-
                     videoViews = MediaCreator.createVideoViews(ctx, videoViewIds, videoViewPaths, null);
                 }
             }
         });
+
 
         startPlaybackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,9 +128,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-
-
     }
+
+    public List<Integer> startVideoFragmentBy(int videoN, int containerId) {
+        FragmentTransaction trans = getSupportFragmentManager().beginTransaction().setReorderingAllowed(true);
+        List<Integer> ids = new ArrayList<>();
+        switch (videoN) {
+            case 2:
+                trans.add(containerId, TwoVideoFragment.class, null).commit();
+                ids.add(R.id.twoVideo1);
+                ids.add(R.id.twoVideo2);
+                break;
+            case 3:
+                trans.add(containerId, ThreeVideoFragment.class, null).commit();
+                ids.add(R.id.threeVideo1);
+                ids.add(R.id.threeVideo2);
+                ids.add(R.id.threeVideo3);
+                break;
+        }
+        return ids;
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

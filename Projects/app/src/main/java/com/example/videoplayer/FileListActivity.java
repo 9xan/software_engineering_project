@@ -62,13 +62,21 @@ public class FileListActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String itemValue = (String) myListView.getItemAtPosition(position);
-                    MediaCreator.addOrRemoveElement(selectedVideosPath, dirPath + itemValue);
-                    if (MediaCreator.addOrRemoveElement(selectedVideosName, itemValue)) {
-                        view.setBackgroundColor(0xFF00FF00);
-                    } else {
-                        view.setBackgroundColor(0xFFFFFFFF);
+
+                    if (MediaCreator.isInFormat(itemValue, "mp4")) {
+
+                        MediaCreator.addOrRemoveElement(selectedVideosPath, dirPath + itemValue);
+                        if (MediaCreator.addOrRemoveElement(selectedVideosName, itemValue)) {
+                            view.setBackgroundColor(0xFF00FF00);
+                        } else {
+                            view.setBackgroundColor(0xFFFFFFFF);
+                        }
+                        Log.d("selectedVideos", selectedVideosPath.toString());
+
                     }
-                    Log.d("selectedVideos", selectedVideosPath.toString());
+                    else{
+                        Toast.makeText(getApplicationContext(), "Not a valid mp4", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

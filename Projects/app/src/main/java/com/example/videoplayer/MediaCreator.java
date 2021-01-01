@@ -1,6 +1,7 @@
 package com.example.videoplayer;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -35,6 +36,7 @@ public class MediaCreator {
             myVideoView.setMediaController(controller);
         }
         myVideoView.setVideoPath(videoPath);
+
         return myVideoView;
     }
 
@@ -143,4 +145,8 @@ public class MediaCreator {
         }
     }
 
+    public static boolean isInFormat(String filePath, String format) {
+        String[] arr = filePath.split("\\.");
+        return (arr[arr.length - 1].compareTo(format) == 0);
+    }
 }
