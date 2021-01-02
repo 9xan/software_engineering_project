@@ -3,59 +3,32 @@ package com.example.provaapp.ModeCreate_2_1;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.P2PStarConnection;
+import com.example.provaapp.UsefulClasses.P2PManagerNearby;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.AdvertisingOptions;
+import com.google.android.gms.nearby.connection.ConnectionInfo;
+import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
+import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO: REINSERIRE QUESTO CODICE ->
-//QUANDO TI SI CONNETTONO TUTTI I DISPOSITIVI :
+import static com.google.android.gms.nearby.connection.Strategy.P2P_STAR;
 
-           /* if (setReadyDevices == 0) {
-                    finishButton.setVisibility(View.VISIBLE);
-                    finishButton.setClickable(true);
-                    }*/
-//QUANDO TI SI CONNETTE UN SINGOLO DISPOSITIVO:
-
-                /*if(tmpCounter == peerNumber) {
-                        finishButton.setVisibility(View.VISIBLE);
-                        finishButton.setClickable(true);
-                        }*/
-
-                /*if(tmpCounter <= peerNumber){
-                *       staticPeers.get(peersCounter).setText("Ready");
-                        peerLoaders.get(peersCounter).setVisibility(View.INVISIBLE);
-                        * if(tmpCounter == peerNumber){
-                            finishButton.setVisibility(View.VISIBLE);
-                            finishButton.setClickable(true);
-                        * }
-                        tmpCounter++;
-                        peersCounter++;
-                        *
-                * }
-                * */
-   /* for (String i : permissions) {
-
-            if (ActivityCompat.checkSelfPermission(this, i) != PackageManager.PERMISSION_GRANTED) {
-                // PERMISSIONS
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-        }*/
 
 public class MasterCreationActivity extends AppCompatActivity {
 
@@ -71,8 +44,7 @@ public class MasterCreationActivity extends AppCompatActivity {
     public ArrayList<ProgressBar> peerLoaders;
     private String masterRole;
     public int tmpCounter = 1, peersCounter = tmpCounter - 1;
-    public static int peerNumber;
-    public P2PStarConnection managerConnection;
+    public int peerNumber;
     public String myNickName, secureCode;
 
     public final String[] permissionsList = {
@@ -104,10 +76,11 @@ public class MasterCreationActivity extends AppCompatActivity {
         finishButton = findViewById(R.id.finishSetupButton);
         finishButton.setVisibility(View.INVISIBLE);
 
+
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //METTERE CODICE PER PROSEGUIRE CON  WaitForPeerConfigurationActivity
             }
         });
 
@@ -124,12 +97,95 @@ public class MasterCreationActivity extends AppCompatActivity {
 
         startXML(peers, peerNumber, peerLoaders); // questa funzione preapara l'interfaccia iniziale
 
-        managerConnection = new P2PStarConnection(this, myNickName, secureCode);
-
-        managerConnection.startAdvertising();
+        startAdvertising();
 
     }
 
+    /**************************************************************************************************/
+
+    public void startAdvertising() {
+        AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(P2P_STAR).build();
+
+        Nearby.getConnectionsClient(getApplicationContext())
+                .startAdvertising(
+                        myNickName, secureCode, connectionLifecycleCallback, advertisingOptions)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("MANAGER", "Start_Advertising_Result: SUCCESS");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("MANAGER", "Start_Advertising_Result: FAILURE" + e.toString());
+                        //di solito si ricade in qui per android service non aggiornato o permissions mancate
+                    }
+                });
+    }
+
+    /**************************************************************************************************/
+
+
+    public ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
+        @Override
+        public void onConnectionInitiated(@NonNull String s, @NonNull ConnectionInfo connectionInfo) {
+            // Automatically accept the connection on both sides.
+
+            P2PManagerNearby.workers.put(s, connectionInfo.getEndpointName());              //aggiungo l'id (String) del worker che si è connesso e il suo nome
+            P2PManagerNearby.endpoints.add(s);                                              //la lista servirà per mandare un payload a TUTTI i peers con una sola chiamata!!
+
+            peers.get(peersCounter).setText(connectionInfo.getEndpointName()+ " is Ready!");
+
+            P2PManagerNearby.workersPayload.put(s, P2PManagerNearby.newPayloadCallback());
+
+            Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(s, P2PManagerNearby.workersPayload.get(s));
+        }
+
+        @Override
+        public void onConnectionResult(@NonNull String s, @NonNull ConnectionResolution result) {
+
+            switch (result.getStatus().getStatusCode()) {
+                case ConnectionsStatusCodes.STATUS_OK:
+
+                    // We're connected! Can now start sending and receiving data.
+                    Log.d("MANAGER", "ConnectionsStatusCodes=STATUS_OK");
+                    if (tmpCounter <= peerNumber) {
+                        peerLoaders.get(peersCounter).setVisibility(View.INVISIBLE);
+                        if (tmpCounter == peerNumber) {
+                            finishButton.setVisibility(View.VISIBLE);
+                            finishButton.setClickable(true);
+                        }
+                        tmpCounter++;
+                        peersCounter++;
+                    }
+                    break;
+                case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
+                    // The connection was rejected by one or both sides.
+                    Log.e("MANAGER", "ConnectionsStatusCodes=STATUS_CONNECTION_REJECTED");
+                    break;
+                case ConnectionsStatusCodes.STATUS_ERROR:
+                    // The connection broke before it was able to be accepted.
+                    Log.e("MANAGER", "ConnectionsStatusCodes=STATUS_ERROR");
+                    break;
+                default:
+                    Log.d("MANAGER", "UNKNOW");
+            }
+        }
+
+        @Override
+        public void onDisconnected(@NonNull String s) {
+            // We've been disconnected from this endpoint. No more data can be
+            // sent or received.
+            //TODO: incrementare i peers disponibili poichè si deve riconnettere
+            //tipo: activity.setReadyDevice++;
+        }
+    };
+
+    /**************************************************************************************************/
+
+
+    /**************************************************************************************************/
 
     private void startXML(ArrayList<TextView> peers, int peerNum, ArrayList<ProgressBar> loaders) {
 

@@ -94,6 +94,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ModeCreate_2_1.QRCreationActivity" />
         </activity>
+        <activity android:name=".ModeCreate_2_1.WaitForPeerConfigurationActivity" />
 
 
     </application>

@@ -17,11 +17,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.P2PClientConnection;
+import com.example.provaapp.UsefulClasses.P2PWorkerNearby;
+import com.example.provaapp.UsefulClasses.Permissions;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.ConnectionInfo;
+import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
+import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
+import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
+import com.google.android.gms.nearby.connection.DiscoveryOptions;
+import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+
+import static com.google.android.gms.nearby.connection.Strategy.P2P_STAR;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -43,8 +56,8 @@ public class JoinActivity extends AppCompatActivity {
     private String myNicknameDevice;
     public Button connectBtn;
 
+    private String roomName, secureCode;
 
-    public P2PClientConnection connection;
     private ArrayList<String> permissions = new ArrayList<>();
     private Bundle args;
 
@@ -70,6 +83,14 @@ public class JoinActivity extends AppCompatActivity {
             i++;
         }
 
+        roomName=qrData[0];
+        secureCode=qrData[1];
+
+        P2PWorkerNearby.videoN = Integer.parseInt(qrData[2]);
+        P2PWorkerNearby.audioN = Integer.parseInt(qrData[3]);
+
+        P2PWorkerNearby.room = roomName;
+
 
         //ADDING PERMISSIONS
         this.permissions.addAll(Arrays.asList(permissionsList));
@@ -81,15 +102,135 @@ public class JoinActivity extends AppCompatActivity {
 
         pr = findViewById(R.id.progressBarConnection);
         connectionText = findViewById(R.id.connectionText);
-        connectionText.setText("Ricerca stanza -" + qrData[0]+"-");
-
-        connection = new P2PClientConnection(this, myNicknameDevice, qrData[1]);
-
-        connection.startDiscovery();
+        connectionText.setText("Ricerca stanza -" + roomName + "-");
 
 
+        permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
+        permissions.add(Manifest.permission.CHANGE_WIFI_STATE);
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissions.add(Manifest.permission.BLUETOOTH);
+        permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        startDiscovery();
 
     }
+
+
+    /**************************************************************************************************/
+
+    public void startDiscovery() {
+        DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(P2P_STAR).build();
+
+        String[] st = new String[6];
+        Permissions.requestPermissions(this, permissions.toArray(st), 200);
+
+        Nearby.getConnectionsClient(getApplicationContext())
+                .startDiscovery(secureCode, endpointDiscoveryCallback, discoveryOptions)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("PEER_DISCOVERY", "result: SUCCESS");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        Log.e("PEER_DISCOVERY", "result: FAILURE");
+                    }
+                });
+    }
+
+    /**************************************************************************************************/
+
+    public EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
+        @Override
+        public void onEndpointFound(@NonNull String s, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
+
+
+            pr.setVisibility(View.INVISIBLE);
+            connectionText.setVisibility(View.INVISIBLE);
+            pr.setIndeterminate(false);
+
+            // An endpoint was found. We request a connection to it.
+
+            final String st = s;
+            /*final String[] st= new String[1];
+            st[0]=s;*/
+
+            connectBtn.setClickable(true);
+            connectBtn.setVisibility(View.VISIBLE);
+            connectBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Nearby.getConnectionsClient(getApplicationContext())
+                            .requestConnection(myNicknameDevice, st, connectionLifecycleCallback)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("CONNECTION", "requestConnection: SUCCESS");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("CONNECTION", "requestConnection: FAILURE");
+                                }
+                            });
+                }
+            });
+        }
+
+        @Override
+        public void onEndpointLost(@NonNull String s) {
+            Log.d("ENDPOINT_DISCOVERY", "EndpointLost");
+            // A previously discovered endpoint has gone away.
+        }
+    };
+
+    /**************************************************************************************************/
+
+    public ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
+        @Override
+        public void onConnectionInitiated(@NonNull String s, @NonNull ConnectionInfo connectionInfo) {
+            // Automatically accept the connection on both sides.
+            // finisco qui se sono effettivamente connesso!! Salvo Id del manager che serve più avanti
+            P2PWorkerNearby.managerEndpointID = s;
+            //l'oggetto che passo per la callback, deve occuparsi di tutti i dati in input!
+            Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(s, P2PWorkerNearby.workerCallback);
+        }
+
+        @Override
+        public void onConnectionResult(@NonNull String s, @NonNull ConnectionResolution result) {
+            switch (result.getStatus().getStatusCode()) {
+                case ConnectionsStatusCodes.STATUS_OK:
+                    // We're connected! Can now start sending and receiving data.
+                    Log.d("CONNECTION", "ConnectionsStatusCodes=STATUS_OK");
+                    break;
+                case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
+                    // The connection was rejected by one or both sides.
+                    Log.e("CONNECTION", "ConnectionsStatusCodes=STATUS_CONNECTION_REJECTED");
+                    break;
+                case ConnectionsStatusCodes.STATUS_ERROR:
+                    // The connection broke before it was able to be accepted.
+                    Log.e("CONNECTION", "ConnectionsStatusCodes=STATUS_ERROR");
+                    break;
+                default:
+                    Log.d("CONNECTION", "UNKNOW");
+            }
+        }
+
+        @Override
+        public void onDisconnected(@NonNull String s) {
+            Log.e("TAG", "onDisconnected: DISCONNECTED");
+            // We've been disconnected from this endpoint. No more data can be
+            // sent or received.
+        }
+    };
+
+    /**************************************************************************************************/
+
 
     /*********************************************************************************************************/
 

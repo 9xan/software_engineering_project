@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textRoomView"
+        android:id="@+id/roomManagerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -33,100 +33,108 @@
         android:layout_marginTop="35dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRoomView" />
+        app:layout_constraintTop_toBottomOf="@+id/roomManagerView" />
 
     <TextView
-        android:id="@+id/textViewAudio"
+        android:id="@+id/textView6"
         android:layout_width="287dp"
         android:layout_height="37dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="68dp"
         android:text="Recorders audio rimanenti:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider21" />
 
-    <Button
-        android:id="@+id/JoinAudioButton"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="130dp"
-        android:text="Join audio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAudio" />
-
     <View
         android:id="@+id/divider19"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="72dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/JoinAudioButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/textViewVideo"
+        android:id="@+id/textView7"
         android:layout_width="300dp"
         android:layout_height="39dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="72dp"
         android:text="Recorders video rimanenti:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider19" />
 
-    <Button
-        android:id="@+id/JoinVideoButton"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="130dp"
-        android:text="Join video"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewVideo" />
-
     <TextView
-        android:id="@+id/joinAudioAvailable"
+        android:id="@+id/audioManagerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="20dp"
         android:text="0"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewAudio"
+        app:layout_constraintHorizontal_bias="0.289"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/divider21" />
 
     <TextView
-        android:id="@+id/joinVideoAvailable"
+        android:id="@+id/videoManagerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="20dp"
         android:text="0"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewVideo"
+        app:layout_constraintHorizontal_bias="0.289"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/divider19" />
 
     <View
         android:id="@+id/divider20"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="68dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/JoinVideoButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/finishConfView"
+        android:layout_width="269dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="71dp"
+        android:clickable="false"
+        android:text="Start Recording!"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finishView" />
+
+    <TextView
+        android:id="@+id/finishView"
+        android:layout_width="234dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="89dp"
+        android:text="Everything's Ready!"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider20" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
