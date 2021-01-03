@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.Semaphore;
 
 import static com.google.android.gms.nearby.connection.Strategy.P2P_STAR;
 
@@ -57,7 +58,6 @@ public class MasterCreationActivity extends AppCompatActivity {
     };
     private ArrayList<String> permissions = new ArrayList<>();
 
-
     /*********************************************************************************************************/
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +70,10 @@ public class MasterCreationActivity extends AppCompatActivity {
 
         permissions.addAll(Arrays.asList(permissionsList));
 
-
         Intent intent = getIntent();
         message = intent.getBundleExtra(QRCreationActivity.forMasterCreation); //tutti i dati della stanza sono qui
         finishButton = findViewById(R.id.finishSetupButton);
         finishButton.setVisibility(View.INVISIBLE);
-
 
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,8 +86,10 @@ public class MasterCreationActivity extends AppCompatActivity {
 
         assert message != null;
         masterRole = message.getString("masterRole");
+
         P2PManagerNearby.audioN = message.getInt("audioN");
         P2PManagerNearby.videoN = message.getInt("videoN");
+
         peerNumber = message.getInt("audioN") + message.getInt("videoN");
         myName.setText(message.getString("RoomName"));
 
@@ -109,7 +109,6 @@ public class MasterCreationActivity extends AppCompatActivity {
 
     public void startAdvertising() {
         AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(P2P_STAR).build();
-
         Nearby.getConnectionsClient(getApplicationContext())
                 .startAdvertising(
                         myNickName, secureCode, connectionLifecycleCallback, advertisingOptions)
@@ -130,20 +129,15 @@ public class MasterCreationActivity extends AppCompatActivity {
 
     /**************************************************************************************************/
 
-
     public ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
         @Override
         public void onConnectionInitiated(@NonNull String s, @NonNull ConnectionInfo connectionInfo) {
             // Automatically accept the connection on both sides.
-
             Log.d("MANAGER", "onConnectionInitiated: OK");
             P2PManagerNearby.workers.put(s, connectionInfo.getEndpointName());              //aggiungo l'id (String) del worker che si è connesso e il suo nome
             P2PManagerNearby.endpoints.add(s);                                              //la lista servirà per mandare un payload a TUTTI i peers con una sola chiamata!!
-
-            peers.get(peersCounter).setText(connectionInfo.getEndpointName()+ " is Ready!");
-
+            peers.get(peersCounter).setText(connectionInfo.getEndpointName() + " is Ready!");
             P2PManagerNearby.workersPayload.put(s, P2PManagerNearby.newPayloadCallback());
-
             Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(s, P2PManagerNearby.workersPayload.get(s));
         }
 
@@ -152,7 +146,6 @@ public class MasterCreationActivity extends AppCompatActivity {
 
             switch (result.getStatus().getStatusCode()) {
                 case ConnectionsStatusCodes.STATUS_OK:
-
                     // We're connected! Can now start sending and receiving data.
                     Log.d("MANAGER", "ConnectionsStatusCodes=STATUS_OK");
                     if (tmpCounter <= peerNumber) {

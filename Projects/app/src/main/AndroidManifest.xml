@@ -71,6 +71,15 @@
         </activity>
 
         <activity
+            android:name=".ModeJoin_2_0.ReadyToStartActivity"
+            android:parentActivityName=".ModeJoin_2_0.JoinSelectRoleActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ModeJoin_2_0.JoinSelectRoleActivity" />
+        </activity>
+
+
+        <activity
             android:name=".ModeCreate_2_1.QRCreationActivity"
             android:parentActivityName=".ModeCreate_2_1.CreateActivity">
             <meta-data
@@ -94,7 +103,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ModeCreate_2_1.QRCreationActivity" />
         </activity>
-        <activity android:name=".ModeCreate_2_1.WaitForPeerConfigurationActivity" />
+
+        <activity
+            android:name=".ModeCreate_2_1.WaitForPeerConfigurationActivity"
+            android:parentActivityName=".ModeCreate_2_1.MasterCreationActivity"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ModeCreate_2_1.MasterCreationActivity" />
+        </activity>
+
+        <activity
+            android:name=".ModeCreate_2_1.ReadyToRecordActivity"
+            android:parentActivityName=".ModeCreate_2_1.WaitForPeerConfigurationActivity"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ModeCreate_2_1.WaitForPeerConfigurationActivity" />
+        </activity>
+
 
 
     </application>

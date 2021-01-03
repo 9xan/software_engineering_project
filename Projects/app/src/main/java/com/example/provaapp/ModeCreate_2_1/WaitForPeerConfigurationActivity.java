@@ -1,5 +1,6 @@
 package com.example.provaapp.ModeCreate_2_1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,8 +23,6 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
     public static Button finishBtn;
     public static TextView audioView, videoView, finishView, roomView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +34,8 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         audioView = findViewById(R.id.audioManagerView);
         videoView = findViewById(R.id.videoManagerView);
         finishView = findViewById(R.id.finishView);
-        finishBtn = findViewById(R.id.finishConfView);
+        finishBtn = findViewById(R.id.finishConfBTN);
+
         roomView = findViewById(R.id.roomManagerView);
         roomView.setText(P2PManagerNearby.room);
         audioView.setText(String.valueOf(P2PManagerNearby.audioN));
@@ -44,7 +44,7 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mettere il codice per passare alla prox activity per le avviare le registrazioni!
+                sendMessage(ReadyToRecordActivity.class);
             }
         });
 
@@ -52,55 +52,42 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         Nearby.getConnectionsClient(getApplicationContext()).stopAdvertising();
 
         Log.d("MANAGER", "stopAdvertising");
-
+        P2PManagerNearby.c = this;
 
         update();
-
 
     }
 
 
     // ci vuole qualcosa di simile a setIntervall di Js per mandare ai peers i posti disponibili, praticamente il manager condivide ogni tot i posti disponibili a tutti i workers
     //poi deve fermarsi appena tutti hanno scelto ..... un esempio che mi è venuto in mente al volo
-    private void update(){
-
+    private void update() {
 
         final Timer myTimer = new Timer();
 
-
-        myTimer.scheduleAtFixedRate(new TimerTask(){
+        myTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
-            public void run(){
+            public void run() {
                 Log.d("MANAGER", "Sending updates to peers");
-                if(P2PManagerNearby.videoN + P2PManagerNearby.audioN != 0){
-                    String s = (P2PManagerNearby.videoN)+"-"+(P2PManagerNearby.audioN);
+                if (P2PManagerNearby.videoN + P2PManagerNearby.audioN != 0) {
+                    String s = "VA-"+(P2PManagerNearby.videoN) + "-" + (P2PManagerNearby.audioN);
                     Payload mes = Payload.fromBytes(s.getBytes());
-
                     Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, mes);
-
-
-
-                }else{
-                    Payload mes = Payload.fromBytes("0-0".getBytes());
-
+                } else {
+                    Payload mes = Payload.fromBytes("VA-0-0".getBytes());
                     Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, mes);
-
-
                     //ultimo messaggio a tutti i peer per dire di stare pronti che si passa alla prossima fare
 
                     //metttere il codice della payload finale qui
-                    Payload fin = Payload.fromBytes("go on".getBytes());
+                    Payload fin = Payload.fromBytes("GO_ON-".getBytes());
                     Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, fin);
-
                     myTimer.cancel();
                 }
-
             }
-        },0,200);
-
+        }, 0, 200);
     }
 
-    private void finished(Timer t){
+    private void finished(Timer t) {
         t.cancel();
 
         finishBtn.setClickable(true);
@@ -108,20 +95,15 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         finishView.setVisibility(View.VISIBLE);
     }
 
-
-
-
-
-
-
-
-
-
-    
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
+
+    public void sendMessage(Class<? extends AppCompatActivity> nextActivity) {
+        Intent intent = new Intent(this, nextActivity);
+        startActivity(intent);
+    }
 
 }

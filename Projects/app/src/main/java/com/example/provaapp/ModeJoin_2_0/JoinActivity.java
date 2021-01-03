@@ -281,7 +281,6 @@ public class JoinActivity extends AppCompatActivity {
 
     public void sendMessage(Class<? extends AppCompatActivity> nextActivity) {
         Intent intent = new Intent(this, nextActivity);
-
         startActivity(intent);
     }
 

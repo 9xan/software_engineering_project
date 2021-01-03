@@ -1,5 +1,7 @@
 package com.example.provaapp.ModeJoin_2_0;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +19,12 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
 
 
     public TextView roomText;
-    public static TextView audioAvailable, videoAvailable, updateView;
-    public static Button audioBtn, videoBtn;
+    public static TextView audioAvailable, videoAvailable;
+    public static Button audioBtn, videoBtn, start;
+    public static int myRole = 0;
 
 
-    public static void setView(int a, int v){
+    public static void setView(int a, int v) {
 
         if (JoinSelectRoleActivity.audioAvailable != null && JoinSelectRoleActivity.videoAvailable != null) {
 
@@ -49,10 +52,11 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
         videoBtn = findViewById(R.id.JoinVideoButton);
         audioAvailable = findViewById(R.id.joinAudioAvailable);
         videoAvailable = findViewById(R.id.joinVideoAvailable);
-        updateView = findViewById(R.id.updateView);
+        start = findViewById(R.id.finishRoleButton);
 
         audioAvailable.setText(String.valueOf(P2PWorkerNearby.audioN));
         videoAvailable.setText(String.valueOf(P2PWorkerNearby.videoN));
+        P2PWorkerNearby.c = this;
 
         roomText.setText(P2PWorkerNearby.room);
 
@@ -62,11 +66,9 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
                 Payload bytesPayload = Payload.fromBytes("0-1".getBytes()); //così significa che chiedo di avere il posto di audioRecorder
                 Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PWorkerNearby.managerEndpointID, bytesPayload);
                 audioBtn.setClickable(false);
-                videoBtn.setClickable(false);
-                updateView.setText("Chosen Role, wait for new directions...");
-                updateView.setVisibility(View.VISIBLE);
+                myRole = 0;
+                //videoBtn.setClickable(false);
                 //aggiungere codice per proseguire con la prossima activity!!!!!!!!!!!!!!!!
-
 
                 //QUI NON CI DOVREBBERO ESSERE PROBLEMI DI COORDINAMENTO IN QUANTO IL PAYLOADCALLBACK SI OCCUPA DI METTERE IL SETCLICKABLE DEL PULSANTE A FALSE APPENA FINISCONO I POSTI
                 //C'è UN AGGIORNAMENTO CONTINUO DEI POSTI DA PARTE DEL MANAGER, BASTA TROVARE UNA VELOCITà ADATTA DI REFRESH DA PARTE DEL MANAGER PER EVITARE COLLISIONI!
@@ -79,22 +81,26 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
                 Payload bytesPayload = Payload.fromBytes("1-0".getBytes()); //così significa che chiedo di avere il posto di videoRecorder
                 Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PWorkerNearby.managerEndpointID, bytesPayload);
                 videoBtn.setClickable(false);
-                audioBtn.setClickable(false);
-                updateView.setText("Chosen Role, wait for new directions...");
-                updateView.setVisibility(View.VISIBLE);
-
+                myRole = 1;
+                //audioBtn.setClickable(false);
                 //aggiungere codice per proseguire con la prossima activity!!!!!!!!!!!!!!!!!!
                 //STESSO DISCORSO SOPRA
             }
         });
 
+        /*start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (myRole == 0) {
+                    sendMessage("Role", "audio", ReadyToStartActivity.class);
+                } else {
+                    sendMessage("Role", "video", ReadyToStartActivity.class);
+                }
+            }
+        });*/
 
         //visto che mi sono già collegato posso fermare la discovery, la connessione col manager non verrà persa!
         Nearby.getConnectionsClient(getApplicationContext()).stopDiscovery();
-
-
-
-
     }
 
 
@@ -103,5 +109,13 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public static void sendMessage(Context c , String[] key, String[] vals, Class<? extends AppCompatActivity> nextActivity) {
+        int i = 0;
+        Intent intent = new Intent(c, nextActivity);
+        for(i = 0 ; i < key.length ; i++){
+            intent.putExtra(key[i], vals[i]);
+        }
+        c.startActivity(intent);
+    }
 
 }

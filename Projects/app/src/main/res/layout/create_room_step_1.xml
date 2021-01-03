@@ -13,7 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="52dp"
-        android:text="Seleziona il numero di Video Recorders:"
+        android:text="Select the number of Video Recorders:"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="43dp"
 
-        android:text="Seleziona il numero di Audio Recorders:"
+        android:text="Select the number of Audio Recorders:"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
