@@ -1,5 +1,9 @@
 package com.example.provaapp.UsefulClasses;
-
+/*
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+ */
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;
@@ -24,9 +28,18 @@ public class AudioTool {//riproduce e registra file audio
             Log.e(LOG_TAG, "prepare() failed");
         }
     }
+    public void pausePlaying(){
+        player.pause();
+
+    }
+
+    public void resumePlaying(){
+        player.start();
+    }
 
     //termina riproduzione
     public void stopPlaying() {
+        player.stop();
         player.release();
         player = null;
     }
