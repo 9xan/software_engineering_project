@@ -1,7 +1,12 @@
 package com.example.provaapp.UsefulClasses;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
+import com.example.provaapp.ModeCreate_2_1.WaitForPeerConfigurationActivity;
+import com.example.provaapp.ModeJoin_2_0.JoinActivity;
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
@@ -23,6 +28,7 @@ public class P2PManagerNearby {
 
                                                                             //gli altri campi per ora non so se tenerli o meno, sto facendo prove
 
+
     public static int audioN, videoN;
 
     public static PayloadCallback newPayloadCallback(){
@@ -34,15 +40,30 @@ public class P2PManagerNearby {
 
                     //il formato della stringa passata sarà "VIDEO-AUDIO" con valore 1 sul ruolo che il peer vuole gestire!
                     String in = new String(payload.asBytes());
-                    String[] out = in.split("-");
+                    String[] out = in.split("-", 0);
 
                     int v=Integer.parseInt(out[0]);
                     int a=Integer.parseInt(out[1]);
-                    if(v==1){
-                        --P2PManagerNearby.videoN;
-                    }else if(a==1){
-                        --P2PManagerNearby.audioN;
+                    if(v==1)
+                        --videoN;
+                    if(a==1)
+                        --audioN;
+
+                    if(WaitForPeerConfigurationActivity.audioView != null && WaitForPeerConfigurationActivity.videoView != null){
+                        WaitForPeerConfigurationActivity.audioView.setText(String.valueOf(audioN));
+                        WaitForPeerConfigurationActivity.videoView.setText(String.valueOf(videoN));
+
+                        if(audioN+videoN==0){
+                            WaitForPeerConfigurationActivity.finishBtn.setClickable(true);
+                            WaitForPeerConfigurationActivity.finishBtn.setVisibility(View.VISIBLE);
+                            WaitForPeerConfigurationActivity.finishView.setVisibility(View.VISIBLE);
+
+                        }
                     }
+
+
+
+
                 }
 
             }
@@ -50,7 +71,7 @@ public class P2PManagerNearby {
             @Override
             public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
 
-                //qui verrà messo il codice per gestire
+                //qui verrà messo il codice per gestire gli arrivi dei file più avanti
             }
         };
     }

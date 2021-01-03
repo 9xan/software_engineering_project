@@ -54,7 +54,7 @@ public class JoinActivity extends AppCompatActivity {
     public TextView connectionText;
     private String[] qrData;
     private String myNicknameDevice;
-    public Button connectBtn;
+    public Button continueBtn;
 
     private String roomName, secureCode;
 
@@ -86,8 +86,8 @@ public class JoinActivity extends AppCompatActivity {
         roomName=qrData[0];
         secureCode=qrData[1];
 
-        P2PWorkerNearby.videoN = Integer.parseInt(qrData[2]);
-        P2PWorkerNearby.audioN = Integer.parseInt(qrData[3]);
+        P2PWorkerNearby.videoN = Integer.parseInt(qrData[3]);
+        P2PWorkerNearby.audioN = Integer.parseInt(qrData[4]);
 
         P2PWorkerNearby.room = roomName;
 
@@ -98,11 +98,11 @@ public class JoinActivity extends AppCompatActivity {
         // Capture the layout's TextView and set the string as its text
         TextView NickViewJoin = findViewById(R.id.NickViewJoin);
         NickViewJoin.setText(myNicknameDevice);
-        connectBtn = findViewById(R.id.connectBtn);
+        continueBtn = findViewById(R.id.continueBtn);
 
         pr = findViewById(R.id.progressBarConnection);
         connectionText = findViewById(R.id.connectionText);
-        connectionText.setText("Ricerca stanza -" + roomName + "-");
+        connectionText.setText("Searching Room -" + roomName + "-");
 
 
         permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
@@ -148,38 +148,24 @@ public class JoinActivity extends AppCompatActivity {
         @Override
         public void onEndpointFound(@NonNull String s, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
 
-
-            pr.setVisibility(View.INVISIBLE);
-            connectionText.setVisibility(View.INVISIBLE);
-            pr.setIndeterminate(false);
-
             // An endpoint was found. We request a connection to it.
+            Nearby.getConnectionsClient(getApplicationContext())
+                    .requestConnection(myNicknameDevice, s, connectionLifecycleCallback)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("CONNECTION", "requestConnection: SUCCESS");
+                            connectionText.setText("Room -"+roomName+"- Found! Connecting...");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("CONNECTION", "requestConnection: FAILURE");
+                        }
+                    });
 
-            final String st = s;
-            /*final String[] st= new String[1];
-            st[0]=s;*/
 
-            connectBtn.setClickable(true);
-            connectBtn.setVisibility(View.VISIBLE);
-            connectBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Nearby.getConnectionsClient(getApplicationContext())
-                            .requestConnection(myNicknameDevice, st, connectionLifecycleCallback)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("CONNECTION", "requestConnection: SUCCESS");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e("CONNECTION", "requestConnection: FAILURE");
-                                }
-                            });
-                }
-            });
         }
 
         @Override
@@ -199,6 +185,8 @@ public class JoinActivity extends AppCompatActivity {
             P2PWorkerNearby.managerEndpointID = s;
             //l'oggetto che passo per la callback, deve occuparsi di tutti i dati in input!
             Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(s, P2PWorkerNearby.workerCallback);
+
+
         }
 
         @Override
@@ -207,6 +195,24 @@ public class JoinActivity extends AppCompatActivity {
                 case ConnectionsStatusCodes.STATUS_OK:
                     // We're connected! Can now start sending and receiving data.
                     Log.d("CONNECTION", "ConnectionsStatusCodes=STATUS_OK");
+
+                    pr.setVisibility(View.INVISIBLE);
+                    pr.setIndeterminate(false);
+                    connectionText.setText("Connection Accepted!");
+
+                    final String st = s;
+                    /*final String[] st= new String[1];
+                    st[0]=s;*/
+
+                    continueBtn.setClickable(true);
+                    continueBtn.setVisibility(View.VISIBLE);
+                    continueBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendMessage(JoinSelectRoleActivity.class);
+                        }
+                    });
+
                     break;
                 case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                     // The connection was rejected by one or both sides.
@@ -273,9 +279,9 @@ public class JoinActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    public void sendMessage(Bundle s, String Key, Class<? extends AppCompatActivity> nextActivity) {
+    public void sendMessage(Class<? extends AppCompatActivity> nextActivity) {
         Intent intent = new Intent(this, nextActivity);
-        intent.putExtra(Key, s);
+
         startActivity(intent);
     }
 

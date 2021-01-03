@@ -42,7 +42,7 @@ public class MasterCreationActivity extends AppCompatActivity {
     public Button finishButton;
     public ProgressBar peerL1, peerL2, peerL3, peerL4, peerL5, peerL6;
     public ArrayList<ProgressBar> peerLoaders;
-    private String masterRole;
+    private String masterRole;      //da vedere a cosa serviva sta roba, non l'ho messa io
     public int tmpCounter = 1, peersCounter = tmpCounter - 1;
     public int peerNumber;
     public String myNickName, secureCode;
@@ -80,12 +80,16 @@ public class MasterCreationActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                sendMessage(WaitForPeerConfigurationActivity.class);
                 //METTERE CODICE PER PROSEGUIRE CON  WaitForPeerConfigurationActivity
             }
         });
 
         assert message != null;
         masterRole = message.getString("masterRole");
+        P2PManagerNearby.audioN = message.getInt("audioN");
+        P2PManagerNearby.videoN = message.getInt("videoN");
         peerNumber = message.getInt("audioN") + message.getInt("videoN");
         myName.setText(message.getString("RoomName"));
 
@@ -132,6 +136,7 @@ public class MasterCreationActivity extends AppCompatActivity {
         public void onConnectionInitiated(@NonNull String s, @NonNull ConnectionInfo connectionInfo) {
             // Automatically accept the connection on both sides.
 
+            Log.d("MANAGER", "onConnectionInitiated: OK");
             P2PManagerNearby.workers.put(s, connectionInfo.getEndpointName());              //aggiungo l'id (String) del worker che si è connesso e il suo nome
             P2PManagerNearby.endpoints.add(s);                                              //la lista servirà per mandare un payload a TUTTI i peers con una sola chiamata!!
 
@@ -178,7 +183,7 @@ public class MasterCreationActivity extends AppCompatActivity {
             // We've been disconnected from this endpoint. No more data can be
             // sent or received.
             //TODO: incrementare i peers disponibili poichè si deve riconnettere
-            //tipo: activity.setReadyDevice++;
+            //          tipo: activity.setReadyDevice++;
         }
     };
 
@@ -239,6 +244,14 @@ public class MasterCreationActivity extends AppCompatActivity {
         }
     }
 
+
+    /*********************************************************************************************************/
+
+    public void sendMessage(Class<? extends AppCompatActivity> nextActivity) {
+        Intent intent = new Intent(this, nextActivity);
+
+        startActivity(intent);
+    }
 
     /*********************************************************************************************************/
 

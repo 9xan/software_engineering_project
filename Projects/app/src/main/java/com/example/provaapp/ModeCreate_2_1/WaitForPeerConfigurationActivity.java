@@ -1,21 +1,26 @@
 package com.example.provaapp.ModeCreate_2_1;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.provaapp.R;
 import com.example.provaapp.UsefulClasses.P2PManagerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class WaitForPeerConfigurationActivity extends AppCompatActivity {
 
-    public TextView audioView, videoView, finishView,roomView;
-    public Button finishBtn;
+    public static Button finishBtn;
+    public static TextView audioView, videoView, finishView, roomView;
 
 
 
@@ -23,8 +28,8 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wait_for_peer_configuration_activity);
-        //Toolbar toolbar = findViewById(R.id.JoinRoleToolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.peerConfigToolbar);
+        setSupportActionBar(toolbar);
 
 
         audioView = findViewById(R.id.audioManagerView);
@@ -33,30 +38,71 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         finishBtn = findViewById(R.id.finishConfView);
         roomView = findViewById(R.id.roomManagerView);
         roomView.setText(P2PManagerNearby.room);
-        audioView.setText(P2PManagerNearby.audioN);
-        videoView.setText(P2PManagerNearby.videoN);
+        audioView.setText(String.valueOf(P2PManagerNearby.audioN));
+        videoView.setText(String.valueOf(P2PManagerNearby.videoN));
 
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //mettere il codice per passare alla prox activity per le avviare le registrazioni!
+            }
+        });
 
         //quando si è qua posso fermare l advertising del manager in quanto tutti si sono connessi e non manca nessuno
         Nearby.getConnectionsClient(getApplicationContext()).stopAdvertising();
 
+        Log.d("MANAGER", "stopAdvertising");
 
-        // ci vuole qualcosa di simile a setIntervall di Js per mandare ai peers i posti disponibili, praticamente il manager condivide ogni tot i posti disponibili a tutti i workers
-        //poi deve fermarsi appena tutti hanno scelto e
-        {
 
-            String s = String.valueOf(P2PManagerNearby.videoN)+"-"+String.valueOf(P2PManagerNearby.audioN);
-            Payload mes = Payload.fromBytes(s.getBytes());
-
-            Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, mes);
-
-            //if(finito){ finished(); }
-        }
+        update();
 
 
     }
 
-    public void finished(){
+
+    // ci vuole qualcosa di simile a setIntervall di Js per mandare ai peers i posti disponibili, praticamente il manager condivide ogni tot i posti disponibili a tutti i workers
+    //poi deve fermarsi appena tutti hanno scelto ..... un esempio che mi è venuto in mente al volo
+    private void update(){
+
+
+        final Timer myTimer = new Timer();
+
+
+        myTimer.scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                Log.d("MANAGER", "Sending updates to peers");
+                if(P2PManagerNearby.videoN + P2PManagerNearby.audioN != 0){
+                    String s = (P2PManagerNearby.videoN)+"-"+(P2PManagerNearby.audioN);
+                    Payload mes = Payload.fromBytes(s.getBytes());
+
+                    Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, mes);
+
+
+
+                }else{
+                    Payload mes = Payload.fromBytes("0-0".getBytes());
+
+                    Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, mes);
+
+
+                    //ultimo messaggio a tutti i peer per dire di stare pronti che si passa alla prossima fare
+
+                    //metttere il codice della payload finale qui
+                    Payload fin = Payload.fromBytes("go on".getBytes());
+                    Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, fin);
+
+                    myTimer.cancel();
+                }
+
+            }
+        },0,200);
+
+    }
+
+    private void finished(Timer t){
+        t.cancel();
+
         finishBtn.setClickable(true);
         finishBtn.setVisibility(View.VISIBLE);
         finishView.setVisibility(View.VISIBLE);
