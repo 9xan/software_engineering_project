@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/BackColor"
     android:layout_height="match_parent">
 
     <ProgressBar
@@ -33,9 +34,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:textColor="@color/TextColor"
         android:text="Dai ora un nome alla tua stanza:"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider5" />
@@ -49,6 +51,8 @@
         android:layout_marginEnd="68dp"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        android:textColor="@color/TextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -56,25 +60,32 @@
 
     <Button
         android:id="@+id/Next3"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/rounded_nickname_background"
         android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Back3"
         app:layout_constraintTop_toBottomOf="@+id/divider6" />
 
     <Button
         android:id="@+id/Back3"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="31dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/rounded_nickname_background"
         android:text="Back"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/Next3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
     <View
         android:id="@+id/divider6"
         android:layout_width="match_parent"

@@ -251,10 +251,12 @@ public class MasterCreationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        startAdvertising();
     }
 
     @Override
     protected void onPause() {
+        Nearby.getConnectionsClient(getApplicationContext()).stopAdvertising();
         super.onPause();
     }
 

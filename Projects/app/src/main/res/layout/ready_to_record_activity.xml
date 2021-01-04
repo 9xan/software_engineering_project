@@ -4,13 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/BackColor"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarReadyToStart"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ee6055"
+        android:background="@color/ToolbarColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,6 +20,7 @@
         android:id="@+id/readyTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/TextColor"
         android:layout_marginTop="30dp"
         android:text="Everything is ready"
         android:textAlignment="center"
@@ -32,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:textColor="@color/TextColor"
         android:text="Tap the button to start recording in five seconds:"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -41,11 +44,13 @@
 
     <Button
         android:id="@+id/BeginBTN"
-        android:layout_width="215dp"
-        android:layout_height="78dp"
+        android:layout_width="225dp"
+        android:layout_height="73dp"
         android:layout_marginStart="98dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="98dp"
+        android:textColor="@color/TextColor"
+        android:background="@drawable/rounded_nickname_background"
         android:text="Begin"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

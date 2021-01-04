@@ -49,13 +49,11 @@ public class JoinActivity extends AppCompatActivity {
     };
 
     public static final int ACCESS_FINE_LOCATION_CODE = 100;
-
     public ProgressBar pr;
     public TextView connectionText;
     private String[] qrData;
     private String myNicknameDevice;
     public Button continueBtn;
-
     private String roomName, secureCode;
 
     private ArrayList<String> permissions = new ArrayList<>();
@@ -83,8 +81,8 @@ public class JoinActivity extends AppCompatActivity {
             i++;
         }
 
-        roomName=qrData[0];
-        secureCode=qrData[1];
+        roomName = qrData[0];
+        secureCode = qrData[1];
 
         P2PWorkerNearby.videoN = Integer.parseInt(qrData[3]);
         P2PWorkerNearby.audioN = Integer.parseInt(qrData[4]);
@@ -155,7 +153,7 @@ public class JoinActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d("CONNECTION", "requestConnection: SUCCESS");
-                            connectionText.setText("Room -"+roomName+"- Found! Connecting...");
+                            connectionText.setText("Room -" + roomName + "- Found! Connecting...");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -266,16 +264,17 @@ public class JoinActivity extends AppCompatActivity {
         }
     }
 
-
     /*********************************************************************************************************/
 
     @Override
     protected void onResume() {
         super.onResume();
+        startDiscovery();
     }
 
     @Override
     protected void onPause() {
+        Nearby.getConnectionsClient(getApplicationContext()).stopDiscovery();
         super.onPause();
     }
 
@@ -283,8 +282,6 @@ public class JoinActivity extends AppCompatActivity {
         Intent intent = new Intent(this, nextActivity);
         startActivity(intent);
     }
-
-
 }
 
 

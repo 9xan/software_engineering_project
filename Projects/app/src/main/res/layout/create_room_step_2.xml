@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/BackColor"
     android:layout_height="match_parent">
 
     <View
@@ -19,13 +20,12 @@
         android:id="@+id/TextFunctionMaster"
         android:layout_width="330dp"
         android:layout_height="29dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="65dp"
+        android:layout_marginTop="25dp"
         android:text="Select your role:"
-        android:textSize="18sp"
+        android:textColor="@color/TextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
@@ -46,7 +46,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="220dp"
             android:text="Video Recorder"
+            android:textColor="@color/TextColor"
             android:textSize="14sp"
+            android:textStyle="bold"
             android:theme="@style/Widget.AppCompat.CompoundButton.RadioButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +63,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="220dp"
             android:text="Audio Recorder"
+            android:textColor="@color/TextColor"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioVideo" />
@@ -73,6 +77,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="284dp"
             android:text="None"
+            android:textColor="@color/TextColor"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioAudio" />
@@ -83,7 +89,7 @@
         android:id="@+id/divider4"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="25dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,24 +98,29 @@
 
     <Button
         android:id="@+id/Next2"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/rounded_nickname_background"
         android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Back2"
         app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
     <Button
         android:id="@+id/Back2"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="69dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/rounded_nickname_background"
         android:text="Back"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/Next2"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider4" />
 

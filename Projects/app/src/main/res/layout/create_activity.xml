@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ModeCreate_2_1.CreateActivity">
+    tools:context=".ModeCreate_2_1.CreateActivity"
+    android:background="@color/BackColor"
+    >
 
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarCreate"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ee6055"
+        android:background="@color/ToolbarColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

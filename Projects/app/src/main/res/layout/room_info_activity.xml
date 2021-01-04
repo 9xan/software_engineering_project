@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/BackColor"
     android:layout_height="match_parent">
 
 
@@ -10,7 +11,7 @@
         android:id="@+id/toolbarRoomInfo"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ee6055"
+        android:background="@color/ToolbarColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +24,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:text="TextView"
+        android:textColor="@color/TextColor"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -55,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nome della stanza:"
+            android:textColor="@color/TextColor"
             android:textSize="24sp" />
 
         <TextView
@@ -77,6 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Numero di video recorder:"
+            android:textColor="@color/TextColor"
             android:textSize="24sp" />
 
         <TextView
@@ -99,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Numero di audio recorder:"
+            android:textColor="@color/TextColor"
             android:textSize="24sp" />
 
         <TextView
@@ -121,6 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hash code:"
+            android:textColor="@color/TextColor"
             android:textSize="24sp" />
 
         <TextView
@@ -143,6 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Master name:"
+            android:textColor="@color/TextColor"
             android:textSize="24sp" />
 
         <TextView
@@ -164,12 +171,15 @@
 
     <Button
         android:id="@+id/NextToJoin"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
+        android:layout_width="193dp"
+        android:layout_height="53dp"
         android:layout_marginStart="130dp"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="131dp"
+        android:background="@drawable/rounded_nickname_background"
+        android:textColor="@color/TextColor"
         android:text="Next"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />

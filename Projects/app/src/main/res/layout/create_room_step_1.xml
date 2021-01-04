@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/BackColor"
     android:layout_height="match_parent">
 
 
@@ -10,12 +11,12 @@
         android:id="@+id/textView2"
         android:layout_width="343dp"
         android:layout_height="33dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="52dp"
         android:text="Select the number of Video Recorders:"
-        android:textSize="18sp"
+        android:textColor="@color/TextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/upperDivider" />
 
@@ -48,13 +49,13 @@
         android:id="@+id/textView3"
         android:layout_width="352dp"
         android:layout_height="31dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="43dp"
 
         android:text="Select the number of Audio Recorders:"
-        android:textSize="18sp"
+        android:textColor="@color/TextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.322"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
@@ -85,24 +86,29 @@
 
     <Button
         android:id="@+id/Next1"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/rounded_nickname_background"
         android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Back1"
         app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
     <Button
         android:id="@+id/Back1"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="69dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/rounded_nickname_background"
         android:text="Back"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/Next1"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2" />
 

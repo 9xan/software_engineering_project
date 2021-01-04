@@ -4,48 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/BackColor"
     tools:context=".OperativeActivityChanger_1.FirstFragment">
 
     <LinearLayout
         android:id="@+id/NicknameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/rounded_nickname_background"
+        android:layout_width="416dp"
+        android:layout_height="109dp"
+        android:layout_marginTop="35dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/Join"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textview_first"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:text="Insert your nickname:"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-
-            app:layout_constraintBottom_toTopOf="@+id/NickNameInput"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/LogoView">
 
         <EditText
             android:id="@+id/NickNameInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="366dp"
+            android:layout_height="61dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_corners"
             android:ems="10"
-            android:hint="nickname"
+            android:hint="Nickname"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="#2B2B2B"
             android:textSize="24sp"
 
             app:layout_constraintBottom_toBottomOf="parent"
@@ -53,36 +36,58 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_first" />
 
-
     </LinearLayout>
 
     <Button
         android:id="@+id/Join"
-        android:layout_width="160dp"
-        android:layout_height="59dp"
+        android:layout_width="263dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/rounded_nickname_background"
-        android:backgroundTint="#0F6FFF"
         android:text="@string/join"
+        android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/Create"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/NicknameLayout" />
 
     <Button
         android:id="@+id/Create"
-        android:layout_width="160dp"
-        android:layout_height="59dp"
+        android:layout_width="263dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_nickname_background"
-        android:backgroundTint="#0F6FFF"
         android:text="@string/create"
+        android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Join" />
+
+    <Button
+        android:id="@+id/OpenPlayer"
+        android:layout_width="263dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/rounded_nickname_background"
+        android:text="Open Player"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Create" />
+
+    <ImageView
+        android:id="@+id/LogoView"
+        android:layout_width="match_parent"
+        android:layout_height="143dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
