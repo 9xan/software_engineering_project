@@ -37,6 +37,7 @@ public class P2PWorkerNearby {
                     case "DONE":
                         /*JoinSelectRoleActivity.start.setVisibility(View.VISIBLE);
                         JoinSelectRoleActivity.start.setClickable(true);*/
+                        Log.e("TAG", "onPayloadReceived: TUTTO OK SELEZIONE DATI" );
                         //todo: settare una textview peravvisare che lo scambio dati ha avuto successo
                         break;
 
