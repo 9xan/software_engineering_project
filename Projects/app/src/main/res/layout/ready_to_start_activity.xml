@@ -29,15 +29,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarWaitToStart" />
 
+
     <TextView
         android:id="@+id/TextCountDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
+        android:layout_marginTop="22dp"
+        android:text="5"
         android:textAlignment="center"
+        android:textColor="@color/TextColor"
         android:textSize="30sp"
-        android:visibility="invisible"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -46,14 +48,13 @@
         android:id="@+id/progressBarStart"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="144dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextCountDown" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/TextCountDown"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

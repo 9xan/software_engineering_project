@@ -1,12 +1,14 @@
 package com.example.provaapp.OperativeActivityChanger_1;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ public class FirstFragment extends Fragment {
     public static final String JoinKey = "JoinNickName";
     public static final String CreateKey = "CreateNickName";
     public String NickName;
+    private ImageView LOGOOOO;
     private Bundle args;
 
 
@@ -34,6 +37,10 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button Join = view.findViewById(R.id.Join);
+        LOGOOOO = view.findViewById(R.id.LogoView);
+
+        /*Bitmap logoPath;
+        LOGOOOO.setImageBitmap();*/
         Button Create = view.findViewById(R.id.Create);
         args = new Bundle();
         final EditText NickNameInput = view.findViewById(R.id.NickNameInput);

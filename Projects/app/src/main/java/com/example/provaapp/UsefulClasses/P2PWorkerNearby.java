@@ -54,7 +54,7 @@ public class P2PWorkerNearby {
                                 "The role you want to choose isn't available",
                                 Toast.LENGTH_SHORT)
                                 .show();
-                        JoinSelectRoleActivity.audioBtn.setClickable(false);
+                        JoinSelectRoleActivity.videoBtn.setClickable(true);
                         break;
 
                     case "FAILV":
@@ -62,7 +62,7 @@ public class P2PWorkerNearby {
                                 "The role you want to choose isn't available",
                                 Toast.LENGTH_SHORT)
                                 .show();
-                        JoinSelectRoleActivity.videoBtn.setClickable(false);
+                        JoinSelectRoleActivity.audioBtn.setClickable(true);
                         break;
 
                     case "TIMESTAMP":

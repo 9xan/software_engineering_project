@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- we define background color -->
-    <solid android:color="#2A5E52" />
+   <solid android:color="#2A5E52" />
 
     <!-- we define border color and thick -->
     <stroke
         android:width="3dp"
-        android:color="#1A3937" />
-
+        android:color="#2A5E52" />
+    <!--#1A3937-->
     <!-- add some padding for text inside -->
     <padding
         android:bottom="15dp"
