@@ -40,6 +40,8 @@ public class ReadyToStartActivity extends AppCompatActivity {
 
         pb.setIndeterminate(true);
 
+        Log.d("Ho avviato l'activity Ready to Start e il timeout prima di iniziare è di :" , String.valueOf(timeToStart - System.currentTimeMillis()));
+
         new CountDownTimer(timeToStart - System.currentTimeMillis(), 1000) {
 
             @SuppressLint("SetTextI18n")
