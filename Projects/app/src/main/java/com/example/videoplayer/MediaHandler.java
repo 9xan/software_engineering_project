@@ -1,7 +1,6 @@
 package com.example.videoplayer;
 
 import android.app.Activity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -13,7 +12,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaCreator {
+
+public class MediaHandler {
 
     public static List<VideoView> createVideoViews(@NonNull Activity act, @NonNull List<Integer> ids, @NonNull List<String> videoPaths, @Nullable List<MediaController> viewControllers) {
         List<VideoView> destVideoViews = new ArrayList<>();
@@ -63,6 +63,8 @@ public class MediaCreator {
         }
         return myFilesName;
     }
+
+    // TODO add flow control for different video duration
 
 
     public static void startVideoView(VideoView v) {
@@ -148,5 +150,13 @@ public class MediaCreator {
     public static boolean isInFormat(String filePath, String format) {
         String[] arr = filePath.split("\\.");
         return (arr[arr.length - 1].compareTo(format) == 0);
+    }
+
+    public static boolean areVideosPlaying(List<VideoView> videos) {
+        boolean arePlaying = true;
+        for (VideoView v : videos) {
+            arePlaying &= v.isPlaying();
+        }
+        return arePlaying;
     }
 }

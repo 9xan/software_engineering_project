@@ -50,7 +50,7 @@ public class FileListActivity extends AppCompatActivity {
             myListView = findViewById(R.id.myListView);
             montageButton = findViewById(R.id.montageButton);
 
-            List<String> filePaths = MediaCreator.getFilesNameFromDirPath(dirPath);
+            List<String> filePaths = MediaHandler.getFilesNameFromDirPath(dirPath);
             String[] paths = filePaths.toArray(new String[0]);
 
             ArrayAdapter<String> myAdapter = new ArrayAdapter<>(this, R.layout.simple_list_item1,
@@ -63,10 +63,10 @@ public class FileListActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String itemValue = (String) myListView.getItemAtPosition(position);
 
-                    if (MediaCreator.isInFormat(itemValue, "mp4")) {
+                    if (MediaHandler.isInFormat(itemValue, "mp4")) {
 
-                        MediaCreator.addOrRemoveElement(selectedVideosPath, dirPath + itemValue);
-                        if (MediaCreator.addOrRemoveElement(selectedVideosName, itemValue)) {
+                        MediaHandler.addOrRemoveElement(selectedVideosPath, dirPath + itemValue);
+                        if (MediaHandler.addOrRemoveElement(selectedVideosName, itemValue)) {
                             view.setBackgroundColor(0xFF00FF00);
                         } else {
                             view.setBackgroundColor(0xFFFFFFFF);
