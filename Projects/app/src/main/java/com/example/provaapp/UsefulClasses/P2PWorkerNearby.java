@@ -37,6 +37,7 @@ public class P2PWorkerNearby {
                     case "DONE":
                         /*JoinSelectRoleActivity.start.setVisibility(View.VISIBLE);
                         JoinSelectRoleActivity.start.setClickable(true);*/
+                        Log.e("TAG", "onPayloadReceived: TUTTO OK SELEZIONE DATI" );
                         //todo: settare una textview peravvisare che lo scambio dati ha avuto successo
                         break;
 
@@ -54,7 +55,7 @@ public class P2PWorkerNearby {
                                 "The role you want to choose isn't available",
                                 Toast.LENGTH_SHORT)
                                 .show();
-                        JoinSelectRoleActivity.audioBtn.setClickable(false);
+                        JoinSelectRoleActivity.videoBtn.setClickable(true);
                         break;
 
                     case "FAILV":
@@ -62,7 +63,7 @@ public class P2PWorkerNearby {
                                 "The role you want to choose isn't available",
                                 Toast.LENGTH_SHORT)
                                 .show();
-                        JoinSelectRoleActivity.videoBtn.setClickable(false);
+                        JoinSelectRoleActivity.audioBtn.setClickable(true);
                         break;
 
                     case "TIMESTAMP":
