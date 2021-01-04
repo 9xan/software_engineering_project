@@ -251,6 +251,7 @@ public class MasterCreationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        startAdvertising();
     }
 
     @Override

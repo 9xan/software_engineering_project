@@ -38,46 +38,46 @@ public class P2PManagerNearby {
             @Override
             public void onPayloadReceived(@NonNull String endpointId, @NonNull Payload payload) {
 
-                if (payload.getType() == Payload.Type.BYTES) {
+                    if (payload.getType() == Payload.Type.BYTES) {
 
-                    //il formato della stringa passata sarà "VIDEO-AUDIO" con valore 1 sul ruolo che il peer vuole gestire!
-                    String in = new String(payload.asBytes());
+                        //il formato della stringa passata sarà "VIDEO-AUDIO" con valore 1 sul ruolo che il peer vuole gestire!
+                        String in = new String(payload.asBytes());
 
-                    String[] out = in.split("-", 0);
+                        String[] out = in.split("-", 0);
 
-                    int v = Integer.parseInt(out[0]);
-                    int a = Integer.parseInt(out[1]);
+                        int v = Integer.parseInt(out[0]);
+                        int a = Integer.parseInt(out[1]);
 
-                    if (v == 1) {
-                        if (videoN > 0) {
-                            --videoN;
-                            Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("DONE-".getBytes()));
-                        } else {
-                            Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("FAILV-".getBytes()));
-                            //TODO:INVIO NON CI SONO POSTI
+                        if (v == 1) {
+                            if (videoN > 0) {
+                                --videoN;
+                                Nearby.getConnectionsClient(c).sendPayload(endpointId,  Payload.fromBytes("DONE-".getBytes()));
+                            } else {
+                                Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("FAILV-".getBytes()));
+                                //TODO:INVIO NON CI SONO POSTI
+                            }
+                        } else if (a == 1) {
+                            if (audioN > 0) {
+                                --audioN;
+                                Nearby.getConnectionsClient(c).sendPayload(endpointId,  Payload.fromBytes("DONE-".getBytes()));
+                            } else {
+                                Nearby.getConnectionsClient(c).sendPayload(endpointId,  Payload.fromBytes("FAILA-".getBytes()));
+                                //TODO:INVIO NON CI SONO POSTI
+                            }
                         }
-                    } else if (a == 1) {
-                        if (audioN > 0) {
-                            --audioN;
-                            Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("DONE-".getBytes()));
-                        } else {
-                            Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("FAILA-".getBytes()));
-                            //TODO:INVIO NON CI SONO POSTI
+
+                        if (WaitForPeerConfigurationActivity.audioView != null && WaitForPeerConfigurationActivity.videoView != null) {
+                            WaitForPeerConfigurationActivity.audioView.setText(String.valueOf(audioN));
+                            WaitForPeerConfigurationActivity.videoView.setText(String.valueOf(videoN));
+                            if (audioN + videoN == 0) {
+                                WaitForPeerConfigurationActivity.finishBtn.setClickable(true);
+                                WaitForPeerConfigurationActivity.finishBtn.setVisibility(View.VISIBLE);
+                                //WaitForPeerConfigurationActivity.finishView.setVisibility(View.VISIBLE);
+                            }
                         }
+                    }else if(payload.getType() == Payload.Type.FILE){
+                        //TODO : RICEVO UN VIDEO O UN AUDIO
                     }
-
-                    if (WaitForPeerConfigurationActivity.audioView != null && WaitForPeerConfigurationActivity.videoView != null) {
-                        WaitForPeerConfigurationActivity.audioView.setText(String.valueOf(audioN));
-                        WaitForPeerConfigurationActivity.videoView.setText(String.valueOf(videoN));
-                        if (audioN + videoN == 0) {
-                            WaitForPeerConfigurationActivity.finishBtn.setClickable(true);
-                            WaitForPeerConfigurationActivity.finishBtn.setVisibility(View.VISIBLE);
-                            //WaitForPeerConfigurationActivity.finishView.setVisibility(View.VISIBLE);
-                        }
-                    }
-                } else if (payload.getType() == Payload.Type.FILE) {
-                    //TODO : RICEVO UN VIDEO O UN AUDIO
-                }
             }
 
             @Override

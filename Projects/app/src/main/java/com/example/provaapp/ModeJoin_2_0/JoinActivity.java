@@ -269,12 +269,12 @@ public class JoinActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //startDiscovery();
+        startDiscovery();
     }
 
     @Override
     protected void onPause() {
-        //Nearby.getConnectionsClient(getApplicationContext()).stopDiscovery();
+        Nearby.getConnectionsClient(getApplicationContext()).stopDiscovery();
         super.onPause();
     }
 
