@@ -46,6 +46,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
         // get video path from the bundle received from FileListActivity
         List<String> filePaths = myIntent.getStringArrayListExtra("paths");
+
         assert filePaths != null;
         for (String path : filePaths) {
             if (MediaHandler.isInFormat(path, "mp3")) {
@@ -87,7 +88,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
                         videoViews = MediaHandler.createVideoViews(ctx, videoViewIds, videoViewPaths, null);
                     }
                 }
-                if (musicPlayer == null) {
+                if (musicPlayer == null) { 
                     if (mp3TrackPath != null) {
                         musicPlayer = MediaPlayer.create(ctx, Uri.parse(mp3TrackPath));
                         musicPlayer.setVolume(100, 100);
@@ -96,11 +97,15 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 // if videos are playing
                 if (MediaHandler.areVideosPlaying(videoViews)) {
                     // stop videos
-                    musicPlayer.pause();
+                    if (musicPlayer != null) {
+                        musicPlayer.pause();
+                    }
                     MediaHandler.stopVideoViews(videoViews);
                 } else {
                     // else proceed to start
-                    musicPlayer.start();
+                    if (musicPlayer != null) {
+                        musicPlayer.start();
+                    }
                     MediaHandler.startVideoViews(videoViews);
                 }
             }

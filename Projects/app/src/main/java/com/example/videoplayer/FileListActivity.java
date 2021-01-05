@@ -79,18 +79,22 @@ public class FileListActivity extends AppCompatActivity {
                 }
             });
 
+            // TODO add smarter function to count occurrences of paths that have a specified format
             montageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedFilesPath.size() >= 2) {
+                    if (selectedFilesPath.size() > 0) {
                         int mp3FileCount = 0;
+                        int mp4FileCount = 0;
                         for (String p : selectedFilesPath) {
                             if (MediaHandler.isInFormat(p, "mp3")) {
                                 mp3FileCount++;
+                            } else {
+                                mp4FileCount++;
                             }
                         }
-                        if (mp3FileCount > 1) {
-                            Toast.makeText(getApplicationContext(), "You can choose maximum 1 mp3 file", Toast.LENGTH_SHORT).show();
+                        if (mp3FileCount > 1 || mp4FileCount < 2) {
+                            Toast.makeText(getApplicationContext(), "Choose max 1 mp3 and min 2 mp4", Toast.LENGTH_SHORT).show();
                         } else {
                             Bundle b = new Bundle();
                             String videosPathKey = "paths";
