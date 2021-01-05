@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ModeCreate_2_1.CreateActivity"
+    tools:context=".mode_create_2_1.CreateActivity"
     android:background="@color/BackColor"
     >
 

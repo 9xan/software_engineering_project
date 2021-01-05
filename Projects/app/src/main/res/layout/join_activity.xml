@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/BackColor"
-    tools:context=".ModeJoin_2_0.JoinActivity">
+    tools:context=".mode_join_2_0.JoinActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarJoin"
@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/join"
+        android:textColor="@color/TextColor"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +38,7 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="92dp"
         android:text="@string/peer_search"
+        android:textColor="@color/TextColor"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,9 +67,12 @@
         android:layout_marginStart="112dp"
         android:layout_marginTop="164dp"
         android:layout_marginEnd="112dp"
+        android:background="@drawable/rounded_nickname_background"
         android:clickable="false"
         android:text="Continue"
         android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="invisible"

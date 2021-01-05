@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeCreate_2_1;
+package com.example.provaapp.mode_create_2_1;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.P2PManagerNearby;
+import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
@@ -26,7 +26,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.Semaphore;
 
 import static com.google.android.gms.nearby.connection.Strategy.P2P_STAR;
 

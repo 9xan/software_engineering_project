@@ -1,17 +1,15 @@
-package com.example.provaapp.ModeCreate_2_1;
+package com.example.provaapp.mode_create_2_1;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.P2PManagerNearby;
-import com.example.provaapp.UsefulClasses.P2PWorkerNearby;
+import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 

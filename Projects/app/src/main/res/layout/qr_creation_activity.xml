@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="QR creation Page"
+        android:textColor="@color/TextColor"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"

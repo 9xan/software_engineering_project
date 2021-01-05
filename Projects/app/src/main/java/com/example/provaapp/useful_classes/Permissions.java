@@ -1,4 +1,4 @@
-package com.example.provaapp.UsefulClasses;
+package com.example.provaapp.useful_classes;
 
 
 import android.content.pm.PackageManager;

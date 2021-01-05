@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeCreate_2_1;
+package com.example.provaapp.mode_create_2_1;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -15,8 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.provaapp.ModeJoin_2_0.JoinActivity;
-import com.example.provaapp.OperativeActivityChanger_1.MainActivity;
+import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.example.provaapp.R;
 
 public class CreateRoomStep1 extends Fragment {

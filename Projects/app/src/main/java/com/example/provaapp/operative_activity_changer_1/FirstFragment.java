@@ -1,7 +1,6 @@
-package com.example.provaapp.OperativeActivityChanger_1;
+package com.example.provaapp.operative_activity_changer_1;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.provaapp.ModeCreate_2_1.CreateActivity;
-import com.example.provaapp.ModeJoin_2_0.JoinActivity;
-import com.example.provaapp.ModeJoin_2_0.QRReaderActivity;
+import com.example.provaapp.mode_create_2_1.CreateActivity;
+import com.example.provaapp.mode_join_2_0.QRReaderActivity;
 import com.example.provaapp.R;
 
 public class FirstFragment extends Fragment {

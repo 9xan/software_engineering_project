@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeCreate_2_1;
+package com.example.provaapp.mode_create_2_1;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,17 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.provaapp.ModeJoin_2_0.JoinActivity;
-import com.example.provaapp.OperativeActivityChanger_1.FirstFragment;
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.AppSecurity;
-import com.example.provaapp.UsefulClasses.RandomString;
-import com.google.zxing.WriterException;
+import com.example.provaapp.useful_classes.AppSecurity;
+import com.example.provaapp.useful_classes.RandomString;
 
 import java.security.NoSuchAlgorithmException;
 

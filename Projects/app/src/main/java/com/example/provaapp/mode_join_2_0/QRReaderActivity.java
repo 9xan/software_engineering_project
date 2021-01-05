@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeJoin_2_0;
+package com.example.provaapp.mode_join_2_0;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +10,7 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ErrorCallback;
-import com.example.provaapp.OperativeActivityChanger_1.FirstFragment;
+import com.example.provaapp.operative_activity_changer_1.FirstFragment;
 import com.example.provaapp.R;
 import com.google.zxing.Result;
 

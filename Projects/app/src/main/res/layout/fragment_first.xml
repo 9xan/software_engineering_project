@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/BackColor"
-    tools:context=".OperativeActivityChanger_1.FirstFragment">
-
+    tools:context=".operative_activity_changer_1.FirstFragment">
 
     <ImageView
         android:id="@+id/LogoView"

@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeJoin_2_0;
+package com.example.provaapp.mode_join_2_0;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

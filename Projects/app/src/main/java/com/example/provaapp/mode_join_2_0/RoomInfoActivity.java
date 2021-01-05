@@ -1,10 +1,7 @@
-package com.example.provaapp.ModeJoin_2_0;
+package com.example.provaapp.mode_join_2_0;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,9 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.provaapp.OperativeActivityChanger_1.FirstFragment;
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.Permissions;
 
 import java.util.Objects;
 

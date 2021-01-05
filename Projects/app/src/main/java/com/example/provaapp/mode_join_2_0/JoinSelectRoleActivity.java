@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeJoin_2_0;
+package com.example.provaapp.mode_join_2_0;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.P2PWorkerNearby;
+import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
@@ -63,7 +63,7 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
         audioBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Payload bytesPayload = Payload.fromBytes("0-1".getBytes()); //così significa che chiedo di avere il posto di audioRecorder
+                Payload bytesPayload = Payload.fromBytes("VA-0-1".getBytes()); //così significa che chiedo di avere il posto di audioRecorder
                 Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PWorkerNearby.managerEndpointID, bytesPayload);
                 audioBtn.setClickable(false);
                 myRole = 0;
@@ -78,7 +78,7 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
         videoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Payload bytesPayload = Payload.fromBytes("1-0".getBytes()); //così significa che chiedo di avere il posto di videoRecorder
+                Payload bytesPayload = Payload.fromBytes("VA-1-0".getBytes()); //così significa che chiedo di avere il posto di videoRecorder
                 Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PWorkerNearby.managerEndpointID, bytesPayload);
                 videoBtn.setClickable(false);
                 myRole = 1;

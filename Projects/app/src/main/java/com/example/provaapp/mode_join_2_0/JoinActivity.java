@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeJoin_2_0;
+package com.example.provaapp.mode_join_2_0;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.P2PWorkerNearby;
-import com.example.provaapp.UsefulClasses.Permissions;
+import com.example.provaapp.useful_classes.P2PWorkerNearby;
+import com.example.provaapp.useful_classes.Permissions;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;

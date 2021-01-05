@@ -1,8 +1,7 @@
-package com.example.provaapp.UsefulClasses;
+package com.example.provaapp.useful_classes;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

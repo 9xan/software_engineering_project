@@ -1,10 +1,10 @@
-package com.example.provaapp.OperativeActivityChanger_1;
+package com.example.provaapp.operative_activity_changer_1;
 
 import android.Manifest;
 import android.os.Bundle;
 
 import com.example.provaapp.R;
-import com.example.provaapp.UsefulClasses.Permissions;
+import com.example.provaapp.useful_classes.Permissions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

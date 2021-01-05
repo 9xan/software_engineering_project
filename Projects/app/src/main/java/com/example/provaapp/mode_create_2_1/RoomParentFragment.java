@@ -1,4 +1,4 @@
-package com.example.provaapp.ModeCreate_2_1;
+package com.example.provaapp.mode_create_2_1;
 
 import android.os.Bundle;
 import android.view.View;

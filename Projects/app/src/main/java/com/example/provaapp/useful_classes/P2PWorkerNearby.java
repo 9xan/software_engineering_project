@@ -1,15 +1,13 @@
-package com.example.provaapp.UsefulClasses;
+package com.example.provaapp.useful_classes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.provaapp.ModeJoin_2_0.JoinSelectRoleActivity;
-import com.example.provaapp.ModeJoin_2_0.ReadyToStartActivity;
+import com.example.provaapp.mode_join_2_0.JoinSelectRoleActivity;
+import com.example.provaapp.mode_join_2_0.ReadyToStartActivity;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
