@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CameraXTesting</string>
+    <string name="recording">Record</string>
+</resources>
