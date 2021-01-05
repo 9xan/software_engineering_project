@@ -29,40 +29,45 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="624dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/backwardButton"
-            android:layout_width="59dp"
-            android:layout_height="49dp"
-            android:text="-1s" />
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/arrowbackbutton" />
+
 
         <Button
             android:id="@+id/playPauseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Play/Pause" />
+            android:layout_width="62dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="10dp"
+
+            android:background="@drawable/playpausebutton1" />
 
         <Button
             android:id="@+id/restartButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Restart" />
-
+            android:layout_width="61dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/restartbutton" />
 
         <Button
             android:id="@+id/forwardButton"
-            android:layout_width="59dp"
-            android:layout_height="47dp"
-            android:text="+1s" />
+            android:layout_width="60dp"
+            android:layout_height="49dp"
+            android:background="@drawable/arrowforbutton" />
 
     </LinearLayout>
 

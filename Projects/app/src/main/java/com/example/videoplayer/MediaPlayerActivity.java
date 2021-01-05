@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MediaPlayerActivity extends AppCompatActivity {
@@ -47,11 +48,12 @@ public class MediaPlayerActivity extends AppCompatActivity {
         // get video path from the bundle received from FileListActivity
         List<String> filePaths = myIntent.getStringArrayListExtra("paths");
 
-        assert filePaths != null;
-        for (String path : filePaths) {
-            if (MediaHandler.isInFormat(path, "mp3")) {
-                mp3TrackPath = path;
-                filePaths.remove(path);
+        // FIXME currentModification while removing elements
+        for (Iterator<String> iterator = filePaths.iterator(); iterator.hasNext(); ) {
+            String p = iterator.next();
+            if (MediaHandler.isInFormat(p, "mp3")) {
+                mp3TrackPath = p;
+                iterator.remove();
                 Log.d("info", mp3TrackPath);
             }
         }
@@ -88,7 +90,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
                         videoViews = MediaHandler.createVideoViews(ctx, videoViewIds, videoViewPaths, null);
                     }
                 }
-                if (musicPlayer == null) { 
+                if (musicPlayer == null) {
                     if (mp3TrackPath != null) {
                         musicPlayer = MediaPlayer.create(ctx, Uri.parse(mp3TrackPath));
                         musicPlayer.setVolume(100, 100);

@@ -137,7 +137,7 @@ public class MediaHandler {
     }
 
     public static <T> boolean addOrRemoveElement(@NonNull List<T> list, @NonNull T elem) {
-        if (list.indexOf(elem) == -1) {
+        if (!list.contains(elem)) {
             list.add(elem);
             return true;
         } else {

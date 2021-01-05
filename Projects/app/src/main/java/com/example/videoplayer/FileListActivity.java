@@ -28,7 +28,11 @@ public class FileListActivity extends AppCompatActivity {
     final String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
     final String dirPath = "/storage/emulated/0/DCIM/EpVideos/";
     ListView myListView;
+
+    // name of files to show on the list
     List<String> selectedFilesName;
+
+    // path of files to play on the player
     ArrayList<String> selectedFilesPath;
     Button montageButton;
 
@@ -93,8 +97,8 @@ public class FileListActivity extends AppCompatActivity {
                                 mp4FileCount++;
                             }
                         }
-                        if (mp3FileCount > 1 || mp4FileCount < 2) {
-                            Toast.makeText(getApplicationContext(), "Choose max 1 mp3 and min 2 mp4", Toast.LENGTH_SHORT).show();
+                        if (mp3FileCount > 1 || mp4FileCount < 2 || mp4FileCount > 4) {
+                            Toast.makeText(getApplicationContext(), "Choose max 1 mp3 and from 2 to 4 mp4", Toast.LENGTH_SHORT).show();
                         } else {
                             Bundle b = new Bundle();
                             String videosPathKey = "paths";
