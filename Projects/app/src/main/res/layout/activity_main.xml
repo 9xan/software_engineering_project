@@ -9,12 +9,12 @@
 
     <Button
         android:id="@+id/switchActivityButton"
-        android:layout_width="62dp"
-        android:layout_height="39dp"
+        android:layout_width="52dp"
+        android:layout_height="51dp"
         android:layout_marginTop="16dp"
-        android:text="Back"
+        android:background="@drawable/backbutton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,12 +31,11 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="624dp"
+        android:layout_marginTop="612dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -44,30 +43,30 @@
             android:id="@+id/backwardButton"
             android:layout_width="54dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/arrowbackbutton" />
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/backwardbutton" />
 
 
         <Button
             android:id="@+id/playPauseButton"
             android:layout_width="62dp"
             android:layout_height="64dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="20dp"
 
-            android:background="@drawable/playpausebutton1" />
+            android:background="@drawable/playpausebutton" />
 
         <Button
             android:id="@+id/restartButton"
             android:layout_width="61dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/restartbutton" />
 
         <Button
             android:id="@+id/forwardButton"
-            android:layout_width="60dp"
-            android:layout_height="49dp"
-            android:background="@drawable/arrowforbutton" />
+            android:layout_width="51dp"
+            android:layout_height="64dp"
+            android:background="@drawable/forwardbutton" />
 
     </LinearLayout>
 
