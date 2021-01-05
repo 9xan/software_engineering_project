@@ -3,7 +3,10 @@ package com.example.videoplayer;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,11 +20,14 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MediaPlayerActivity extends AppCompatActivity {
 
     final int READ_EXTERNAL_STORAGE_CODE = 101;
 
     final String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+
+    MediaPlayer musicPlayer;
+    String mp3TrackPath;
     List<Integer> videoViewIds;
     List<String> videoViewPaths;
     List<VideoView> videoViews;
@@ -39,10 +45,21 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
 
         // get video path from the bundle received from FileListActivity
-        videoViewPaths = myIntent.getStringArrayListExtra("videospath");
+        List<String> filePaths = myIntent.getStringArrayListExtra("paths");
+        assert filePaths != null;
+        for (String path : filePaths) {
+            if (MediaHandler.isInFormat(path, "mp3")) {
+                mp3TrackPath = path;
+                filePaths.remove(path);
+                Log.d("info", mp3TrackPath);
+            }
+        }
+
+        Log.d("info", filePaths.toString());
+
+        videoViewPaths = filePaths;
 
         // initialize the right fragment given the number of videos
-        assert videoViewPaths != null;
         videoViewIds = startVideoFragmentBy(videoViewPaths.size(), R.id.myFragmentContainer);
 
         // initialize buttons
@@ -60,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         playPausePlaybackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // if videoviews don't exist
+                // if videoviews doesn't exist
                 if (videoViews == null) {
                     // check for read storage permission
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), permissions[0]) != PackageManager.PERMISSION_GRANTED) {
@@ -70,12 +87,20 @@ public class MainActivity extends AppCompatActivity {
                         videoViews = MediaHandler.createVideoViews(ctx, videoViewIds, videoViewPaths, null);
                     }
                 }
+                if (musicPlayer == null) {
+                    if (mp3TrackPath != null) {
+                        musicPlayer = MediaPlayer.create(ctx, Uri.parse(mp3TrackPath));
+                        musicPlayer.setVolume(100, 100);
+                    }
+                }
                 // if videos are playing
                 if (MediaHandler.areVideosPlaying(videoViews)) {
                     // stop videos
+                    musicPlayer.pause();
                     MediaHandler.stopVideoViews(videoViews);
                 } else {
                     // else proceed to start
+                    musicPlayer.start();
                     MediaHandler.startVideoViews(videoViews);
                 }
             }

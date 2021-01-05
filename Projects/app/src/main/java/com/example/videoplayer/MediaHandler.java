@@ -36,7 +36,6 @@ public class MediaHandler {
             myVideoView.setMediaController(controller);
         }
         myVideoView.setVideoPath(videoPath);
-
         return myVideoView;
     }
 
@@ -159,4 +158,5 @@ public class MediaHandler {
         }
         return arePlaying;
     }
+
 }

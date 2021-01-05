@@ -28,8 +28,8 @@ public class FileListActivity extends AppCompatActivity {
     final String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
     final String dirPath = "/storage/emulated/0/DCIM/EpVideos/";
     ListView myListView;
-    List<String> selectedVideosName;
-    ArrayList<String> selectedVideosPath;
+    List<String> selectedFilesName;
+    ArrayList<String> selectedFilesPath;
     Button montageButton;
 
     @Override
@@ -44,8 +44,8 @@ public class FileListActivity extends AppCompatActivity {
 
         } else {
 
-            selectedVideosPath = new ArrayList<>();
-            selectedVideosName = new ArrayList<>();
+            selectedFilesPath = new ArrayList<>();
+            selectedFilesName = new ArrayList<>();
 
             myListView = findViewById(R.id.myListView);
             montageButton = findViewById(R.id.montageButton);
@@ -63,19 +63,18 @@ public class FileListActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String itemValue = (String) myListView.getItemAtPosition(position);
 
-                    if (MediaHandler.isInFormat(itemValue, "mp4")) {
+                    if (MediaHandler.isInFormat(itemValue, "mp4") || MediaHandler.isInFormat(itemValue, "mp3")) {
 
-                        MediaHandler.addOrRemoveElement(selectedVideosPath, dirPath + itemValue);
-                        if (MediaHandler.addOrRemoveElement(selectedVideosName, itemValue)) {
+                        MediaHandler.addOrRemoveElement(selectedFilesPath, dirPath + itemValue);
+                        if (MediaHandler.addOrRemoveElement(selectedFilesName, itemValue)) {
                             view.setBackgroundColor(0xFF00FF00);
                         } else {
                             view.setBackgroundColor(0xFFFFFFFF);
                         }
-                        Log.d("selectedVideos", selectedVideosPath.toString());
+                        Log.d("selectedVideos", selectedFilesPath.toString());
 
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Not a valid mp4", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Not a valid format", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -83,11 +82,21 @@ public class FileListActivity extends AppCompatActivity {
             montageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedVideosPath.size() >= 2) {
-                        Bundle b = new Bundle();
-                        String videosPathKey = "videospath";
-                        b.putStringArrayList(videosPathKey, selectedVideosPath);
-                        switchActivity(b, MainActivity.class);
+                    if (selectedFilesPath.size() >= 2) {
+                        int mp3FileCount = 0;
+                        for (String p : selectedFilesPath) {
+                            if (MediaHandler.isInFormat(p, "mp3")) {
+                                mp3FileCount++;
+                            }
+                        }
+                        if (mp3FileCount > 1) {
+                            Toast.makeText(getApplicationContext(), "You can choose maximum 1 mp3 file", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Bundle b = new Bundle();
+                            String videosPathKey = "paths";
+                            b.putStringArrayList(videosPathKey, selectedFilesPath);
+                            switchActivity(b, MediaPlayerActivity.class);
+                        }
                     } else {
                         Toast.makeText(getApplicationContext(), "Not enough videos", Toast.LENGTH_SHORT).show();
                     }
