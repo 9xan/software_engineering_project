@@ -78,7 +78,7 @@ public class MasterCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                sendMessage(WaitForPeerConfigurationActivity.class);
+                sendMessage(masterRole , WaitForPeerConfigurationActivity.class);
                 //METTERE CODICE PER PROSEGUIRE CON  WaitForPeerConfigurationActivity
             }
         });
@@ -239,8 +239,9 @@ public class MasterCreationActivity extends AppCompatActivity {
 
     /*********************************************************************************************************/
 
-    public void sendMessage(Class<? extends AppCompatActivity> nextActivity) {
+    public void sendMessage(String role , Class<? extends AppCompatActivity> nextActivity) {
         Intent intent = new Intent(this, nextActivity);
+        intent.putExtra("MasterRole" , role);
         startActivity(intent);
     }
 

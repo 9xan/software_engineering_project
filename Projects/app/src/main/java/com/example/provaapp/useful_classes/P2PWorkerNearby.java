@@ -1,16 +1,25 @@
 package com.example.provaapp.useful_classes;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.provaapp.VideoRecordingActivity;
 import com.example.provaapp.mode_join_2_0.JoinSelectRoleActivity;
 import com.example.provaapp.mode_join_2_0.ReadyToStartActivity;
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
+
+import java.io.File;
 
 public class P2PWorkerNearby {
 
@@ -18,6 +27,7 @@ public class P2PWorkerNearby {
     public static String managerEndpointID;  //ESSENZIALE PER LE CHIAMATE A METODI DI CONDIVISIONE DATI!!!
     public static Context c;
     public static int videoN, audioN;
+    public static CountDownTimer ct;
 
 
     //qui devo METTERE TUTTO IL CODICE PER GESTIRE I VARI DATI IN INPUT, QUINDI SI PARLA DI BYTES O FILES!!!
@@ -77,6 +87,18 @@ public class P2PWorkerNearby {
 
                         JoinSelectRoleActivity.sendMessage(c, keys, vals, ReadyToStartActivity.class);
                         break;
+
+                    case "STOPRECORDING":
+                        ct = new CountDownTimer(Long.parseLong(in[1]) - System.currentTimeMillis(), 1000) {
+                            public void onTick(long millisUntilFinished) {
+                            }
+
+                            public void onFinish() {
+                                VideoRecordingActivity.stopRecording();
+                            }
+                        }.start();
+                        break;
+
                 }
 
 

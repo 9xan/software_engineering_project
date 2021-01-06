@@ -1,4 +1,4 @@
-package com.example.provaapp.useful_classes;
+package com.example.provaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 

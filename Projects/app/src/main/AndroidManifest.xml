@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!--this is for qr-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -122,8 +123,8 @@
                 android:value=".mode_create_2_1.WaitForPeerConfigurationActivity" />
         </activity>
 
-        <activity android:name=".useful_classes.VideoRecordingActivity" />
-        <activity android:name=".useful_classes.AudioRecordingActivity" />
+        <activity android:name=".VideoRecordingActivity" />
+        <activity android:name=".AudioRecordingActivity" />
 
     </application>
 
