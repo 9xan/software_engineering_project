@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.provaapp.R;
+import com.example.provaapp.VideoRecordingActivity;
 import com.example.provaapp.useful_classes.EzCam;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.google.android.gms.nearby.Nearby;
@@ -54,11 +55,12 @@ public class ReadyToRecordActivity extends AppCompatActivity {
 
             public void onFinish() {
                 if (myRole.compareTo("Video Recorder") == 0) {
-                    Intent forVideoIntent = new Intent();
+                    Intent forVideoIntent = new Intent(getApplicationContext(), VideoRecordingActivity.class);
                     forVideoIntent.putExtra("timestamp", 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                     forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
                     forVideoIntent.putExtra("role", "Manager"); // devo specificargli se sono un manager o un worker
                     forVideoIntent.putExtra("outputPath", "/storage/emulated/0/DCIM/EpVideos/RecordTest/RecordVideoMaster.mp4"); //devo passargli un path todo : VEDERE COI FIOI
+                    startActivity(forVideoIntent);
                 } else if (myRole.compareTo("Audio Recorder") == 0) {
                     //todo:aprire player in modalità audio recorder
 

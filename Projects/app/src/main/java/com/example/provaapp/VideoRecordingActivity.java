@@ -26,7 +26,7 @@ import java.io.File;
 public class VideoRecordingActivity extends AppCompatActivity {
 
 
-    private static EzCam myCamera;
+    private EzCam myCamera;
     private Intent receivedIntent;
     private int receivedRequestCode;
     private String receivedOutputPath;
@@ -48,7 +48,9 @@ public class VideoRecordingActivity extends AppCompatActivity {
         role = receivedIntent.getStringExtra("role");                                         //Worker oppure Manager
 
         try {
+            Log.d("CAMERA", "onCreate: NEWEZ CAM Constructor");
             myCamera = new EzCam(this);
+
         } catch (Permissions.PermissionDeniedException e) {
             Toast.makeText(this, "Unable to access camera", Toast.LENGTH_LONG).show();
             Log.i("Permissions denied", e.getMessage());
@@ -57,7 +59,12 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
         myCamera.startPreview(findViewById(R.id.previewView));
 
-        stopRecordingButton = findViewById(R.id.stopRecordingButton);
+        findViewById(R.id.stopRecordingButton).setOnClickListener((v) -> recordingLogic());
+
+
+
+
+        /*stopRecordingButton = findViewById(R.id.stopRecordingButton);
         stopRecordingButton.setVisibility(View.INVISIBLE);
         stopRecordingButton.setClickable(false);
 
@@ -81,7 +88,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
                             } else {
                                 setResult(Activity.RESULT_CANCELED, new Intent());
                             }
-                            finish();   // close activity and give result to caller// todo: posso spawnare la prissima activity qui al posto della finish
+                            //finish();   // close activity and give result to caller// todo: posso spawnare la prissima activity qui al posto della finish
                         }
                 );
 
@@ -98,11 +105,13 @@ public class VideoRecordingActivity extends AppCompatActivity {
                 }
             }
         }.start();
+
+         */
     }
 
 
     public static void stopRecording() {
-        myCamera.stopRecording();
+        //myCamera.stopRecording();
         //todo: lo start activity per l'activity successiva va fatto al posto della finish
     }
 
