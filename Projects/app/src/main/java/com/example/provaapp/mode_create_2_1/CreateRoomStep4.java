@@ -63,10 +63,10 @@ public class CreateRoomStep4 extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Log.d(" VISUALIZZAZIONE DATI NELL'ARGOMENTO 1:" ,  "videoN -> " + args.getString("videoN") + " audioN -> " +args.getString("audioN") +
-                        " masterRole -> " + args.getString("masterRole") + " RoomName -> " + args.getString("RoomName") + " MyNick -> "+ args.getString("NickName"));
+                Log.d(" VISUALIZZAZIONE DATI NELL'ARGOMENTO 1:", "videoN -> " + args.getString("videoN") + " audioN -> " + args.getString("audioN") +
+                        " masterRole -> " + args.getString("masterRole") + " RoomName -> " + args.getString("RoomName") + " MyNick -> " + args.getString("NickName"));
 
-                sendMessage(args , RoomData , QRCreationActivity.class);
+                sendMessage(args, RoomData, QRCreationActivity.class);
             }
         });
 
@@ -84,7 +84,7 @@ public class CreateRoomStep4 extends Fragment {
 
     public void sendMessage(Bundle args, String Key, Class<? extends AppCompatActivity> nextActivity) {
         Intent intent = new Intent(getContext(), nextActivity);
-        intent.putExtra(Key , args);
+        intent.putExtra(Key, args);
         startActivity(intent);
     }
 

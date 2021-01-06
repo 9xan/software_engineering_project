@@ -30,7 +30,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/first_page_fragment"
-        android:name="com.example.provaapp.OperativeActivityChanger_1.FirstFragment"
+        android:name="com.example.provaapp.operative_activity_changer_1.FirstFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"

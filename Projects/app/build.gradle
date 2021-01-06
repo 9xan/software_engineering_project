@@ -20,6 +20,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -29,6 +35,19 @@ dependencies {
     def fragment_version = "1.2.5"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.fragment:fragment:$fragment_version"
+
+
+    def camerax_version = "1.0.0-rc01"
+    // CameraX core library using camera2 implementation
+    //implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    // CameraX Lifecycle Library
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    // CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha20"
+
+    implementation 'com.github.yangjie10930:EpMedia:v1.0.1' // EpMedia for separating audio and video from .mp4
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

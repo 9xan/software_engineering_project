@@ -122,7 +122,8 @@
                 android:value=".mode_create_2_1.WaitForPeerConfigurationActivity" />
         </activity>
 
-
+        <activity android:name=".useful_classes.VideoRecordingActivity" />
+        <activity android:name=".useful_classes.AudioRecordingActivity" />
 
     </application>
 

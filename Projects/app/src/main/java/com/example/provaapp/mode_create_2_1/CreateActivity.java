@@ -12,6 +12,7 @@ import com.example.provaapp.R;
 public class CreateActivity extends AppCompatActivity { //HOST ACTIVITY
 
     private Bundle args;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

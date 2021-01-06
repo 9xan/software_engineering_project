@@ -40,22 +40,22 @@ public class ReadyToStartActivity extends AppCompatActivity {
 
         pb.setIndeterminate(true);
 
-        Log.d("Ho avviato l'activity Ready to Start e il timeout prima di iniziare è di :" , String.valueOf(timeToStart - System.currentTimeMillis()));
+        Log.d("Ho avviato l'activity Ready to Start e il timeout prima di iniziare è di :", String.valueOf(timeToStart - System.currentTimeMillis()));
 
         new CountDownTimer(timeToStart - System.currentTimeMillis(), 1000) {
 
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
-                seconds.setText(((Long)(millisUntilFinished/1000)).toString());
+                seconds.setText(((Long) (millisUntilFinished / 1000)).toString());
             }
 
             public void onFinish() {
                 if (myRole.compareTo("audio") == 0) {
-                    Log.d("Avvio " , "audio Recorder");
+                    Log.d("Avvio ", "audio Recorder");
                     //TODO: AVVIARE L'ACTIVITY PER REGISTRARE AUDIO
 
                 } else if (myRole.compareTo("video") == 0) {
-                    Log.d("Avvio " , "video Recorder");
+                    Log.d("Avvio ", "video Recorder");
                     //TODO: AVVIARE L'ACTIVITY PER REGISTRARE VIDEO
 
                 } else {

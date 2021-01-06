@@ -72,7 +72,7 @@ public class QRCreationActivity extends AppCompatActivity {
         try {     //generating hash starting from a random string
 
             hashSecCode = AppSecurity.StringToHashSHA512(secCode, algorithm);
-            QRString = roomNameQR + "//" + hashSecCode + "//" + myDeviceMAC + "//" + videoN + "//"+ audioN + "//" + new RandomString(300).nextString();
+            QRString = roomNameQR + "//" + hashSecCode + "//" + myDeviceMAC + "//" + videoN + "//" + audioN + "//" + new RandomString(300).nextString();
             QRGEncoder qrgEncoder = new QRGEncoder(QRString, null, QRGContents.Type.TEXT, QRString.length());
             Bitmap QRbits = qrgEncoder.getBitmap();
             QrView.setImageBitmap(QRbits);

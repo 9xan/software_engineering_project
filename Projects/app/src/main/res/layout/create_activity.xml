@@ -20,7 +20,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/room_creation_fragment_container"
-        android:name="com.example.provaapp.ModeCreate_2_1.RoomParentFragment"
+        android:name="com.example.provaapp.mode_create_2_1.RoomParentFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

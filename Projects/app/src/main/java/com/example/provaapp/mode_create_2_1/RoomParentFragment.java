@@ -11,7 +11,7 @@ import com.example.provaapp.R;
 
 public class RoomParentFragment extends Fragment { //HOST FRAGMENT
 
-    public RoomParentFragment(){
+    public RoomParentFragment() {
         super(R.layout.room_parent_fragment);
     }
 
@@ -25,7 +25,4 @@ public class RoomParentFragment extends Fragment { //HOST FRAGMENT
                 .add(R.id.room_parent_fragment_container, CreateRoomStep1.class, args)
                 .commit();
     }
-
-
-
 }

@@ -109,10 +109,10 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public static void sendMessage(Context c , String[] key, String[] vals, Class<? extends AppCompatActivity> nextActivity) {
+    public static void sendMessage(Context c, String[] key, String[] vals, Class<? extends AppCompatActivity> nextActivity) {
         int i = 0;
         Intent intent = new Intent(c, nextActivity);
-        for(i = 0 ; i < key.length ; i++){
+        for (i = 0; i < key.length; i++) {
             intent.putExtra(key[i], vals[i]);
         }
         c.startActivity(intent);

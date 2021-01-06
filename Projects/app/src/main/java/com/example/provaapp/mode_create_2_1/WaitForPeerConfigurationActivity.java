@@ -70,7 +70,7 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
             public void run() {
                 Log.d("MANAGER", "Sending updates to peers");
                 if (P2PManagerNearby.videoN + P2PManagerNearby.audioN != 0) {
-                    String s = "VA-"+(P2PManagerNearby.videoN) + "-" + (P2PManagerNearby.audioN);
+                    String s = "VA-" + (P2PManagerNearby.videoN) + "-" + (P2PManagerNearby.audioN);
                     Payload mes = Payload.fromBytes(s.getBytes());
                     Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, mes);
                 } else {

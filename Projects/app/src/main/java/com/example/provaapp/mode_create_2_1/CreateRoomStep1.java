@@ -108,17 +108,17 @@ public class CreateRoomStep1 extends Fragment {
                             .addToBackStack("step1") // name can be null
                             .commit();
                 } else {
-                    if(videoN == 0 && audioN >0){
+                    if (videoN == 0 && audioN > 0) {
                         Toast.makeText(getContext(),
                                 "Please select at least one video recorder",
                                 Toast.LENGTH_SHORT)
                                 .show();
-                    }else if(videoN > 0 && audioN == 0){
+                    } else if (videoN > 0 && audioN == 0) {
                         Toast.makeText(getContext(),
                                 "Please select at least one audio recorder",
                                 Toast.LENGTH_SHORT)
                                 .show();
-                    }else{
+                    } else {
                         Toast.makeText(getContext(),
                                 "Please select something",
                                 Toast.LENGTH_SHORT)
@@ -133,7 +133,7 @@ public class CreateRoomStep1 extends Fragment {
             @Override
             public void onClick(View v) {
                 nextStep.clear();
-                Intent myIntent = new Intent(v.getContext() , MainActivity.class);
+                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
                 startActivity(myIntent);
             }
         });

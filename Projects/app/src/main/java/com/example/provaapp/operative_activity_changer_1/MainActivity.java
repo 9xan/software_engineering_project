@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarActivityChanger);
         setSupportActionBar(toolbar);
-        Permissions.requestPermissions( this , new String[]{Manifest.permission.CAMERA} , 100);
+        Permissions.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
     }
 
     @Override

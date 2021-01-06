@@ -36,7 +36,7 @@ public class ReadyToRecordActivity extends AppCompatActivity {
                 String ts = Long.toString(tsLong);
 
                 Payload bytesPayload = Payload.fromBytes(("TIMESTAMP-" + ts).getBytes());
-                Nearby.getConnectionsClient(getApplicationContext()).sendPayload( P2PManagerNearby.endpoints  ,  bytesPayload);
+                Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
             }
         });
     }

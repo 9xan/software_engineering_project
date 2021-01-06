@@ -22,7 +22,6 @@ public class CreateRoomStep3 extends Fragment {
     public Button prev;
 
 
-
     public CreateRoomStep3() {
         super(R.layout.create_room_step_3);
     }

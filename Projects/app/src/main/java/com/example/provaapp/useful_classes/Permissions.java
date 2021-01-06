@@ -16,7 +16,9 @@ public class Permissions {
         public PermissionDeniedException(String message) {
             super(message);
         }
-    };
+    }
+
+    ;
 
     // Ask permissions then run a lambda if allowed
     public static void runIfAllowed(AppCompatActivity context, String[] permissions, int requestCode, Runnable fun) throws PermissionDeniedException {
@@ -31,7 +33,7 @@ public class Permissions {
 
     public static void requestPermissions(AppCompatActivity context, String[] permissions, int requestCode) {
         // smart requests: if already allowed don't ask for permissions again!
-        if(!areGranted(context, Arrays.asList(permissions)))
+        if (!areGranted(context, Arrays.asList(permissions)))
             ActivityCompat.requestPermissions(context, permissions, requestCode);
     }
 
@@ -41,7 +43,7 @@ public class Permissions {
 
     public static boolean areGranted(AppCompatActivity context, List<String> permissions) {
         for (String permission : permissions) {
-            if(!isGranted(context, permission))
+            if (!isGranted(context, permission))
                 return false;
         }
         return true;
@@ -49,7 +51,7 @@ public class Permissions {
 
     private static String buildPermissionString(String[] permissions) {
         String result = "";
-        for(String permission : permissions) {
+        for (String permission : permissions) {
             result = result + "[ " + permission + " ] ";
         }
         return result;

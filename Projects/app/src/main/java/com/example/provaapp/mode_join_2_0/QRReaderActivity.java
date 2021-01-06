@@ -1,4 +1,5 @@
 package com.example.provaapp.mode_join_2_0;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,7 +39,7 @@ public class QRReaderActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         args.putString("QRData", result.getText());
-                        sendMessage(args, NextToRoomInfoKey , RoomInfoActivity.class);
+                        sendMessage(args, NextToRoomInfoKey, RoomInfoActivity.class);
                     }
                 });
             }
