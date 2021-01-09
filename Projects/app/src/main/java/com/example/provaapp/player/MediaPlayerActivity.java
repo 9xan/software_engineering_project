@@ -25,10 +25,6 @@ import java.util.List;
 
 public class MediaPlayerActivity extends AppCompatActivity {
 
-    final int READ_EXTERNAL_STORAGE_CODE = 101;
-
-    final String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-
     MediaPlayer musicPlayer;
     String mp3TrackPath;
     List<Integer> videoViewIds;
@@ -43,7 +39,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mediaplayer);
 
         Intent myIntent = getIntent();
 
@@ -84,13 +80,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // if videoviews doesn't exist
                 if (videoViews == null) {
-                    // check for read storage permission
-                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), permissions[0]) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(ctx, new String[]{permissions[0]}, READ_EXTERNAL_STORAGE_CODE);
-                    } else {
-                        // create videoviews
-                        videoViews = MediaHandler.createVideoViews(ctx, videoViewIds, videoViewPaths, null);
-                    }
+                    // create videoviews
+                    videoViews = MediaHandler.createVideoViews(ctx, videoViewIds, videoViewPaths, null);
                 }
                 if (musicPlayer == null) {
                     if (mp3TrackPath != null) {
@@ -185,33 +176,4 @@ public class MediaPlayerActivity extends AppCompatActivity {
         }
         return ids;
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case READ_EXTERNAL_STORAGE_CODE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "Storage permission granted",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Storage permission denied",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
 }

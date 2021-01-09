@@ -18,7 +18,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String appMediaFolderPath = "/storage/emulated/0/DCIM/multi_rec";
+    public static final String appMediaFolderPath = Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void createStorageDir() {
         //create folder
-        File file = new File(Environment.getExternalStorageDirectory() + "/multi_rec");
+        File file = new File(appMediaFolderPath);
         if (!file.mkdirs()) {
             file.mkdirs();
         }
         String filePath = file.getAbsolutePath() + File.separator;
-        Log.d("filepath ->>>", filePath);
     }
 }
