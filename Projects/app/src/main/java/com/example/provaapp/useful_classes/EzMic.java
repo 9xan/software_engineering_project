@@ -27,7 +27,7 @@ public class EzMic {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         if(outputFile == null) outputFile = new File(context.getExternalMediaDirs()[0], "ezmic.mp3");
-        recorder.setOutputFile(outputFile.getPath());
+        recorder.setOutputFile(outputFile.getAbsolutePath());
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         recorder.prepare(); // throws IOException

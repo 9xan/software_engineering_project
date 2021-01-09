@@ -51,7 +51,7 @@ public class QRCreationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.QRToolbar);
         setSupportActionBar(toolbar);
 
-        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = manager.getConnectionInfo();
         myDeviceMAC = info.getMacAddress();
 

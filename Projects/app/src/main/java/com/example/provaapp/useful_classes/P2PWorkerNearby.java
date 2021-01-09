@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.provaapp.AudioRecordingActivity;
 import com.example.provaapp.VideoRecordingActivity;
 import com.example.provaapp.mode_join_2_0.JoinSelectRoleActivity;
 import com.example.provaapp.mode_join_2_0.ReadyToStartActivity;
@@ -27,8 +28,6 @@ public class P2PWorkerNearby {
     public static String managerEndpointID;  //ESSENZIALE PER LE CHIAMATE A METODI DI CONDIVISIONE DATI!!!
     public static Context c;
     public static int videoN, audioN;
-    public static CountDownTimer ct;
-
 
     //qui devo METTERE TUTTO IL CODICE PER GESTIRE I VARI DATI IN INPUT, QUINDI SI PARLA DI BYTES O FILES!!!
     public static PayloadCallback workerCallback = new PayloadCallback() {
@@ -85,18 +84,27 @@ public class P2PWorkerNearby {
                             vals[1] = "video";
 
                         JoinSelectRoleActivity.sendMessage(c, keys, vals, ReadyToStartActivity.class);
+                        c = null;
                         break;
 
                     case "STOPRECORDING":
-                        ct = new CountDownTimer(Long.parseLong(in[1]) - System.currentTimeMillis(), 1000) {
+
+                        new CountDownTimer(Long.parseLong(in[1]) - System.currentTimeMillis(), 1000) {
                             public void onTick(long millisUntilFinished) {
                             }
 
                             public void onFinish() {
                                 Log.d("Stop recordin'", "GHESBORO ME FERMO");
-                                //VideoRecordingActivity.stopRecording();
+                                if (c instanceof VideoRecordingActivity) {              //se non è un video recorder allora è per forza un audio recorder(Worker)
+                                    ((VideoRecordingActivity) c).recordingLogic();
+                                } else {
+                                    ((AudioRecordingActivity) c).recordingLogic();
+                                }
+                                c = null;
                             }
                         }.start();
+
+
                         break;
                 }
 

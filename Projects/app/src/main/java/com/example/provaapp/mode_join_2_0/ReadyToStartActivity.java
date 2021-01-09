@@ -12,8 +12,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.provaapp.AudioRecordingActivity;
 import com.example.provaapp.R;
 import com.example.provaapp.VideoRecordingActivity;
+import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.example.provaapp.useful_classes.EzCam;
 
 import java.util.Objects;
@@ -25,7 +27,6 @@ public class ReadyToStartActivity extends AppCompatActivity {
     public Long timeToStart;
     private String myRole;
     private TextView seconds;
-    private CountDownTimer ct;
 
 
     @Override
@@ -45,7 +46,7 @@ public class ReadyToStartActivity extends AppCompatActivity {
 
         pb.setIndeterminate(true);
 
-        ct = new CountDownTimer(timeToStart - System.currentTimeMillis(), 1000) {
+        new CountDownTimer(timeToStart - System.currentTimeMillis(), 1000) {
 
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
@@ -53,18 +54,25 @@ public class ReadyToStartActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
+
+
                 if (myRole.compareTo("audio") == 0) {
                     Log.d("Avvio ", "audio Recorder");
                     //TODO: AVVIARE L'ACTIVITY PER REGISTRARE AUDIO
+                    Intent forVideoIntent = new Intent(getApplicationContext(), AudioRecordingActivity.class);
+                    forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
+                    forVideoIntent.putExtra("role", "Worker"); // devo specificargli se sono un manager o un worker
+                    forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordAudioWorker.mp3"); //devo passargli un path todo : VEDERE COI FIOI
+                    startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
 
                 } else if (myRole.compareTo("video") == 0) {
                     Log.d("Avvio ", "video Recorder");
                     //TODO: AVVIARE L'ACTIVITY PER REGISTRARE VIDEO
                     Intent forVideoIntent = new Intent(getApplicationContext(), VideoRecordingActivity.class);
-                    forVideoIntent.putExtra("timestamp", 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
+                    forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                     forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
                     forVideoIntent.putExtra("role", "Worker"); // devo specificargli se sono un manager o un worker
-                    //forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoWorker.mp4"); //devo passargli un path todo : VEDERE COI FIOI
+                    forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoWorker.mp4"); //devo passargli un path todo : VEDERE COI FIOI
                     startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
                 } else {
                     Log.d("error:", "wrong parameter");

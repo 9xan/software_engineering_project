@@ -46,6 +46,7 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
         setContentView(R.layout.join_select_role_activity);
         Toolbar toolbar = findViewById(R.id.peerConfigToolbar);
         setSupportActionBar(toolbar);
+        P2PWorkerNearby.c = this;
 
         roomText = findViewById(R.id.textRoomView);
         audioBtn = findViewById(R.id.JoinAudioButton);
@@ -56,7 +57,6 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
 
         audioAvailable.setText(String.valueOf(P2PWorkerNearby.audioN));
         videoAvailable.setText(String.valueOf(P2PWorkerNearby.videoN));
-        P2PWorkerNearby.c = this;
 
         roomText.setText(P2PWorkerNearby.room);
 

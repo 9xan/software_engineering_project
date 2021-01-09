@@ -104,6 +104,15 @@
                 android:value=".mode_create_2_1.QRCreationActivity" />
         </activity>
 
+
+        <activity
+            android:name=".mode_create_2_1.NoneRoleMasterActivity"
+            android:parentActivityName=".mode_create_2_1.ReadyToRecordActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mode_create_2_1.ReadyToRecordActivity" />
+        </activity>
+
         <activity
             android:name=".mode_create_2_1.WaitForPeerConfigurationActivity"
             android:label="@string/app_name"

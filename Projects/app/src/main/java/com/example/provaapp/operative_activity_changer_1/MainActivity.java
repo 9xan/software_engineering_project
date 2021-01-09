@@ -26,8 +26,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarActivityChanger);
         setSupportActionBar(toolbar);
-        Permissions.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 100);
         createStorageDir();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Permissions.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 100);
     }
 
     @Override
@@ -44,3 +49,4 @@ public class MainActivity extends AppCompatActivity {
         String filePath = file.getAbsolutePath() + File.separator;
     }
 }
+

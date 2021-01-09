@@ -13,8 +13,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.provaapp.AudioRecordingActivity;
 import com.example.provaapp.R;
 import com.example.provaapp.VideoRecordingActivity;
+import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.example.provaapp.useful_classes.EzCam;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.google.android.gms.nearby.Nearby;
@@ -26,7 +28,6 @@ public class ReadyToRecordActivity extends AppCompatActivity {
     private Button begin;
     private long tsLong;
     private String myRole;
-    private CountDownTimer ct;
     private TextView recordResult;
 
     @Override
@@ -51,33 +52,45 @@ public class ReadyToRecordActivity extends AppCompatActivity {
                 tsLong = (System.currentTimeMillis() + 10000);
                 String ts = Long.toString(tsLong);
 
+                recordResult.setText("Start Recording...");
+
+
                 Payload bytesPayload = Payload.fromBytes(("TIMESTAMP-" + ts).getBytes());
                 Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
+
+
+                new CountDownTimer(tsLong - System.currentTimeMillis(), 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        if (myRole.compareTo("Video Recorder") == 0) {
+                            Intent forVideoIntent = new Intent(getApplicationContext(), VideoRecordingActivity.class);
+                            forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
+                            forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
+                            forVideoIntent.putExtra("role", "Manager"); // devo specificargli se sono un manager o un worker
+                            forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoMaster.mp4"); //devo passargli un path todo : VEDERE COI FIOI
+                            startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
+                        } else if (myRole.compareTo("Audio Recorder") == 0) {
+                            //todo:aprire player in modalità audio recorder
+                            Intent forVideoIntent = new Intent(getApplicationContext(), AudioRecordingActivity.class);
+                            forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
+                            forVideoIntent.putExtra("role", "Manager"); // devo specificargli se sono un manager o un worker
+                            forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordAudioMaster.mp3"); //devo passargli un path todo : VEDERE COI FIOI
+                            startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
+                        } else {
+                            //todo:qui ho selezionato il ruolo none quindi non farò nulla se non  decidere quando i client dovranno fermarsi
+                            Intent forVideoIntent = new Intent(getApplicationContext(), NoneRoleMasterActivity.class);
+                            forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
+                            startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
+                        }
+                        //mTextField.setText("done!");
+                    }
+                }.start();
             }
         });
 
-        ct = new CountDownTimer(tsLong - System.currentTimeMillis(), 1000) {
-
-            public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
-                if (myRole.compareTo("Video Recorder") == 0) {
-                    Intent forVideoIntent = new Intent(getApplicationContext(), VideoRecordingActivity.class);
-                    forVideoIntent.putExtra("timestamp", 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
-                    forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
-                    forVideoIntent.putExtra("role", "Manager"); // devo specificargli se sono un manager o un worker
-                    //forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoWorker.mp4"); //devo passargli un path todo : VEDERE COI FIOI
-                    startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
-                } else if (myRole.compareTo("Audio Recorder") == 0) {
-                    //todo:aprire player in modalità audio recorder
-
-                } else {
-                    //todo:qui ho selezionato il ruolo none quindi non farò nulla se non  decidere quando i client dovranno fermarsi
-                }
-                //mTextField.setText("done!");
-            }
-        }.start();
 
     }
 

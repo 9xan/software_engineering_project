@@ -20,7 +20,10 @@
         android:id="@+id/stopRecordingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="recording"
+        android:background="@drawable/rounded_nickname_background"
+        android:text="Stop"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
