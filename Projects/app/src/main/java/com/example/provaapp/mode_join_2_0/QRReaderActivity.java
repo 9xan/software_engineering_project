@@ -63,6 +63,7 @@ public class QRReaderActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         mCodeScanner.stopPreview();
+        mCodeScanner.releaseResources();
         super.onPause();
     }
 

@@ -100,7 +100,6 @@ public class MasterCreationActivity extends AppCompatActivity {
 
         startXML(peers, peerNumber, peerLoaders); // questa funzione preapara l'interfaccia iniziale
 
-        startAdvertising();
 
     }
 
@@ -250,10 +249,13 @@ public class MasterCreationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        startAdvertising();
     }
 
     @Override
     protected void onPause() {
+        //quando si è qua posso fermare l advertising del manager in quanto tutti si sono connessi e non manca nessuno
+        Nearby.getConnectionsClient(getApplicationContext()).stopAdvertising();
         super.onPause();
     }
 

@@ -1,12 +1,14 @@
 package com.example.provaapp.mode_create_2_1;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +27,7 @@ public class ReadyToRecordActivity extends AppCompatActivity {
     private long tsLong;
     private String myRole;
     private CountDownTimer ct;
+    private TextView recordResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,11 @@ public class ReadyToRecordActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarReadyToStart);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
+
+
+        recordResult = findViewById(R.id.textViewRecorded);
+        recordResult.setVisibility(View.INVISIBLE);
+
         myRole = intent.getStringExtra("MasterRole");
 
         begin = findViewById(R.id.BeginBTN);
@@ -59,8 +67,8 @@ public class ReadyToRecordActivity extends AppCompatActivity {
                     forVideoIntent.putExtra("timestamp", 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                     forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
                     forVideoIntent.putExtra("role", "Manager"); // devo specificargli se sono un manager o un worker
-                    forVideoIntent.putExtra("outputPath", "/storage/emulated/0/DCIM/EpVideos/RecordTest/RecordVideoMaster.mp4"); //devo passargli un path todo : VEDERE COI FIOI
-                    startActivity(forVideoIntent);
+                    //forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoWorker.mp4"); //devo passargli un path todo : VEDERE COI FIOI
+                    startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
                 } else if (myRole.compareTo("Audio Recorder") == 0) {
                     //todo:aprire player in modalità audio recorder
 
@@ -73,6 +81,19 @@ public class ReadyToRecordActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EzCam.REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                recordResult.setText("Recorded Successfully");
+                recordResult.setVisibility(View.VISIBLE);
+                //TODO::QUI IL VIDEO E' SALVATO E DISPONIBILE
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -82,6 +103,7 @@ public class ReadyToRecordActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
     }
 
     @Override

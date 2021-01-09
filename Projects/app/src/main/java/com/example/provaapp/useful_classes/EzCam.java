@@ -209,7 +209,7 @@ public class EzCam {
                             // save current recording as the last video
                             lastVideo = outputFile;
                             */
-                            if(outputFileResults.getSavedUri() == null) return;
+                            if (outputFileResults.getSavedUri() == null) return;
                             switch (mode) {
                                 case MUTED_VIDEO_ACTION:
                                     // here if a muted video recording was requested
@@ -244,7 +244,11 @@ public class EzCam {
 
     public void stopRecording() {
         if (outputFile != null) // only if we are recording
+        {
+            Log.d("EZcamera", "STOP RECORDING");
             videoCapture.stopRecording();
+
+        }
     }
 
     private File getOutputFile() {

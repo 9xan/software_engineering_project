@@ -9,40 +9,39 @@ import com.example.provaapp.useful_classes.Permissions;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    public ArrayList<String> permissions = new ArrayList<>();
+    public static final String appMediaFolderPath = "/storage/emulated/0/DCIM/multi_rec";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarActivityChanger);
         setSupportActionBar(toolbar);
-
-
-        permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
-        permissions.add(Manifest.permission.CHANGE_WIFI_STATE);
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.BLUETOOTH);
-        permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissions.add(Manifest.permission.CAMERA);
-        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.RECORD_AUDIO);
-
-        String[] st = new String[9];
-
-        Permissions.requestPermissions(this, permissions.toArray(st), 100);
-        //Permissions.requestPermissions(this, new String[]{}, 101);
+        Permissions.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 100);
+        createStorageDir();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void createStorageDir() {
+        //create folder
+        File file = new File(Environment.getExternalStorageDirectory() + "/multi_rec");
+        if (!file.mkdirs()) {
+            file.mkdirs();
+        }
+        String filePath = file.getAbsolutePath() + File.separator;
+        Log.d("filepath ->>>", filePath);
     }
 }

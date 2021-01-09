@@ -22,6 +22,7 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
 
     public static Button finishBtn;
     public static TextView audioView, videoView, finishView, roomView;
+    private Intent intentt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.wait_for_peer_configuration_activity);
         Toolbar toolbar = findViewById(R.id.peerConfigToolbar);
         setSupportActionBar(toolbar);
-        Intent intent = getIntent();
+        intentt = getIntent();
 
         audioView = findViewById(R.id.audioManagerView);
         videoView = findViewById(R.id.videoManagerView);
@@ -44,7 +45,8 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(intent.getStringExtra("MasterRole") , ReadyToRecordActivity.class);
+                String tmp = intentt.getStringExtra("MasterRole");
+                sendMessage(tmp , ReadyToRecordActivity.class);
             }
         });
 

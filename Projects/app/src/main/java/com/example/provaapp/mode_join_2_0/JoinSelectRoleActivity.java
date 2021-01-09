@@ -100,7 +100,7 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
         });*/
 
         //visto che mi sono già collegato posso fermare la discovery, la connessione col manager non verrà persa!
-        Nearby.getConnectionsClient(getApplicationContext()).stopDiscovery();
+        //Nearby.getConnectionsClient(getApplicationContext()).stopDiscovery();
     }
 
 

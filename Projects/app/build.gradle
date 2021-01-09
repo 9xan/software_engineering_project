@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.provaapp"
-        minSdkVersion 26
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -36,7 +36,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.fragment:fragment:$fragment_version"
 
-
     def camerax_version = "1.0.0-rc01"
     // CameraX core library using camera2 implementation
     //implementation "androidx.camera:camera-core:${camerax_version}"
@@ -45,7 +44,6 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     // CameraX View class
     implementation "androidx.camera:camera-view:1.0.0-alpha20"
-
     implementation 'com.github.yangjie10930:EpMedia:v1.0.1' // EpMedia for separating audio and video from .mp4
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -57,10 +55,9 @@ dependencies {
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
     implementation 'com.budiyev.android:code-scanner:2.1.0'
     implementation 'com.google.zxing:core:3.3.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    // 1. Use Guava in your implementation only:
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 
 }

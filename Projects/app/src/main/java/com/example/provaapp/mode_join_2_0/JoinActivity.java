@@ -110,7 +110,6 @@ public class JoinActivity extends AppCompatActivity {
         permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        startDiscovery();
 
     }
 
@@ -120,13 +119,24 @@ public class JoinActivity extends AppCompatActivity {
     public void startDiscovery() {
         DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(P2P_STAR).build();
 
-        //String[] st = new String[6];
-        //Permissions.requestPermissions(this, permissions.toArray(st), 200);
+        String[] st = new String[6];
+        Permissions.requestPermissions(this, permissions.toArray(st), 200);
 
         Nearby.getConnectionsClient(getApplicationContext())
                 .startDiscovery(secureCode, endpointDiscoveryCallback, discoveryOptions)
-                .addOnSuccessListener(aVoid -> Log.d("PEER_DISCOVERY", "result: SUCCESS"))
-                .addOnFailureListener(e -> Log.e("PEER_DISCOVERY", "result: FAILURE"));
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("PEER_DISCOVERY", "result: SUCCESS");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        Log.e("PEER_DISCOVERY", "result: FAILURE");
+                    }
+                });
     }
 
     /**************************************************************************************************/

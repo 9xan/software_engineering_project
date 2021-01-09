@@ -75,7 +75,7 @@ public class P2PManagerNearby {
                                 if (audioN + videoN == 0) {
                                     WaitForPeerConfigurationActivity.finishBtn.setClickable(true);
                                     WaitForPeerConfigurationActivity.finishBtn.setVisibility(View.VISIBLE);
-                                    //WaitForPeerConfigurationActivity.finishView.setVisibility(View.VISIBLE);
+                                    WaitForPeerConfigurationActivity.finishView.setVisibility(View.VISIBLE);
                                 }
                             }
                             break;

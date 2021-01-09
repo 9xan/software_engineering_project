@@ -25,31 +25,47 @@ import java.io.File;
 
 public class VideoRecordingActivity extends AppCompatActivity {
 
-
-    private EzCam myCamera;
+    private static EzCam myCamera;
     private Intent receivedIntent;
     private int receivedRequestCode;
     private String receivedOutputPath;
     private Long timeoutMs;
     private boolean isRecording = false;
     private Button stopRecordingButton;
-    private CountDownTimer cm;
+    public CountDownTimer cm, cm2;
     private String role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_recording);
-
+        Log.d("Creazione VideorAct->", "gg");
         receivedIntent = getIntent();
         timeoutMs = receivedIntent.getLongExtra("timestamp", 5000);
         receivedRequestCode = receivedIntent.getIntExtra("requestCode", EzCam.ACTION_ERROR);  // returns EzCamera.NO_ACTION if no request code was provided by the calling activity
         receivedOutputPath = receivedIntent.getStringExtra("outputPath");                     // returns null if no output path was requested by the calling activity
         role = receivedIntent.getStringExtra("role");                                         //Worker oppure Manager
 
+        Log.d(" Dati letti dall'intent", " timestamp " + timeoutMs + " requestCode " + receivedRequestCode + " path " + receivedOutputPath + " role " + role);
+
         try {
-            Log.d("CAMERA", "onCreate: NEWEZ CAM Constructor");
             myCamera = new EzCam(this);
+            myCamera.startPreview(findViewById(R.id.previewView));
+
+            stopRecordingButton = findViewById(R.id.stopRecordingButton);
+            stopRecordingButton.setVisibility(View.INVISIBLE);
+            stopRecordingButton.setClickable(false);
+            stopRecordingButton.setOnClickListener(
+                    (v) -> {
+                        countDownStopRecording(System.currentTimeMillis() + 3000);
+                    }
+            );
+
+            if (role.compareTo("Manager") == 0) {//todo, se è master il countdown dura di piu  perche non chiama la ready to start activity
+                stopRecordingButton.setVisibility(View.VISIBLE);
+                stopRecordingButton.setClickable(true);
+            }
+
 
         } catch (Permissions.PermissionDeniedException e) {
             Toast.makeText(this, "Unable to access camera", Toast.LENGTH_LONG).show();
@@ -57,61 +73,86 @@ public class VideoRecordingActivity extends AppCompatActivity {
             finish();
         }
 
-        myCamera.startPreview(findViewById(R.id.previewView));
+        countDownStartRecording(timeoutMs);
 
-        findViewById(R.id.stopRecordingButton).setOnClickListener((v) -> recordingLogic());
-
-
+    }
 
 
-        /*stopRecordingButton = findViewById(R.id.stopRecordingButton);
-        stopRecordingButton.setVisibility(View.INVISIBLE);
+    private void countDownStopRecording(long timeToWait) {
+
+        Log.d("sto fermando", "gg");
         stopRecordingButton.setClickable(false);
+        Payload bytesPayload = Payload.fromBytes(("STOPRECORDING-" + Long.toString(timeToWait)).getBytes());
+        Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
+
+        //Toast.makeText(getApplicationContext(), "sono prima del countdown ma ho inviato", Toast.LENGTH_LONG).show();
+
+       // myCamera.stopRecording();
 
 
-        cm = new CountDownTimer(timeoutMs - System.currentTimeMillis(), 1000) {
+        cm2 = new CountDownTimer(timeToWait - System.currentTimeMillis(), 1000) {
 
             public void onTick(long millisUntilFinished) {
-
             }
 
             public void onFinish() {
-                myCamera.startRecording(
-                        (receivedOutputPath == null) ? null : Uri.fromFile(new File(receivedOutputPath)),
-                        EzCam.VIDEO_ACTION,
-                        (savedVideoUri) -> {
-                            // called after myCamera.stopRecording() and when the file containing the video is available
-                            Intent intent = new Intent();
-                            intent.setData(savedVideoUri);
-                            if (savedVideoUri != null) {
-                                setResult(Activity.RESULT_OK, intent);
-                            } else {
-                                setResult(Activity.RESULT_CANCELED, new Intent());
-                            }
-                            //finish();   // close activity and give result to caller// todo: posso spawnare la prissima activity qui al posto della finish
-                        }
-                );
-
-                if (role.compareTo("Manager") == 0) {
-                    stopRecordingButton.setVisibility(View.VISIBLE);
-                    stopRecordingButton.setClickable(true);
-                    stopRecordingButton.setOnClickListener(
-                            (v) -> {
-                                myCamera.stopRecording();
-                                Payload bytesPayload = Payload.fromBytes(("STOPRECORDING-" + Long.toString(System.currentTimeMillis() + 7000)).getBytes());
-                                Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
-                            }
-                    );
+                try {
+                    Toast.makeText(getApplicationContext(), "mi fermo", Toast.LENGTH_LONG).show();
+                    Log.d("mo me fermo", "mo");
+                    myCamera.stopRecording();
+                } catch (Exception e) {
+                    Log.i("Error", e.getMessage());
                 }
             }
         }.start();
+    }
 
-         */
+    private void countDownStartRecording(long timeToWait) {
+
+        cm = new CountDownTimer(timeToWait - System.currentTimeMillis(), 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+
+                Log.d("PRE START RECORDING", "STO PER CHIAMARE LA START RECORDING");
+
+                try {
+                    Log.d("PRE START RECORDING", "STO PER CHIAMARE LA START RECORDING - 1");
+
+                    myCamera.startRecording(
+                            (receivedOutputPath == null) ? null : Uri.fromFile(new File(receivedOutputPath)),
+                            EzCam.VIDEO_ACTION,
+                            (savedVideoUri) -> {
+                                // called after myCamera.stopRecording() and when the file containing the video is available
+                                Log.d("Torno", "allactivity precedente");
+                                Intent intent = new Intent();
+                                intent.setData(savedVideoUri);
+                                if (savedVideoUri != null) {
+                                    setResult(Activity.RESULT_OK, intent);
+                                } else {
+                                    setResult(Activity.RESULT_CANCELED, new Intent());
+                                }
+                                Log.d("Torno", "allactivity precedente");
+                                finish();   // close activity and give result to caller// todo: posso spawnare la prissima activity qui al posto della finish
+                            }
+                    );
+                } catch (Exception e) {
+                    Log.i("Error", e.getMessage());
+                }
+
+                  /*  if (role.compareTo("Manager") == 0) {//todo, se è master il countdown dura di piu  perche non chiama la ready to start activity
+                        stopRecordingButton.setVisibility(View.VISIBLE);
+                        stopRecordingButton.setClickable(true);
+                    }*/
+            }
+        }.start();
     }
 
 
     public static void stopRecording() {
-        //myCamera.stopRecording();
+        myCamera.stopRecording();
         //todo: lo start activity per l'activity successiva va fatto al posto della finish
     }
 

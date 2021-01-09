@@ -75,7 +75,6 @@ public class P2PWorkerNearby {
 
                     case "TIMESTAMP":
                         //ReadyToStartActivity.timeToStart = Long.parseLong(in[1]);
-                        Log.d("DIOMERDOSO", "E ARRIVATO IL TIMESTAMP");
                         String[] keys = {"Time", "Role"};
                         String[] vals = new String[2];
                         vals[0] = in[1];
@@ -94,13 +93,12 @@ public class P2PWorkerNearby {
                             }
 
                             public void onFinish() {
-                                VideoRecordingActivity.stopRecording();
+                                Log.d("Stop recordin'", "GHESBORO ME FERMO");
+                                //VideoRecordingActivity.stopRecording();
                             }
                         }.start();
                         break;
-
                 }
-
 
                 //qui verrà messo il codice per dare input di iniziare e stoppare la registrazione (in pratica quando il master comanda gli altri di iniziare e fermare le registrazioni!)
             }

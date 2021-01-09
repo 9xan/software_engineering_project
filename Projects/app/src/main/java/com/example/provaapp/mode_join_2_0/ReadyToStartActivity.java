@@ -1,6 +1,7 @@
 package com.example.provaapp.mode_join_2_0;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -44,10 +45,7 @@ public class ReadyToStartActivity extends AppCompatActivity {
 
         pb.setIndeterminate(true);
 
-        Log.d("Ho avviato l'activity Ready to Start e il timeout prima di iniziare è di :", String.valueOf(timeToStart - System.currentTimeMillis()));
-
         ct = new CountDownTimer(timeToStart - System.currentTimeMillis(), 1000) {
-
 
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
@@ -66,8 +64,8 @@ public class ReadyToStartActivity extends AppCompatActivity {
                     forVideoIntent.putExtra("timestamp", 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                     forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
                     forVideoIntent.putExtra("role", "Worker"); // devo specificargli se sono un manager o un worker
-                    forVideoIntent.putExtra("outputPath", "/storage/emulated/0/DCIM/EpVideos/RecordTest/RecordVideoWorker.mp4"); //devo passargli un path todo : VEDERE COI FIOI
-                    startActivity(forVideoIntent);
+                    //forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoWorker.mp4"); //devo passargli un path todo : VEDERE COI FIOI
+                    startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
                 } else {
                     Log.d("error:", "wrong parameter");
                 }
@@ -79,6 +77,17 @@ public class ReadyToStartActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EzCam.REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                //TODO::QUI IL VIDEO E' SALVATO E DISPONIBILE
+            }
+        }
 
     }
 
