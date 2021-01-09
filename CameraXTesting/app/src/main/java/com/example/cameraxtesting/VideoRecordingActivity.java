@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,16 +34,45 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
         try {
             myCamera = new EzCam(this);
+            myCamera.startPreview(findViewById(R.id.previewView));
+
+            findViewById(R.id.stopRecordingButton).setEnabled(false);
+            findViewById(R.id.stopRecordingButton).setOnClickListener(
+                    (v) -> recordingLogic()
+            );
+
+            AppCompatActivity context = this;
+            new CountDownTimer(5000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    Log.d("startTick", "tick, tock...");
+                }
+
+                @Override
+                public void onFinish() {
+                    recordingLogic();
+                    Toast.makeText(context, "Recording started", Toast.LENGTH_LONG).show();
+                    new CountDownTimer(5000, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            Log.d("stopTick", "tick, tock...");
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            recordingLogic();
+                        }
+                    }.start();
+                    //isRecording = !isRecording;
+                    findViewById(R.id.stopRecordingButton).setEnabled(true);
+                }
+            }.start();
+
         } catch (Permissions.PermissionDeniedException e) {
             Toast.makeText(this, "Unable to access camera", Toast.LENGTH_LONG).show();
             Log.i("Permissions denied", e.getMessage());
             finish();
         }
-
-        myCamera.startPreview(findViewById(R.id.previewView));
-        findViewById(R.id.stopRecordingButton).setOnClickListener(
-                (v) -> recordingLogic()
-        );
     }
 
     private void recordingLogic() {
@@ -50,7 +80,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
         if (!isRecording)
             myCamera.startRecording(
                     (receivedOutputPath == null) ? null : Uri.fromFile(new File(receivedOutputPath)),
-                    EzCam.VIDEO_ACTION,
+                    EzCam.MUTED_VIDEO_ACTION,
                     (savedVideoUri) -> {
                         // called after myCamera.stopRecording() and when the file containing the video is available
                         Intent intent = new Intent();
@@ -63,8 +93,10 @@ public class VideoRecordingActivity extends AppCompatActivity {
                         finish();   // close activity and give result to caller
                     }
             );
-        else
+        else {
             myCamera.stopRecording();
+            Toast.makeText(this, "Recording stopped", Toast.LENGTH_LONG).show();
+        }
         isRecording = !isRecording;
     }
 }
