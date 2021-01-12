@@ -103,6 +103,7 @@ public class ReadyToRecordActivity extends AppCompatActivity {
                 recordResult.setVisibility(View.VISIBLE);
 
                 //TODO::QUI IL VIDEO E' SALVATO E DISPONIBILE
+                P2PManagerNearby.requestPeerVideo();
             }
         }
     }

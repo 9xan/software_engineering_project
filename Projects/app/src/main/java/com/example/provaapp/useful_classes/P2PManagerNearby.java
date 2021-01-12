@@ -1,13 +1,11 @@
 package com.example.provaapp.useful_classes;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.collection.SimpleArrayMap;
 
 import com.example.provaapp.mode_create_2_1.WaitForPeerConfigurationActivity;
 import com.google.android.gms.nearby.Nearby;
@@ -16,26 +14,22 @@ import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Semaphore;
 
 public class P2PManagerNearby {
 
     public static String room;
     //public static String managerEndpointID;  //ESSENZIALE PER LE CHIAMATE A METODI DI CONDIVISIONE DATI!!!
 
-    private static Semaphore mutex = new Semaphore(1);
-    public static HashMap<String, String> workers = new HashMap<>();
+    public static SimpleArrayMap<String, Payload> incomingFilePayloads = new SimpleArrayMap<>();
+    public static HashMap<String, String> workers = new HashMap<>(); //map ENDPOINTS-NICKNAME
     public static HashMap<String, PayloadCallback> workersPayload = new HashMap<>();
     public static HashMap<String, String> workerRole = new HashMap<>();
     public static Context c;
-    public static List<String> endpoints = new ArrayList<>(); //ho aggiunto anche questa dato che c'è un metodo che permette  di inviare una roba a tutti i peers presenti nella lista
+    public static ArrayList<String> endpoints = new ArrayList<>(); //ho aggiunto anche questa dato che c'è un metodo che permette  di inviare una roba a tutti i peers presenti nella lista
     //cosi da non fare un for earch
-    //gli altri campi per ora non so se tenerli o meno, sto facendo prove
-    public static int audioN, videoN;
+    public static int audioN, videoN, shareDataN = 0;
 
     public static PayloadCallback newPayloadCallback() {
         return new PayloadCallback() {
@@ -44,12 +38,7 @@ public class P2PManagerNearby {
 
                 if (payload.getType() == Payload.Type.BYTES) {
 
-                    //il formato della stringa passata sarà "VIDEO-AUDIO" con valore 1 sul ruolo che il peer vuole gestire!
-
                     String[] in = new String(payload.asBytes()).split("-", 0);
-                    //String in = new String(payload.asBytes());
-
-                    //String[] out = in.split("-", 0);
 
                     switch (in[0]) {
                         case "VA":  //si ricade in questo case nel caso in cui il client invii una richiesta di prenotazione di un ruolo che è identificata da un preambolo particolare(VA)
@@ -86,30 +75,69 @@ public class P2PManagerNearby {
                                 }
                             }
                             break;
+                        case "DATAREQUEST":
+
+                            //mettere il codice per condividere tutto il pacchetto dei file multimediali
+
+                            break;
+
                         //TODO: VERRANNO AGGIUNTI ALTRI CASE
                     }
 
                 } else if (payload.getType() == Payload.Type.FILE) {
 
                     //TODO : RICEVO UN VIDEO O UN AUDIO
+                    Log.e("WORKER: " + workers.get(endpointId) + "  ", "CONDIVISIONE FILE INIZIATA");
+                    incomingFilePayloads.put(endpointId, payload);
                 }
             }
 
             @Override
-            public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
+            public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate update) {
+
                 //qui verrà messo il codice per gestire gli arrivi dei file più avanti
+                //aggiornare la progress bar
+                //usare per la Progress barrrrrr
+                //update.getBytesTransferred()/update.getTotalBytes()
+
+
+
+                if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                    //resettare la progress bar
+
+
+                    Payload dataPayload = incomingFilePayloads.get(s);
+
+                    //TODO FARE CONTROLLI CON TRY CATCH
+                    File payloadFile = dataPayload.asFile().asJavaFile();
+
+                    if (workerRole.get(s).compareTo("video") == 0) {
+                        payloadFile.renameTo(new File(payloadFile.getParentFile(), workers.get(s) + ".mp4"));
+                    } else if (workerRole.get(s).compareTo("audio") == 0) {
+                        payloadFile.renameTo(new File(payloadFile.getParentFile(), workers.get(s) + ".mp3"));
+                    }
+
+
+                    if (++shareDataN < endpoints.size()) {//vedo se c'è un altro peer a cui devo chiedere il file
+
+                        Payload fin = Payload.fromBytes("DATA-".getBytes());   //request data
+                        Nearby.getConnectionsClient(c).sendPayload(endpoints.get(shareDataN), fin);
+
+                    } else {
+                        //ricado qui se ho tutti i video, avviso i workers che è disponibile il pacchetto da scaricare
+                        Payload mes = Payload.fromBytes("AVAILABLE-".getBytes());
+                        Nearby.getConnectionsClient(c).sendPayload(P2PManagerNearby.endpoints, mes);
+                    }
+
+                }
             }
         };
     }
 
-    private static void requestPeerVideo() {
-        for (String i : P2PManagerNearby.endpoints) {
-            Payload fin = Payload.fromBytes("DATA-".getBytes());   //request data
-            Nearby.getConnectionsClient(c).sendPayload(i, fin);
 
-
-
-        }
+    public static void requestPeerVideo() {
+        Payload fin = Payload.fromBytes("DATA-".getBytes());   //request data
+        Nearby.getConnectionsClient(c).sendPayload(endpoints.get(shareDataN), fin);
     }
 
 

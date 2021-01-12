@@ -1,14 +1,10 @@
 package com.example.provaapp.useful_classes;
 
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +28,7 @@ public class P2PWorkerNearby {
     public static String managerEndpointID;  //ESSENZIALE PER LE CHIAMATE A METODI DI CONDIVISIONE DATI!!!
     public static Context c;
     public static int videoN, audioN;
+    private static Payload incomingFile=null;
 
     //qui devo METTERE TUTTO IL CODICE PER GESTIRE I VARI DATI IN INPUT, QUINDI SI PARLA DI BYTES O FILES!!!
     public static PayloadCallback workerCallback = new PayloadCallback() {
@@ -95,10 +92,11 @@ public class P2PWorkerNearby {
 
                         new CountDownTimer(Long.parseLong(in[1]) - System.currentTimeMillis(), 1000) {
                             public void onTick(long millisUntilFinished) {
+
                             }
 
                             public void onFinish() {
-                                Log.d("Stop recordin'", "GHESBORO ME FERMO");
+
                                 if (c instanceof VideoRecordingActivity) {              //se non è un video recorder allora è per forza un audio recorder(Worker)
                                     ((VideoRecordingActivity) c).recordingLogic();
                                 } else {
@@ -111,25 +109,48 @@ public class P2PWorkerNearby {
                         break;
                     case "DATA":
 
+                        sendMyRecord();
+
+                        c=null;
+                        break;
+                    case "AVAILABLE":
+
+                        //mettere pulsante disponibile per poter scaricare il pacchetto dal master
+
+                        c=null;
                         break;
                 }
 
                 //qui verrà messo il codice per dare input di iniziare e stoppare la registrazione (in pratica quando il master comanda gli altri di iniziare e fermare le registrazioni!)
+            }else if (payload.getType() == Payload.Type.FILE) {
+                Log.d("WORKER", "inizio condivisione pacchetto files da master");
+                incomingFile=payload;
             }
         }
 
         @Override
         public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
 
+            if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+
+                File payloadFile = incomingFile.asFile().asJavaFile();
+                //finire qui, devo vedere se è possibile condividere una intera cartella oppure mi  tocca condividere i singoli files
+
+            }
         }
     };
 
-    private void sendMyRecord() {  //TODO: assegnare il contesto dall'activity che deve fare questa cosa
+
+
+    private static void sendMyRecord() {  //TODO: assegnare il contesto dall'activity che deve fare questa cosa
+
         ParcelFileDescriptor pfd = null;
         try {
-            pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(MainActivity.appMediaFolderPath + "NickName-data-ora.mp3")), "r");
+
+            pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(ReadyToStartActivity.uriPath)), "r");
+
         } catch (FileNotFoundException e) {
-            Log.e("TAG", "NON HO TROVATO FILE");
+            Log.e("TAG", "File not Found!!!");
             e.printStackTrace();
         }
 
