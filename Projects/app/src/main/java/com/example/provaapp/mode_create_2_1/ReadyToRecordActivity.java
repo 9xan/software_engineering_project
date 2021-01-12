@@ -19,6 +19,7 @@ import com.example.provaapp.VideoRecordingActivity;
 import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.example.provaapp.useful_classes.EzCam;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
+import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
@@ -37,7 +38,7 @@ public class ReadyToRecordActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarReadyToStart);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-
+        P2PManagerNearby.c = this;
 
         recordResult = findViewById(R.id.textViewRecorded);
         recordResult.setVisibility(View.INVISIBLE);
@@ -54,10 +55,8 @@ public class ReadyToRecordActivity extends AppCompatActivity {
 
                 recordResult.setText("Start Recording...");
 
-
                 Payload bytesPayload = Payload.fromBytes(("TIMESTAMP-" + ts).getBytes());
                 Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
-
 
                 new CountDownTimer(tsLong - System.currentTimeMillis(), 1000) {
 
@@ -102,10 +101,13 @@ public class ReadyToRecordActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 recordResult.setText("Recorded Successfully");
                 recordResult.setVisibility(View.VISIBLE);
+
                 //TODO::QUI IL VIDEO E' SALVATO E DISPONIBILE
             }
         }
     }
+
+
 
     @Override
     protected void onResume() {

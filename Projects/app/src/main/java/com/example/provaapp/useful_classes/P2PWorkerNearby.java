@@ -1,10 +1,12 @@
 package com.example.provaapp.useful_classes;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -15,12 +17,14 @@ import com.example.provaapp.AudioRecordingActivity;
 import com.example.provaapp.VideoRecordingActivity;
 import com.example.provaapp.mode_join_2_0.JoinSelectRoleActivity;
 import com.example.provaapp.mode_join_2_0.ReadyToStartActivity;
+import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class P2PWorkerNearby {
 
@@ -104,6 +108,8 @@ public class P2PWorkerNearby {
                             }
                         }.start();
 
+                        break;
+                    case "DATA":
 
                         break;
                 }
@@ -117,6 +123,21 @@ public class P2PWorkerNearby {
 
         }
     };
+
+    private void sendMyRecord() {  //TODO: assegnare il contesto dall'activity che deve fare questa cosa
+        ParcelFileDescriptor pfd = null;
+        try {
+            pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(MainActivity.appMediaFolderPath + "NickName-data-ora.mp3")), "r");
+        } catch (FileNotFoundException e) {
+            Log.e("TAG", "NON HO TROVATO FILE");
+            e.printStackTrace();
+        }
+
+        if (pfd != null) {
+            Payload filePayload = Payload.fromFile(pfd);
+            Nearby.getConnectionsClient(c).sendPayload(managerEndpointID, filePayload);
+        }
+    }
 
 
 }

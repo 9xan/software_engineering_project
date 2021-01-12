@@ -1,6 +1,10 @@
 package com.example.provaapp.useful_classes;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,6 +15,8 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +30,10 @@ public class P2PManagerNearby {
     private static Semaphore mutex = new Semaphore(1);
     public static HashMap<String, String> workers = new HashMap<>();
     public static HashMap<String, PayloadCallback> workersPayload = new HashMap<>();
+    public static HashMap<String, String> workerRole = new HashMap<>();
     public static Context c;
     public static List<String> endpoints = new ArrayList<>(); //ho aggiunto anche questa dato che c'è un metodo che permette  di inviare una roba a tutti i peers presenti nella lista
     //cosi da non fare un for earch
-
     //gli altri campi per ora non so se tenerli o meno, sto facendo prove
     public static int audioN, videoN;
 
@@ -54,6 +60,7 @@ public class P2PManagerNearby {
                             if (v == 1) {
                                 if (videoN > 0) {
                                     --videoN;
+                                    workerRole.put(endpointId, "video");
                                     Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("DONE-".getBytes()));
                                 } else {
                                     Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("FAILV-".getBytes()));
@@ -62,10 +69,10 @@ public class P2PManagerNearby {
                             } else if (a == 1) {
                                 if (audioN > 0) {
                                     --audioN;
+                                    workerRole.put(endpointId, "audio");
                                     Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("DONE-".getBytes()));
                                 } else {
                                     Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes("FAILA-".getBytes()));
-                                    //TODO:INVIO NON CI SONO POSTI
                                 }
                             }
 
@@ -83,6 +90,7 @@ public class P2PManagerNearby {
                     }
 
                 } else if (payload.getType() == Payload.Type.FILE) {
+
                     //TODO : RICEVO UN VIDEO O UN AUDIO
                 }
             }
@@ -92,6 +100,16 @@ public class P2PManagerNearby {
                 //qui verrà messo il codice per gestire gli arrivi dei file più avanti
             }
         };
+    }
+
+    private static void requestPeerVideo() {
+        for (String i : P2PManagerNearby.endpoints) {
+            Payload fin = Payload.fromBytes("DATA-".getBytes());   //request data
+            Nearby.getConnectionsClient(c).sendPayload(i, fin);
+
+
+
+        }
     }
 
 

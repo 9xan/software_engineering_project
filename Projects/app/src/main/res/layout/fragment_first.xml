@@ -11,7 +11,7 @@
         android:id="@+id/LogoView"
         android:layout_width="match_parent"
         android:layout_height="251dp"
-        android:layout_marginStart="-45dp"
+        android:layout_marginStart="-30dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
