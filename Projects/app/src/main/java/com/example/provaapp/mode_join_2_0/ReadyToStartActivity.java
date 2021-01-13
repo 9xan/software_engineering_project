@@ -27,7 +27,6 @@ public class ReadyToStartActivity extends AppCompatActivity {
     public Long timeToStart;
     private String myRole;
     private TextView seconds;
-    public static String uriPath;
 
 
     @Override
@@ -94,8 +93,10 @@ public class ReadyToStartActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EzCam.REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                uriPath = data.getData().getPath();
                 //TODO::QUI IL VIDEO E' SALVATO E DISPONIBILE
+                Intent nextActivity = new Intent(this, FileShareActivity.class);
+                nextActivity.setData(data.getData());
+                startActivity(nextActivity);
             }
         }
 

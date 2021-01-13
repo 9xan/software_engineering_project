@@ -5,12 +5,14 @@ import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.provaapp.AudioRecordingActivity;
 import com.example.provaapp.VideoRecordingActivity;
+import com.example.provaapp.mode_join_2_0.FileShareActivity;
 import com.example.provaapp.mode_join_2_0.JoinSelectRoleActivity;
 import com.example.provaapp.mode_join_2_0.ReadyToStartActivity;
 import com.example.provaapp.operative_activity_changer_1.MainActivity;
@@ -21,6 +23,7 @@ import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 public class P2PWorkerNearby {
 
@@ -28,10 +31,13 @@ public class P2PWorkerNearby {
     public static String managerEndpointID;  //ESSENZIALE PER LE CHIAMATE A METODI DI CONDIVISIONE DATI!!!
     public static Context c;
     public static int videoN, audioN;
-    private static Payload incomingFile=null;
+    private static Payload incomingFile = null;
+    private static HashMap<String, Payload> filePayloads = new HashMap<>();
 
     //qui devo METTERE TUTTO IL CODICE PER GESTIRE I VARI DATI IN INPUT, QUINDI SI PARLA DI BYTES O FILES!!!
     public static PayloadCallback workerCallback = new PayloadCallback() {
+
+        private boolean dataShared = false;
 
         @Override
         public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
@@ -107,58 +113,70 @@ public class P2PWorkerNearby {
                         }.start();
 
                         break;
-                    case "DATA":
 
-                        sendMyRecord();
+                    case "DATA":    //quando ricevo questo, devo inviare al master il mio file!!!
 
-                        c=null;
+                        ParcelFileDescriptor pfd = null;
+                        try {
+                            pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(FileShareActivity.filePath)), "r");
+                        } catch (FileNotFoundException e) {
+                            Log.e("TAG", "File not Found!!!");
+                            e.printStackTrace();
+                        }
+
+                        if (pfd != null) {
+                            Payload sharePayload = Payload.fromFile(pfd);
+                            filePayloads.put(s, sharePayload);
+                            Nearby.getConnectionsClient(c).sendPayload(managerEndpointID, sharePayload);
+                            FileShareActivity.shareText.setText("Condivisione col Manager...");
+                        }
+                        c = null;
+
                         break;
+
                     case "AVAILABLE":
+                        FileShareActivity.downloadText.setText("Pacchetto disponibile per Download!");
+                        FileShareActivity.downloadBtn.setClickable(true);
 
-                        //mettere pulsante disponibile per poter scaricare il pacchetto dal master
-
-                        c=null;
                         break;
                 }
 
                 //qui verrà messo il codice per dare input di iniziare e stoppare la registrazione (in pratica quando il master comanda gli altri di iniziare e fermare le registrazioni!)
-            }else if (payload.getType() == Payload.Type.FILE) {
+            } else if (payload.getType() == Payload.Type.FILE) {
                 Log.d("WORKER", "inizio condivisione pacchetto files da master");
-                incomingFile=payload;
+                incomingFile = payload;
             }
         }
 
         @Override
         public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
 
-            if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+            //BISOGNA FARE QUESTO CONTROLLO PERCHè QUESTO CODICE DEVE ESSERE CHIAMATO SOLO PER CONDIVISIONE FILE, COSì SI TRALASCIA IN CASO DI BYTES
+            if(filePayloads.get(s)!=null && filePayloads.get(s).getType() == Payload.Type.FILE) {
 
-                File payloadFile = incomingFile.asFile().asJavaFile();
-                //finire qui, devo vedere se è possibile condividere una intera cartella oppure mi  tocca condividere i singoli files
+                if (!dataShared) {
+                    //mettere roba per la progress bar... capire come usare l'incremento oppure lasciare senza
+                }
 
+
+                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+
+                    if (!dataShared) {
+                        //se ricado qui vuol dire che la condivisione del mio file al manager è finita!
+                        FileShareActivity.sharePgrBar.setVisibility(View.INVISIBLE);
+                        FileShareActivity.sharePgrBar.setIndeterminate(false);
+                        FileShareActivity.shareText.setText("Invio File al Manager Completato!");
+                        FileShareActivity.finishShareBtn.setClickable(true);
+                        FileShareActivity.finishShareBtn.setVisibility(View.VISIBLE);
+                        dataShared = true;
+
+                    } else {
+                        //GESTIRE RICEZIONE FILE DAL MANAGER
+                    }
+
+                }
             }
         }
     };
-
-
-
-    private static void sendMyRecord() {  //TODO: assegnare il contesto dall'activity che deve fare questa cosa
-
-        ParcelFileDescriptor pfd = null;
-        try {
-
-            pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(ReadyToStartActivity.uriPath)), "r");
-
-        } catch (FileNotFoundException e) {
-            Log.e("TAG", "File not Found!!!");
-            e.printStackTrace();
-        }
-
-        if (pfd != null) {
-            Payload filePayload = Payload.fromFile(pfd);
-            Nearby.getConnectionsClient(c).sendPayload(managerEndpointID, filePayload);
-        }
-    }
-
 
 }

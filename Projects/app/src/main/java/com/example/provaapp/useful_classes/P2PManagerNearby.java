@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
 
+import com.example.provaapp.mode_create_2_1.ManagerShareActivity;
 import com.example.provaapp.mode_create_2_1.WaitForPeerConfigurationActivity;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
@@ -79,6 +80,7 @@ public class P2PManagerNearby {
 
                             //mettere il codice per condividere tutto il pacchetto dei file multimediali
 
+
                             break;
 
                         //TODO: VERRANNO AGGIUNTI ALTRI CASE
@@ -86,9 +88,10 @@ public class P2PManagerNearby {
 
                 } else if (payload.getType() == Payload.Type.FILE) {
 
-                    //TODO : RICEVO UN VIDEO O UN AUDIO
+                    // : RICEVO UN VIDEO O UN AUDIO
                     Log.e("WORKER: " + workers.get(endpointId) + "  ", "CONDIVISIONE FILE INIZIATA");
                     incomingFilePayloads.put(endpointId, payload);
+
                 }
             }
 
@@ -100,11 +103,11 @@ public class P2PManagerNearby {
                 //usare per la Progress barrrrrr
                 //update.getBytesTransferred()/update.getTotalBytes()
 
+                //CONTROLLO PER LO STESSO MOTIVO CHE HO SPIEGATO IN P2PWORKER
 
 
-                if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                if (incomingFilePayloads.get(s) != null && update.getStatus() == PayloadTransferUpdate.Status.SUCCESS && incomingFilePayloads.get(s).getType() == Payload.Type.FILE) {
                     //resettare la progress bar
-
 
                     Payload dataPayload = incomingFilePayloads.get(s);
 
@@ -117,27 +120,39 @@ public class P2PManagerNearby {
                         payloadFile.renameTo(new File(payloadFile.getParentFile(), workers.get(s) + ".mp3"));
                     }
 
-
                     if (++shareDataN < endpoints.size()) {//vedo se c'è un altro peer a cui devo chiedere il file
 
+                        ManagerShareActivity.masterShareBar.setProgress(shareDataN + 1);
+                        ManagerShareActivity.workerName.setText(workers.get(endpoints.get(shareDataN)));
                         Payload fin = Payload.fromBytes("DATA-".getBytes());   //request data
                         Nearby.getConnectionsClient(c).sendPayload(endpoints.get(shareDataN), fin);
 
                     } else {
                         //ricado qui se ho tutti i video, avviso i workers che è disponibile il pacchetto da scaricare
+                        ManagerShareActivity.workerName.setText("");
+                        ManagerShareActivity.infoShare.setText("Condivisione Finita!");
                         Payload mes = Payload.fromBytes("AVAILABLE-".getBytes());
                         Nearby.getConnectionsClient(c).sendPayload(P2PManagerNearby.endpoints, mes);
                     }
 
                 }
+
             }
         };
+    }
+
+
+    private static void sendFilesFromFolder(File folder, String endpointWorker) {
+        //mettere codice per condividere tutto il contenuto deentro la cartella a endpoint
     }
 
 
     public static void requestPeerVideo() {
         Payload fin = Payload.fromBytes("DATA-".getBytes());   //request data
         Nearby.getConnectionsClient(c).sendPayload(endpoints.get(shareDataN), fin);
+
+        ManagerShareActivity.workerName.setText(workers.get(endpoints.get(shareDataN)));
+        ManagerShareActivity.masterShareBar.setProgress(shareDataN + 1);
     }
 
 

@@ -183,7 +183,6 @@ public class JoinActivity extends AppCompatActivity {
             //l'oggetto che passo per la callback, deve occuparsi di tutti i dati in input!
             Nearby.getConnectionsClient(getApplicationContext()).acceptConnection(s, P2PWorkerNearby.workerCallback);
 
-
         }
 
         @Override
@@ -197,18 +196,9 @@ public class JoinActivity extends AppCompatActivity {
                     pr.setIndeterminate(false);
                     connectionText.setText("Connection Accepted!");
 
-                    final String st = s;
-                    /*final String[] st= new String[1];
-                    st[0]=s;*/
-
                     continueBtn.setClickable(true);
                     continueBtn.setVisibility(View.VISIBLE);
-                    continueBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            sendMessage(JoinSelectRoleActivity.class);
-                        }
-                    });
+                    continueBtn.setOnClickListener(v -> sendMessage(JoinSelectRoleActivity.class));
 
                     break;
                 case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
