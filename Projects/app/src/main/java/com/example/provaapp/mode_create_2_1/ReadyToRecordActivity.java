@@ -65,14 +65,14 @@ public class ReadyToRecordActivity extends AppCompatActivity {
                         forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                         forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
                         forVideoIntent.putExtra("role", "Manager"); // devo specificargli se sono un manager o un worker
-                        forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoMaster.mp4"); //devo passargli un path todo : VEDERE COI FIOI
+                        forVideoIntent.putExtra("outputPath", P2PManagerNearby.managerAppMediaFolderPath + P2PManagerNearby.managerNickName +".mp4"); //devo passargli un path todo : VEDERE COI FIOI
                         startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
                     } else if (myRole.compareTo("Audio Recorder") == 0) {
                         //todo:aprire player in modalità audio recorder
                         Intent forVideoIntent = new Intent(getApplicationContext(), AudioRecordingActivity.class);
                         forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                         forVideoIntent.putExtra("role", "Manager"); // devo specificargli se sono un manager o un worker
-                        forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordAudioMaster.mp3"); //devo passargli un path todo : VEDERE COI FIOI
+                        forVideoIntent.putExtra("outputPath", P2PManagerNearby.managerAppMediaFolderPath + P2PManagerNearby.managerNickName +".mp3"); //devo passargli un path todo : VEDERE COI FIOI
                         startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
                     } else {
                         //todo:qui ho selezionato il ruolo none quindi non farò nulla se non  decidere quando i client dovranno fermarsi

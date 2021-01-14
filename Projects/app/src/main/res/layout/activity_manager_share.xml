@@ -7,6 +7,52 @@
 
     android:background="@color/BackColor">
 
+    <TextView
+        android:id="@+id/workerShareName2"
+        android:layout_width="117dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="32dp"
+        android:text="name"
+        android:textAlignment="center"
+        android:textColor="@color/TextColor"
+        android:textColorLink="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/infoShareStatus2"
+        app:layout_constraintTop_toBottomOf="@+id/masterPgrBar2" />
+
+    <TextView
+        android:id="@+id/infoShareStatus2"
+        android:layout_width="228dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="152dp"
+        android:text="sending to device:"
+        android:textAlignment="center"
+        android:textColor="@color/TextColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/masterPgrBar2" />
+
+    <ProgressBar
+        android:id="@+id/masterPgrBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="358dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="29dp"
+        android:indeterminate="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider32" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/peerConfigToolbar"
         android:layout_width="match_parent"
@@ -91,18 +137,35 @@
         android:id="@+id/workerShareName"
         android:layout_width="117dp"
         android:layout_height="54dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="32dp"
         android:text="name"
         android:textAlignment="center"
         android:textColor="@color/TextColor"
         android:textColorLink="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/infoShareStatus"
         app:layout_constraintTop_toBottomOf="@+id/masterPgrBar" />
+
+    <Button
+        android:id="@+id/lastFinishManagerBtn"
+        android:layout_width="272dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/rounded_nickname_background"
+        android:clickable="false"
+        android:text="Button"
+        android:textAllCaps="false"
+        android:textColor="@color/TextColor"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider32" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

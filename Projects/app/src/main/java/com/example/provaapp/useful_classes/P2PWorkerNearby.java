@@ -15,7 +15,6 @@ import com.example.provaapp.VideoRecordingActivity;
 import com.example.provaapp.mode_join_2_0.FileShareActivity;
 import com.example.provaapp.mode_join_2_0.JoinSelectRoleActivity;
 import com.example.provaapp.mode_join_2_0.ReadyToStartActivity;
-import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
@@ -27,7 +26,8 @@ import java.util.HashMap;
 
 public class P2PWorkerNearby {
 
-    public static String room;
+    public static String workerAppMediaFolderPath; // = Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/"+P2PManagerNearby.room+"/";
+    public static String room, myNickName;
     public static String managerEndpointID;  //ESSENZIALE PER LE CHIAMATE A METODI DI CONDIVISIONE DATI!!!
     public static Context c;
     public static int videoN, audioN;
@@ -77,6 +77,10 @@ public class P2PWorkerNearby {
                                 Toast.LENGTH_SHORT)
                                 .show();
                         JoinSelectRoleActivity.audioBtn.setClickable(true);
+                        break;
+
+                    case "GETREADY4THEPARTY":
+                        JoinSelectRoleActivity.finishAlertText.setVisibility(View.VISIBLE);
                         break;
 
                     case "TIMESTAMP":

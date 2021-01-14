@@ -1,7 +1,6 @@
 package com.example.provaapp.useful_classes;
 
 import android.media.MediaRecorder;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 

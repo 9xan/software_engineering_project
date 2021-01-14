@@ -2,9 +2,8 @@ package com.example.provaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
+
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import com.example.provaapp.useful_classes.EzCam;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.example.provaapp.useful_classes.Permissions;
-import com.example.provaapp.R;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 

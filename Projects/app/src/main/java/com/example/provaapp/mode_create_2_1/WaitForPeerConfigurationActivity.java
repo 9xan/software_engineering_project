@@ -2,6 +2,7 @@ package com.example.provaapp.mode_create_2_1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +12,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.provaapp.R;
+import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class WaitForPeerConfigurationActivity extends AppCompatActivity {
+
+
 
     public static Button finishBtn;
     public static TextView audioView, videoView, finishView, roomView;
@@ -42,12 +47,11 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         audioView.setText(String.valueOf(P2PManagerNearby.audioN));
         videoView.setText(String.valueOf(P2PManagerNearby.videoN));
 
-        finishBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tmp = intentt.getStringExtra("MasterRole");
-                sendMessage(tmp , ReadyToRecordActivity.class);
-            }
+        finishBtn.setOnClickListener(v -> {
+            String tmp = intentt.getStringExtra("MasterRole");
+            sendMessage(tmp , ReadyToRecordActivity.class);
+            Payload bytesPayload = Payload.fromBytes("GETREADY4THEPARTY-".getBytes()); //avviso tutti i peer che il manager è pronto per far partire la registrazione
+            Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
         });
 
         //quando si è qua posso fermare l advertising del manager in quanto tutti si sono connessi e non manca nessuno
@@ -56,6 +60,9 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         Log.d("MANAGER", "stopAdvertising");
         P2PManagerNearby.c = this;
 
+        //Creo la cartella per la room!!!
+        P2PManagerNearby.managerAppMediaFolderPath = Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/"+P2PManagerNearby.room+"/";
+        MainActivity.createStorageDir(P2PManagerNearby.managerAppMediaFolderPath);
         update();
 
     }
@@ -108,5 +115,8 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
         intent.putExtra("MasterRole" , role);
         startActivity(intent);
     }
+
+
+
 
 }

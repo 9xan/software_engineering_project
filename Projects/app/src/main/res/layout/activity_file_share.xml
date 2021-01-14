@@ -116,6 +116,7 @@
         android:clickable="false"
         android:text="Finish"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:visibility="visible"

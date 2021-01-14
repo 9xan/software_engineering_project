@@ -98,6 +98,9 @@ public class MasterCreationActivity extends AppCompatActivity {
         myNickName = message.getString("NickName");
         secureCode = message.getString("secureHash");
 
+        P2PManagerNearby.room=message.getString("RoomName");
+        P2PManagerNearby.managerNickName=myNickName;
+
         startXML(peers, peerNumber, peerLoaders); // questa funzione preapara l'interfaccia iniziale
 
 

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.provaapp.useful_classes.EzMic;
-import com.example.provaapp.R;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.google.android.gms.nearby.Nearby;

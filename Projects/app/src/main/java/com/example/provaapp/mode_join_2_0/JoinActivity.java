@@ -71,7 +71,7 @@ public class JoinActivity extends AppCompatActivity {
         Intent intent = getIntent();
         args = intent.getBundleExtra(RoomInfoActivity.NextToJoinKey);
         myNicknameDevice = args.getString("NickName");
-
+        P2PWorkerNearby.myNickName = myNicknameDevice;
         assert args != null;
         //Log.d("nel bundle della join c'è ", Objects.requireNonNull(args.getString("QRData")));
         qrData = Objects.requireNonNull(args.getString("QRData")).split("//", 0);

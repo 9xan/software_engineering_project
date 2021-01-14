@@ -4,21 +4,19 @@ import android.Manifest;
 import android.os.Bundle;
 
 import com.example.provaapp.R;
+import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.example.provaapp.useful_classes.Permissions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Environment;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String appMediaFolderPath = Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarActivityChanger);
         setSupportActionBar(toolbar);
-        createStorageDir();
+
     }
 
     @Override
@@ -40,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void createStorageDir() {
+
+    public static void createStorageDir(String path) {
         //create folder
-        File file = new File(appMediaFolderPath);
+        File file = new File(path);
         if (!file.mkdirs()) {
             file.mkdirs();
         }

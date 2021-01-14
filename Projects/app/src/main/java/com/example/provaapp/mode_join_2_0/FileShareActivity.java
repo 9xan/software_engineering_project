@@ -4,12 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.provaapp.R;
+import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
@@ -42,12 +42,20 @@ public class FileShareActivity extends AppCompatActivity {
             Payload bytesPayload = Payload.fromBytes("GOODBYE-".getBytes()); //avviso il manager che mi disconnetto dal gruppo
             Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PWorkerNearby.managerEndpointID, bytesPayload);
 
+            Nearby.getConnectionsClient(getApplicationContext()).disconnectFromEndpoint(P2PWorkerNearby.managerEndpointID);
+            Nearby.getConnectionsClient(getApplicationContext()).stopAllEndpoints();
+
+            Intent i = new Intent(FileShareActivity.this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(i);
+            //TODO FARE CHE QUANDO TORNI ALLA HOME NON CI SIA IL VECCHIO NICKNAME VISUALIZZATO
 
         });
 
         downloadBtn.setOnClickListener(v -> {
             Payload bytesPayload = Payload.fromBytes("DATAREQUEST-".getBytes()); //così significa che richiedo il pacchetto di file
             Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PWorkerNearby.managerEndpointID, bytesPayload);
+            downloadText.setText("Download Pacchetto in corso...");
         });
 
 

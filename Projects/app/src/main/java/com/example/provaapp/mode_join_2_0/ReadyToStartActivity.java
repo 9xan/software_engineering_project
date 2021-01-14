@@ -17,6 +17,8 @@ import com.example.provaapp.R;
 import com.example.provaapp.VideoRecordingActivity;
 import com.example.provaapp.operative_activity_changer_1.MainActivity;
 import com.example.provaapp.useful_classes.EzCam;
+import com.example.provaapp.useful_classes.P2PManagerNearby;
+import com.example.provaapp.useful_classes.P2PWorkerNearby;
 
 import java.util.Objects;
 
@@ -62,7 +64,7 @@ public class ReadyToStartActivity extends AppCompatActivity {
                     Intent forVideoIntent = new Intent(getApplicationContext(), AudioRecordingActivity.class);
                     forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                     forVideoIntent.putExtra("role", "Worker"); // devo specificargli se sono un manager o un worker
-                    forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordAudioWorker.mp3"); //devo passargli un path todo : VEDERE COI FIOI
+                    forVideoIntent.putExtra("outputPath", P2PWorkerNearby.workerAppMediaFolderPath + P2PWorkerNearby.myNickName +".mp3"); //devo passargli un path todo : VEDERE COI FIOI
                     startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
 
                 } else if (myRole.compareTo("video") == 0) {
@@ -72,7 +74,7 @@ public class ReadyToStartActivity extends AppCompatActivity {
                     forVideoIntent.putExtra("timestamp", System.currentTimeMillis() + 5000); //poco delay per fare in modo che la fotocamera si apra in tutti i dispositivi
                     forVideoIntent.putExtra("requestCode", EzCam.MUTED_VIDEO_ACTION);//mi avvia il player in modalità video muto
                     forVideoIntent.putExtra("role", "Worker"); // devo specificargli se sono un manager o un worker
-                    forVideoIntent.putExtra("outputPath", MainActivity.appMediaFolderPath + "RecordVideoWorker.mp4"); //devo passargli un path todo : VEDERE COI FIOI
+                    forVideoIntent.putExtra("outputPath", P2PWorkerNearby.workerAppMediaFolderPath + P2PWorkerNearby.myNickName +".mp4"); //devo passargli un path todo : VEDERE COI FIOI
                     startActivityForResult(forVideoIntent, EzCam.REQUEST_CODE);
                 } else {
                     Log.d("error:", "wrong parameter");
