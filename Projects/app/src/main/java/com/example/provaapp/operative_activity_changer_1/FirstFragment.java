@@ -40,6 +40,7 @@ public class FirstFragment extends Fragment {
         create = view.findViewById(R.id.Create);
         args = new Bundle();
         final EditText NickNameInput = view.findViewById(R.id.NickNameInput);
+
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

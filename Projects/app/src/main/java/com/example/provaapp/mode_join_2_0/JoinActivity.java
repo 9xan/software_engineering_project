@@ -38,25 +38,13 @@ import static com.google.android.gms.nearby.connection.Strategy.P2P_STAR;
 
 public class JoinActivity extends AppCompatActivity {
 
-    public final String[] permissionsList = {
-            Manifest.permission.ACCESS_WIFI_STATE,
-            Manifest.permission.ACCESS_WIFI_STATE,
-            Manifest.permission.CHANGE_WIFI_STATE,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.CHANGE_NETWORK_STATE,
-            Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_NETWORK_STATE,
-    };
 
-    public static final int ACCESS_FINE_LOCATION_CODE = 100;
     public ProgressBar pr;
     public TextView connectionText;
     private String[] qrData;
     private String myNicknameDevice;
     public Button continueBtn;
     private String roomName, secureCode;
-
-    private ArrayList<String> permissions = new ArrayList<>();
     private Bundle args;
 
     /*********************************************************************************************************/
@@ -89,10 +77,6 @@ public class JoinActivity extends AppCompatActivity {
 
         P2PWorkerNearby.room = roomName;
 
-
-        //ADDING PERMISSIONS
-        this.permissions.addAll(Arrays.asList(permissionsList));
-
         // Capture the layout's TextView and set the string as its text
         TextView NickViewJoin = findViewById(R.id.NickViewJoin);
         NickViewJoin.setText(myNicknameDevice);
@@ -101,14 +85,6 @@ public class JoinActivity extends AppCompatActivity {
         pr = findViewById(R.id.progressBarConnection);
         connectionText = findViewById(R.id.connectionText);
         connectionText.setText("Searching Room -" + roomName + "-");
-
-
-        permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
-        permissions.add(Manifest.permission.CHANGE_WIFI_STATE);
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.BLUETOOTH);
-        permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
     }
@@ -120,7 +96,6 @@ public class JoinActivity extends AppCompatActivity {
         DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(P2P_STAR).build();
 
         String[] st = new String[6];
-        Permissions.requestPermissions(this, permissions.toArray(st), 200);
 
         Nearby.getConnectionsClient(getApplicationContext())
                 .startDiscovery(secureCode, endpointDiscoveryCallback, discoveryOptions)
