@@ -16,7 +16,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    public static final String mainFolderPath = Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbarActivityChanger);
         setSupportActionBar(toolbar);
-
     }
 
     @Override

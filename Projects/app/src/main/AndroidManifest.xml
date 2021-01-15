@@ -131,6 +131,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".player.FileListActivity" />
         </activity>
+        <activity android:name=".player.DirectoryListActivity" />
     </application>
 
 </manifest>

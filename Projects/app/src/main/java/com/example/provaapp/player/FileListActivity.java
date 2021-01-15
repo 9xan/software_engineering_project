@@ -23,15 +23,15 @@ import java.util.List;
 public class FileListActivity extends AppCompatActivity {
 
     /* TODO modify dirPath to change source directory*/
-    final String dirPath = "";//MainActivity.appMediaFolderPath;
-    ListView myListView;
+    private String dirPath; //= "";//MainActivity.appMediaFolderPath;
+    private ListView myListView;
 
     // name of files to show on the list
-    List<String> selectedFilesName;
+    private List<String> selectedFilesName;
 
     // path of files to play on the player
-    ArrayList<String> selectedFilesPath;
-    Button montageButton;
+    private ArrayList<String> selectedFilesPath;
+    private Button montageButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class FileListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fileslist);
 
         final AppCompatActivity ctx = this;
+        dirPath = getIntent().getStringExtra("dirPath");
 
         selectedFilesPath = new ArrayList<>();
         selectedFilesName = new ArrayList<>();

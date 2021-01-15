@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.provaapp.mode_create_2_1.CreateActivity;
 import com.example.provaapp.mode_join_2_0.QRReaderActivity;
 import com.example.provaapp.R;
+import com.example.provaapp.player.DirectoryListActivity;
 import com.example.provaapp.player.FileListActivity;
 
 public class FirstFragment extends Fragment {
@@ -42,7 +43,7 @@ public class FirstFragment extends Fragment {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                MainActivity.createStorageDir(MainActivity.mainFolderPath); // creo solo la main folder
                 nickName = NickNameInput.getText().toString();
                 if (nickName.compareTo("") == 0) {
                     Toast.makeText(getContext(),
@@ -59,9 +60,8 @@ public class FirstFragment extends Fragment {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainActivity.createStorageDir(MainActivity.mainFolderPath); // creo solo la main folder
                 nickName = NickNameInput.getText().toString();
-
-
                 if (nickName.compareTo("") == 0) {
                     Toast.makeText(getContext(),
                             "Please insert a name!",
@@ -78,7 +78,8 @@ public class FirstFragment extends Fragment {
         openPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessage(null, "", FileListActivity.class);
+                MainActivity.createStorageDir(MainActivity.mainFolderPath); // creo solo la main folder
+                sendMessage(null, "", DirectoryListActivity.class);
             }
         });
 
