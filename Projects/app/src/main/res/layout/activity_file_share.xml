@@ -60,8 +60,8 @@
         android:layout_height="76dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="24dp"
-        android:text="Attendere richiesta condisione file dal Manager"
 
+        android:text="Attendere richiesta condisione file dal Manager"
         android:textAlignment="center"
         android:textColor="@color/TextColor"
         android:textSize="24sp"

@@ -71,7 +71,7 @@
         android:id="@+id/OpenPlayer"
         android:layout_width="263dp"
         android:layout_height="50dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_nickname_background"
         android:text="Open Player"
         android:textAllCaps="false"
