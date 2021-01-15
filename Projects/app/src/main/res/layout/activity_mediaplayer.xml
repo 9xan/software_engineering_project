@@ -39,13 +39,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/backwardButton"
-            android:layout_width="54dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/backwardbutton" />
-
 
         <Button
             android:id="@+id/playPauseButton"
@@ -59,14 +52,8 @@
             android:id="@+id/restartButton"
             android:layout_width="61dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
             android:background="@drawable/restartbutton" />
 
-        <Button
-            android:id="@+id/forwardButton"
-            android:layout_width="51dp"
-            android:layout_height="64dp"
-            android:background="@drawable/forwardbutton" />
 
     </LinearLayout>
 

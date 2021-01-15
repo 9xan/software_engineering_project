@@ -35,8 +35,11 @@ public class MediaPlayerActivity extends AppCompatActivity {
     List<VideoView> videoViews;
     Button playPausePlaybackButton;
     Button restartPlaybackButton;
+    /*
     Button backwardPlaybackButton;
     Button forwardPlaybackButton;
+
+     */
     Button switchActivityButton;
 
     @Override
@@ -50,7 +53,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         // get video path from the bundle received from FileListActivity
         List<String> filePaths = myIntent.getStringArrayListExtra("paths");
 
-        // FIXME currentModification while removing elements
         for (Iterator<String> iterator = filePaths.iterator(); iterator.hasNext(); ) {
             String p = iterator.next();
             if (MediaHandler.isInFormat(p, "mp3")) {
@@ -70,8 +72,11 @@ public class MediaPlayerActivity extends AppCompatActivity {
         // initialize buttons
         playPausePlaybackButton = findViewById(R.id.playPauseButton);
         restartPlaybackButton = findViewById(R.id.restartButton);
+        /*
         backwardPlaybackButton = findViewById(R.id.backwardButton);
         forwardPlaybackButton = findViewById(R.id.forwardButton);
+
+         */
         switchActivityButton = findViewById(R.id.switchActivityButton);
 
 
@@ -90,20 +95,19 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 if (musicPlayer == null) {
                     if (mp3TrackPath != null) {
                         musicPlayer = MediaPlayer.create(ctx, Uri.parse(mp3TrackPath));
-                        musicPlayer.setVolume(100, 100);
                     }
                 }
                 // if videos are playing
                 if (MediaHandler.areVideosPlaying(videoViews)) {
                     // stop videos
                     if (musicPlayer != null) {
-                        musicPlayer.pause();
+                        MediaHandler.pauseAudio(musicPlayer);
                     }
                     MediaHandler.stopVideoViews(videoViews);
                 } else {
                     // else proceed to start
                     if (musicPlayer != null) {
-                        musicPlayer.start();
+                        MediaHandler.startAudio(musicPlayer);
                     }
                     MediaHandler.startVideoViews(videoViews);
                 }
@@ -118,28 +122,42 @@ public class MediaPlayerActivity extends AppCompatActivity {
                 if (videoViews != null) {
                     MediaHandler.restartVideoViews(videoViews);
                 }
+                if (musicPlayer != null) {
+                    MediaHandler.restartAudio(musicPlayer);
+                }
             }
         });
 
         // set backward step button listener
+        /*
         backwardPlaybackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (videoViews != null) {
                     MediaHandler.seekVideoViewsBackward(videoViews, 1000);
                 }
+                if (musicPlayer != null) {
+                    MediaHandler.seekAudioBackward(musicPlayer, 1000);
+                }
             }
         });
+        */
 
         // set forward step button listener
+        /*
         forwardPlaybackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (videoViews != null) {
                     MediaHandler.seekVideoViewsForward(videoViews, 1000);
                 }
+                if (musicPlayer != null) {
+                    MediaHandler.seekAudioForward(musicPlayer, 1000);
+                }
             }
         });
+
+         */
 
         // set return to file list activity button listener
         switchActivityButton.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +165,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), FileListActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                if(musicPlayer != null){
+                if (musicPlayer != null) {
                     musicPlayer.stop();
                 }
                 startActivity(i);

@@ -1,6 +1,7 @@
 package com.example.provaapp.player;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -157,6 +158,30 @@ public class MediaHandler {
             arePlaying &= v.isPlaying();
         }
         return arePlaying;
+    }
+
+    public static void seekAudioBackward(@NonNull MediaPlayer mediaPlayer, int msTime) {
+        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() - msTime);
+    }
+
+    public static void seekAudioForward(@NonNull MediaPlayer mediaPlayer, int msTime) {
+        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() + msTime);
+    }
+
+    public static void pauseAudio(@NonNull MediaPlayer mediaPlayer) {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    public static void startAudio(@NonNull MediaPlayer mediaPlayer) {
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+    public static void restartAudio(@NonNull MediaPlayer mediaPlayer) {
+        mediaPlayer.seekTo(0);
     }
 
 }
