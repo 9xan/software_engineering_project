@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -47,6 +48,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_recording);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         Log.d("Creazione VideorAct->", "gg");
         receivedIntent = getIntent();
         timeoutMs = receivedIntent.getLongExtra("timestamp", System.currentTimeMillis() + 5000);
@@ -54,7 +56,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
         receivedOutputPath = receivedIntent.getStringExtra("outputPath");                     // returns null if no output path was requested by the calling activity
         role = receivedIntent.getStringExtra("role");                                         //Worker or Manager
 
-        elapsedTime = findViewById(R.id.audioRecordingTime);
+        elapsedTime = findViewById(R.id.videoRecordingTime);
 
         if (role.compareTo("Worker") == 0) {                                                        //I'm a Worker, i'm setting my context in p2pWorkerNearby class
             P2PWorkerNearby.c = this;
@@ -84,13 +86,13 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    /*@Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             UiSettings.hideSystemUI(this);
         }
-    }
+    }*/
 
     private void startTiming(long startTime) {
 
