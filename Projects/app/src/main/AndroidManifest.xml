@@ -23,8 +23,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:screenOrientation="portrait">
+        android:theme="@style/AppTheme">
 
         <activity android:name=".mode_create_2_1.ManagerShareActivity"></activity>
         <activity android:name=".mode_join_2_0.FileShareActivity" />
@@ -117,7 +116,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".mode_create_2_1.WaitForPeerConfigurationActivity" />
         </activity>
-        <activity android:name=".VideoRecordingActivity" />
+        <activity android:name=".VideoRecordingActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize"/> <!-- Fixate orientation to landscape for recording -->
         <activity android:name=".AudioRecordingActivity" />
         <activity
             android:name=".player.FileListActivity"

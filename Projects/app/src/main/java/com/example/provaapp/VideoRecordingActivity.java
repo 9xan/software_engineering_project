@@ -19,6 +19,7 @@ import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.example.provaapp.useful_classes.Permissions;
 import com.example.provaapp.R;
+import com.example.provaapp.useful_classes.UiSettings;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
@@ -75,6 +76,13 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            UiSettings.hideSystemUI(this);
+        }
+    }
 
     private void countDownStopRecording(long timeToWait) {
 
