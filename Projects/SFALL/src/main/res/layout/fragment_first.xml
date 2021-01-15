@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BackColor"
+    tools:context=".operative_activity_changer_1.FirstFragment">
+
+    <ImageView
+        android:id="@+id/LogoView"
+        android:layout_width="match_parent"
+        android:layout_height="251dp"
+        android:layout_marginStart="-30dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_completo" />
+
+    <EditText
+        android:id="@+id/NickNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_corners"
+        android:ems="10"
+        android:hint="Nickname"
+        android:textAlignment="center"
+        android:textColor="#2B2B2B"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/Join"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LogoView" />
+
+    <Button
+        android:id="@+id/Join"
+        android:layout_width="263dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/rounded_nickname_background"
+        android:text="@string/join"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/Create"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/NickNameInput" />
+
+    <Button
+        android:id="@+id/Create"
+        android:layout_width="263dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/rounded_nickname_background"
+        android:text="@string/create"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/OpenPlayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Join" />
+
+    <Button
+        android:id="@+id/OpenPlayer"
+        android:layout_width="263dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_nickname_background"
+        android:text="Open Player"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Create" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

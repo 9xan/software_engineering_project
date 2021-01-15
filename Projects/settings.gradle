@@ -1,2 +1,2 @@
-include ':app'
+include ':SFALL'
 rootProject.name = "ProvaApp"
