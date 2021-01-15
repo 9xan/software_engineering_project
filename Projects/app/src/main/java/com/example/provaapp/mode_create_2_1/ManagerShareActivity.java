@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,10 +24,12 @@ import java.nio.file.Paths;
 
 public class ManagerShareActivity extends AppCompatActivity {
 
-    public static TextView workerNameReceive, infoShareReceive, workerNameSend, infoShareSend;
+    public static TextView workerNameReceive, infoShareReceive, infoShareSend;
     public static ProgressBar masterShareBar, send2WorkerPrgBar;
     public String myFile;
     public static Button lastManagerBtn;
+    public static ListView sendListView;
+    public static ArrayAdapter<String> adapterList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,11 @@ public class ManagerShareActivity extends AppCompatActivity {
         infoShareReceive=findViewById(R.id.infoShareStatus);
         masterShareBar.setMax(P2PManagerNearby.workers.size());
         lastManagerBtn=findViewById(R.id.lastFinishManagerBtn);
-        workerNameSend=findViewById(R.id.workerShareName2);
         infoShareSend=findViewById(R.id.infoShareStatus2);
         send2WorkerPrgBar=findViewById(R.id.masterPgrBar2);
+        sendListView=findViewById(R.id.sendFileListView);
+        adapterList = new ArrayAdapter<>(ManagerShareActivity.this, android.R.layout.simple_list_item_1, P2PManagerNearby.workerSendList);
+        sendListView.setAdapter(adapterList);
 
 
         lastManagerBtn.setOnClickListener(v -> {

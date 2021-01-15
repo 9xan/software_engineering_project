@@ -140,13 +140,13 @@ public class P2PWorkerNearby {
                             Payload sharePayload = Payload.fromFile(pfd);
                             filePayloads.put(s, sharePayload);
                             Nearby.getConnectionsClient(c).sendPayload(managerEndpointID, sharePayload);
-                            FileShareActivity.shareText.setText("Condivisione col Manager...");
+                            FileShareActivity.shareText.setText("Sharing with the Manager...");
                         }
                         c = null;
                         break;
 
                     case "AVAILABLE":
-                        FileShareActivity.downloadText.setText("Pacchetto disponibile per Download!");
+                        FileShareActivity.downloadText.setText("Package available for Download!");
                         FileShareActivity.downloadBtn.setClickable(true);
                         break;
 
@@ -155,11 +155,13 @@ public class P2PWorkerNearby {
             } else if (payload.getType() == Payload.Type.FILE) {
                 Log.d("WORKER", "inizio condivisione pacchetto files da master");
                 incomingZipFile.put(managerEndpointID, payload);
-                FileShareActivity.downloadText.setText("Condivisione File... PLS wait");
+                FileShareActivity.downloadText.setText("File sharing... Please wait");
                 FileShareActivity.finishShareBtn.setVisibility(View.INVISIBLE);
                 FileShareActivity.downloadPgrBar.setVisibility(View.VISIBLE);
             }
         }
+
+        public int i = 0;
 
         @Override
         public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
@@ -173,15 +175,15 @@ public class P2PWorkerNearby {
                     //se ricado qui vuol dire che la condivisione del mio file al manager è finita!
                     FileShareActivity.sharePgrBar.setVisibility(View.INVISIBLE);
                     FileShareActivity.sharePgrBar.setIndeterminate(false);
-                    FileShareActivity.shareText.setText("Invio File al Manager Completato!");
+                    FileShareActivity.shareText.setText("Sharing package to Manager!");
                     FileShareActivity.finishShareBtn.setClickable(true);
                     FileShareActivity.finishShareBtn.setVisibility(View.VISIBLE);
                 }
             }
             if (incomingZipFile.get(s) != null) {
 
-                int i = 0;
-                Log.e("TAG", "onPayloadTransferUpdate: " + i++);
+
+                if(i%20==0)Log.e("TAG", "onPayloadTransferUpdate: " + i++);
                 if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
 
                     File payloadFile = incomingZipFile.get(s).asFile().asJavaFile();

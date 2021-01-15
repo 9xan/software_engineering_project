@@ -37,8 +37,6 @@ public class FileListActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fileslist);
-
-        final AppCompatActivity ctx = this;
         dirPath = getIntent().getStringExtra("dirPath");
 
         selectedFilesPath = new ArrayList<>();

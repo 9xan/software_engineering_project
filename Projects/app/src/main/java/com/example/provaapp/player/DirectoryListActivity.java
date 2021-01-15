@@ -48,7 +48,7 @@ public class DirectoryListActivity extends AppCompatActivity {
             myListView.setOnItemClickListener((parent, view, position, id) -> {
                 String itemValue = (String) myListView.getItemAtPosition(position);
                 args = new Bundle();
-                args.putString("dirPath", dirPath + itemValue);
+                args.putString("dirPath", dirPath + itemValue+"/");
                 switchActivity(args, FileListActivity.class);
             });
         }

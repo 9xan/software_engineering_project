@@ -8,21 +8,6 @@
     android:background="@color/BackColor">
 
     <TextView
-        android:id="@+id/workerShareName2"
-        android:layout_width="128dp"
-        android:layout_height="126dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginEnd="32dp"
-        android:textAlignment="center"
-        android:textColor="@color/TextColor"
-        android:textColorLink="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/infoShareStatus2"
-        app:layout_constraintTop_toBottomOf="@+id/masterPgrBar2" />
-
-    <TextView
         android:id="@+id/infoShareStatus2"
         android:layout_width="207dp"
         android:layout_height="50dp"
@@ -34,7 +19,7 @@
         android:textColor="@color/TextColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/masterPgrBar2" />
 
@@ -165,6 +150,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider32" />
+
+    <ListView
+        android:id="@+id/sendFileListView"
+        android:layout_width="141dp"
+        android:layout_height="147dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/infoShareStatus2"
+        app:layout_constraintTop_toBottomOf="@+id/masterPgrBar2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

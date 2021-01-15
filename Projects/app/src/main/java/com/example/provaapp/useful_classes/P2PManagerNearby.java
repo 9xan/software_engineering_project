@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
@@ -48,6 +49,8 @@ public class P2PManagerNearby {
     public static int audioN, videoN, shareDataN = 0;
     public static String managerNickName, zip2Share;
     private static boolean packReady = false;
+    public static ArrayList<String> workerSendList = new ArrayList<>();
+
 
     public static PayloadCallback newPayloadCallback() {
         return new PayloadCallback() {
@@ -113,11 +116,8 @@ public class P2PManagerNearby {
                                 Nearby.getConnectionsClient(c).sendPayload(endpointId, filesFolderPayload);
                                 Log.d("MANAGER", "onPayloadReceived: condivisione pacchetto a worker");
                             }
-                            //}
-                            CharSequence s = ManagerShareActivity.workerNameSend.getText();
-
-                            ManagerShareActivity.workerNameSend.setText(workers.get(endpointId));
-                            //TODO vedere come usare una list view che forse è meglio
+                            workerSendList.add(workers.get(endpointId));
+                            ManagerShareActivity.adapterList.notifyDataSetChanged();
                             break;
                     }
 
@@ -197,8 +197,11 @@ public class P2PManagerNearby {
                 }
                 if (outgoingFilePayloads.get(s) != null && outgoingFilePayloads.get(s).getType() == Payload.Type.FILE && update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
                     //codice per quando l'invio di un pack ad un worker è finito
-                    //TODO : CERCARE DI USARE UNA LIST VIEW E TOGLIERE IL NOME QUANDO SI FINISCE DI CONDIVIDERE LO ZIP
+                    Log.d("MANAGER", "onPayloadTransferUpdate: FINITO INVIO PACK A WORKER");
+                    Log.e("TAG", "onPayloadTransferUpdate: FINOTOOOOOOOOOOOO" );
                     outgoingFilePayloads.remove(s);
+                    workerSendList.remove(s);
+                    ManagerShareActivity.adapterList.notifyDataSetChanged();
                     ManagerShareActivity.send2WorkerPrgBar.setVisibility(View.INVISIBLE);
                     ManagerShareActivity.send2WorkerPrgBar.setIndeterminate(false);
                 }

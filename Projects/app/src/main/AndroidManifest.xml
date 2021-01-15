@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".mode_create_2_1.ManagerShareActivity"></activity>
+        <activity android:name=".mode_create_2_1.ManagerShareActivity" />
         <activity android:name=".mode_join_2_0.FileShareActivity" />
         <activity
             android:name=".mode_create_2_1.CreateActivity"
@@ -122,10 +122,10 @@
         <activity android:name=".AudioRecordingActivity" />
         <activity
             android:name=".player.FileListActivity"
-            android:parentActivityName=".operative_activity_changer_1.MainActivity">
+            android:parentActivityName=".player.DirectoryListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".operative_activity_changer_1.MainActivity" />
+                android:value=".player.DirectoryListActivity" />
         </activity>
         <activity
             android:name=".player.MediaPlayerActivity"

@@ -18,6 +18,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.provaapp.R;
+import com.example.provaapp.mode_create_2_1.ManagerShareActivity;
+import com.example.provaapp.operative_activity_changer_1.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -141,8 +143,13 @@ public class MediaPlayerActivity extends AppCompatActivity {
         switchActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(v.getContext(), FileListActivity.class);
-                startActivity(myIntent);
+                Intent i = new Intent(getApplicationContext(), FileListActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                if(musicPlayer != null){
+                    musicPlayer.stop();
+                }
+                startActivity(i);
+                finish();
             }
         });
     }
