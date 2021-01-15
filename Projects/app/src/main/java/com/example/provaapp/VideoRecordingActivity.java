@@ -12,6 +12,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.provaapp.useful_classes.EzCam;
@@ -24,6 +25,10 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
 import java.io.File;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class VideoRecordingActivity extends AppCompatActivity {
 
@@ -36,6 +41,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
     private Button stopRecordingButton;
     public CountDownTimer cm, cm2;
     private String role;
+    private TextView elapsedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,9 @@ public class VideoRecordingActivity extends AppCompatActivity {
         timeoutMs = receivedIntent.getLongExtra("timestamp", System.currentTimeMillis() + 5000);
         receivedRequestCode = receivedIntent.getIntExtra("requestCode", EzCam.ACTION_ERROR);  // returns EzCamera.NO_ACTION if no request code was provided by the calling activity
         receivedOutputPath = receivedIntent.getStringExtra("outputPath");                     // returns null if no output path was requested by the calling activity
-        role = receivedIntent.getStringExtra("role");                                         //Worker oppure Manager
+        role = receivedIntent.getStringExtra("role");                                         //Worker or Manager
+
+        elapsedTime = findViewById(R.id.audioRecordingTime);
 
         if (role.compareTo("Worker") == 0) {                                                        //I'm a Worker, i'm setting my context in p2pWorkerNearby class
             P2PWorkerNearby.c = this;
@@ -82,6 +90,22 @@ public class VideoRecordingActivity extends AppCompatActivity {
         if (hasFocus) {
             UiSettings.hideSystemUI(this);
         }
+    }
+
+    private void startTiming(long startTime) {
+
+        final Timer myTimer = new Timer();
+
+        myTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+
+                String time = String.format(Locale.getDefault(), "%02d min: %02d sec",
+                        TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - startTime) % 60,
+                        TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime) % 60);
+                elapsedTime.setText(time);
+            }
+        }, 0, 100);
     }
 
     private void countDownStopRecording(long timeToWait) {
@@ -126,6 +150,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
                 try {
                     Log.d("PRE START RECORDING", "STO PER CHIAMARE LA START RECORDING - 1");
                     vRecordingLogic();
+                    startTiming(System.currentTimeMillis());
                 } catch (Exception e) {
                     Log.i("Error", e.getMessage());
                 }

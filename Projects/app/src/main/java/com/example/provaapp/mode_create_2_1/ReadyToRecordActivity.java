@@ -3,6 +3,7 @@ package com.example.provaapp.mode_create_2_1;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -33,6 +34,7 @@ public class ReadyToRecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ready_to_record_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = findViewById(R.id.toolbarReadyToStart);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();

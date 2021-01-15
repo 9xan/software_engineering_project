@@ -2,6 +2,7 @@ package com.example.provaapp.mode_create_2_1;
 
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -24,6 +25,7 @@ public class NoneRoleMasterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.none_role_master_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         stopRecording = findViewById(R.id.stopNoneRecordingButton);
         stopRecording.setVisibility(View.INVISIBLE);
         stopRecording.setClickable(false);

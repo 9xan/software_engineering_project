@@ -1,6 +1,7 @@
 package com.example.provaapp.mode_create_2_1;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class WaitForPeerConfigurationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wait_for_peer_configuration_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = findViewById(R.id.peerConfigToolbar);
         setSupportActionBar(toolbar);
         intentt = getIntent();

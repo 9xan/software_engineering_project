@@ -1,6 +1,7 @@
 package com.example.provaapp.mode_join_2_0;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -28,6 +29,7 @@ public class QRReaderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_reader_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent = getIntent();
         args = intent.getBundleExtra(FirstFragment.JoinKey);
         scannerView = findViewById(R.id.scanner_view);

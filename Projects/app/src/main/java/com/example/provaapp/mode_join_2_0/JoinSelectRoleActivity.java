@@ -2,6 +2,7 @@ package com.example.provaapp.mode_join_2_0;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -47,6 +48,7 @@ public class JoinSelectRoleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.join_select_role_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = findViewById(R.id.peerConfigToolbar);
         setSupportActionBar(toolbar);
         P2PWorkerNearby.c = this;

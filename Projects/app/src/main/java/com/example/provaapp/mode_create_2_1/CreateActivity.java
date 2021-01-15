@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.example.provaapp.operative_activity_changer_1.FirstFragment;
@@ -17,6 +18,7 @@ public class CreateActivity extends AppCompatActivity { //HOST ACTIVITY
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //String message = intent.getStringExtra(FirstFragment.CreateKey);
         // Capture the layout's TextView and set the string as its text

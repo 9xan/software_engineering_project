@@ -1,6 +1,7 @@
 package com.example.provaapp.player;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -29,6 +30,7 @@ public class DirectoryListActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.directory_list_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         myListView = findViewById(R.id.myDirListView);
 
         List<String> filePaths = MediaHandler.getFilesNameFromDirPath(dirPath);
