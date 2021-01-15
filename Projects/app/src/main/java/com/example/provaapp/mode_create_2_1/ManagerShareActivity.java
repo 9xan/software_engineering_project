@@ -15,6 +15,11 @@ import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ManagerShareActivity extends AppCompatActivity {
 
     public static TextView workerNameReceive, infoShareReceive, workerNameSend, infoShareSend;
@@ -38,6 +43,7 @@ public class ManagerShareActivity extends AppCompatActivity {
         infoShareSend=findViewById(R.id.infoShareStatus2);
         send2WorkerPrgBar=findViewById(R.id.masterPgrBar2);
 
+
         lastManagerBtn.setOnClickListener(v -> {
             //mettere il codice per tornare nel menù principale dell'app
             //inviare anche a tutti i peer che il manager ha chiuso la room e quindi disconnettere tutti e farli tornare nella main
@@ -46,12 +52,20 @@ public class ManagerShareActivity extends AppCompatActivity {
             P2PManagerNearby.c = null;
             Payload bytesPayload = Payload.fromBytes("GOODBYE-".getBytes()); //avviso tutti i peer che il manager chiude tutte le connessioni
             Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
-
             Nearby.getConnectionsClient(getApplicationContext()).stopAllEndpoints();
+            //cancello lo zip che non serve più
+            Path source = Paths.get(P2PManagerNearby.managerAppMediaFolderPath+P2PManagerNearby.room+".zip");
+            try {
+                Files.delete(source);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             Intent i = new Intent(ManagerShareActivity.this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(i);
             //TODO FARE CHE QUANDO TORNI ALLA HOME NON CI SIA IL VECCHIO NICKNAME VISUALIZZATO
+            //TODO CANCELLARE LO ZIP CHE è STATO CREATO PER LO SCAMBIO DEL PACCHETTO AI WORKER!
         });
 
 

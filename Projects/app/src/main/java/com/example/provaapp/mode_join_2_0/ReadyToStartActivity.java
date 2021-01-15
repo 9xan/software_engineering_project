@@ -48,7 +48,7 @@ public class ReadyToStartActivity extends AppCompatActivity {
 
         pb.setIndeterminate(true);
 
-        new CountDownTimer(timeToStart - System.currentTimeMillis(), 1000) {
+        new CountDownTimer(timeToStart - System.currentTimeMillis(), 200) {
 
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {

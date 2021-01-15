@@ -2,6 +2,7 @@ package com.example.provaapp.useful_classes;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
@@ -17,13 +18,17 @@ import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class P2PManagerNearby {
 
@@ -32,6 +37,7 @@ public class P2PManagerNearby {
 
     public static String managerAppMediaFolderPath;     // = Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/"+P2PManagerNearby.room+"/";
     public static SimpleArrayMap<String, Payload> incomingFilePayloads = new SimpleArrayMap<>();
+    public static SimpleArrayMap<String, Payload> outgoingFilePayloads = new SimpleArrayMap<>();
     public static HashMap<String, String> workers = new HashMap<>(); //map ENDPOINTS-NICKNAME
     public static HashMap<String, PayloadCallback> workersPayload = new HashMap<>();
     public static HashMap<String, String> workerRole = new HashMap<>();
@@ -40,7 +46,8 @@ public class P2PManagerNearby {
     //cosi da non fare un for earch
     public static ArrayList<String> filesInFolder = new ArrayList<>();
     public static int audioN, videoN, shareDataN = 0;
-    public static String managerNickName;
+    public static String managerNickName, zip2Share;
+    private static boolean packReady = false;
 
     public static PayloadCallback newPayloadCallback() {
         return new PayloadCallback() {
@@ -86,40 +93,46 @@ public class P2PManagerNearby {
                                 }
                             }
                             break;
+
                         case "DATAREQUEST":
 
                             //mettere il codice per condividere tutto il pacchetto dei file multimediali
                             ManagerShareActivity.send2WorkerPrgBar.setIndeterminate(true);
-                            allFilesFromFolder(managerAppMediaFolderPath, filesInFolder);
-                            for(String f : filesInFolder){
 
-                                ParcelFileDescriptor pfd = null;
-                                try {
-                                    pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(f)), "r");
-                                } catch (FileNotFoundException e) {
-                                    Log.e("TAG", "File not Found!!!");
-                                    e.printStackTrace();
-                                }
+                            ParcelFileDescriptor pfd = null;
+                            try {
+                                pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(zip2Share)), "r");
 
-                                if (pfd != null) {
-                                    Payload filesFolderPayload = Payload.fromFile(pfd);
-                                    Nearby.getConnectionsClient(c).sendPayload(endpointId, filesFolderPayload);
-                                    Log.d("", "onPayloadReceived: condivisione pacchetto a worker");
-                                }
+                            } catch (FileNotFoundException e) {
+                                Log.e("MANAGER", "ZIP not Found!!!");
+                                e.printStackTrace();
                             }
+                            Log.d("", "onPayloadReceived: FILE TROVATO");
+                            if (pfd != null) {
+                                Payload filesFolderPayload = Payload.fromFile(pfd);
+                                Nearby.getConnectionsClient(c).sendPayload(endpointId, filesFolderPayload);
+                                Log.d("MANAGER", "onPayloadReceived: condivisione pacchetto a worker");
+                            }
+                            //}
+                            CharSequence s = ManagerShareActivity.workerNameSend.getText();
+
                             ManagerShareActivity.workerNameSend.setText(workers.get(endpointId));
-                            ManagerShareActivity.infoShareSend.setText("Invio pacchetto a:");
-
+                            //TODO vedere come usare una list view che forse è meglio
                             break;
-
-                        //TODO: VERRANNO AGGIUNTI ALTRI CASE
                     }
 
                 } else if (payload.getType() == Payload.Type.FILE) {
 
-                    // : RICEVO UN VIDEO O UN AUDIO
-                    Log.e("WORKER: " + workers.get(endpointId) + "  ", "CONDIVISIONE FILE INIZIATA");
-                    incomingFilePayloads.put(endpointId, payload);
+                    if (!packReady) {
+                        // : RICEVO UN VIDEO O UN AUDIO
+                        Log.e("MANAGER:", "CONDIVISIONE FILE DA " + workers.get(endpointId) + " INIZIATA");
+                        incomingFilePayloads.put(endpointId, payload);
+                    } else {
+                        // CODICE TRIGGERATO DURANTE IL PRIMO INVIO DEL PAYLOAD dello zip
+
+                        Log.e("MANAGER:", "INVIO PACK A " + workers.get(endpointId) + " INIZIATO");
+                        outgoingFilePayloads.put(endpointId, payload);
+                    }
 
                 }
             }
@@ -134,8 +147,7 @@ public class P2PManagerNearby {
 
                 //CONTROLLO PER LO STESSO MOTIVO CHE HO SPIEGATO IN P2PWORKER
 
-
-                if (incomingFilePayloads.get(s) != null && incomingFilePayloads.get(s).getType() == Payload.Type.FILE && update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                if (!packReady && incomingFilePayloads.get(s) != null && incomingFilePayloads.get(s).getType() == Payload.Type.FILE && update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
 
                     Payload dataPayload = incomingFilePayloads.get(s);
 
@@ -157,7 +169,6 @@ public class P2PManagerNearby {
                         incomingFilePayloads.remove(s);
                     }
 
-
                     if (++shareDataN < endpoints.size()) {//vedo se c'è un altro peer a cui devo chiedere il file
 
                         ManagerShareActivity.masterShareBar.setProgress(shareDataN + 1);
@@ -167,6 +178,15 @@ public class P2PManagerNearby {
 
                     } else {
                         //ricado qui se ho tutti i video, avviso i workers che è disponibile il pacchetto da scaricare
+                        //TODO FARE FUNZIONE CHE CREA UNO ZIP DELLA CARTELLA PER RENDERLA DISPONIBILE AL DOWNLOAD
+                        String folderPath = Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/" + P2PManagerNearby.room + "/";
+                        allFilesFromFolder(folderPath, filesInFolder);
+                        try {
+                            zip2Share = createZip4Share(folderPath);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        packReady = true;
                         ManagerShareActivity.workerNameReceive.setText("");
                         ManagerShareActivity.infoShareReceive.setText("Condivisione Finita!");
                         Payload mes = Payload.fromBytes("AVAILABLE-".getBytes());
@@ -174,27 +194,51 @@ public class P2PManagerNearby {
                         ManagerShareActivity.lastManagerBtn.setClickable(true);
                         ManagerShareActivity.lastManagerBtn.setVisibility(View.VISIBLE);
                     }
-
                 }
-
+                if (outgoingFilePayloads.get(s) != null && outgoingFilePayloads.get(s).getType() == Payload.Type.FILE && update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                    //codice per quando l'invio di un pack ad un worker è finito
+                    //TODO : CERCARE DI USARE UNA LIST VIEW E TOGLIERE IL NOME QUANDO SI FINISCE DI CONDIVIDERE LO ZIP
+                    outgoingFilePayloads.remove(s);
+                    ManagerShareActivity.send2WorkerPrgBar.setVisibility(View.INVISIBLE);
+                    ManagerShareActivity.send2WorkerPrgBar.setIndeterminate(false);
+                }
             }
         };
     }
 
 
-    private static void sendFilesFromFolder(File folder, String endpointWorker) {
-        //mettere codice per condividere tutto il contenuto deentro la cartella a endpoint
+    private static String createZip4Share(String folderPath) throws IOException {
+
+        ArrayList<String> files = filesInFolder;
+
+        String pathForZip = folderPath + P2PManagerNearby.room + ".zip";
+        FileOutputStream fos = new FileOutputStream(pathForZip);
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
+        for (String i : files) {
+            File fileToZip = new File(i);
+            FileInputStream fis = new FileInputStream(fileToZip);
+            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            zipOut.putNextEntry(zipEntry);
+            byte[] bytes = new byte[1024];
+            int length;
+            while ((length = fis.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+            fis.close();
+        }
+        zipOut.close();
+        fos.close();
+
+        return pathForZip;
     }
 
-    private static void moveFileFromDownload2Folder(String file2MoveName, String file2MovePath, String destinationFolder) {
+    public static void moveFileFromDownload2Folder(String file2MoveName, String file2MovePath, String destinationFolder) {
 
         Path source = Paths.get(file2MovePath);
         Path target = Paths.get(destinationFolder + file2MoveName);
 
         try {
             Files.move(source, target);
-            //Files.delete(source);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -208,14 +252,16 @@ public class P2PManagerNearby {
         ManagerShareActivity.masterShareBar.setProgress(shareDataN + 1);
     }
 
-    public static void allFilesFromFolder(String folderPath, ArrayList<String> filePathList){
+    public static void allFilesFromFolder(String folderPath, ArrayList<String> filePathList) {
 
         File f = new File(folderPath);
         File[] files = f.listFiles();
         for (File i : files) {
             filePathList.add(i.getAbsolutePath());
-            Log.e("", "allFilesFromFolder: "+i.getAbsolutePath());
+            Log.d("", "allFilesFromFolder: " + i.getAbsolutePath());
         }
+        String listString = String.join(", ", filePathList);
+        Log.d("ARRAYLIST --------  ", listString);
 
     }
 

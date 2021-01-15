@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.provaapp.useful_classes.EzMic;
+import com.example.provaapp.R;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.google.android.gms.nearby.Nearby;
@@ -34,6 +35,7 @@ public class AudioRecordingActivity extends AppCompatActivity {
     private EzMic myMic;
     private File receivedFile;
     private TextView elapsedTime;
+    private Button stopAudioRecordingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class AudioRecordingActivity extends AppCompatActivity {
         receivedPath = receivedIntent.getStringExtra("outputPath");
         role = receivedIntent.getStringExtra("role");
         elapsedTime = findViewById(R.id.audioRecordingTime);
-        Button stopAudioRecordingButton = findViewById(R.id.stopAudioRecordingButton);
+        stopAudioRecordingButton = findViewById(R.id.stopAudioRecordingButton);
 
         if (role.compareTo("Worker") == 0) {
             stopAudioRecordingButton.setClickable(false);
@@ -58,10 +60,7 @@ public class AudioRecordingActivity extends AppCompatActivity {
 
         stopAudioRecordingButton.setOnClickListener(
                 (v) -> {
-                    Payload bytesPayload = Payload.fromBytes(("STOPRECORDING-" + Long.toString(System.currentTimeMillis() + 3000)).getBytes());
-                    Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
-                    Toast.makeText(getApplicationContext(), "fermo la registrazione", Toast.LENGTH_LONG).show();
-                    recordingLogic();
+                    countDownStopRecording(System.currentTimeMillis() + 3000);
                 }
         );
 
@@ -87,14 +86,14 @@ public class AudioRecordingActivity extends AppCompatActivity {
 
     private void countDownStartRecording(long timeToWait) {
 
-        new CountDownTimer(timeToWait - System.currentTimeMillis(), 1000) {
+        new CountDownTimer(timeToWait - System.currentTimeMillis(), 200) {
 
             public void onTick(long millisUntilFinished) {
             }
 
             public void onFinish() {
                 try {
-                    recordingLogic();
+                    aRecordingLogic();
                     startTiming(System.currentTimeMillis());
                 } catch (Exception e) {
                     Log.i("Error", e.getMessage());
@@ -104,7 +103,36 @@ public class AudioRecordingActivity extends AppCompatActivity {
     }
 
 
-    public void recordingLogic() {
+    private void countDownStopRecording(long timeToWait) {
+
+        Log.d("sto fermando", "gg");
+        stopAudioRecordingButton.setClickable(false);
+        Payload bytesPayload = Payload.fromBytes(("STOPRECORDING-" + timeToWait).getBytes());
+        Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
+
+        //Toast.makeText(getApplicationContext(), "sono prima del countdown ma ho inviato", Toast.LENGTH_LONG).show();
+
+        // myCamera.stopRecording();
+
+        new CountDownTimer(timeToWait - System.currentTimeMillis(), 200) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                try {
+                    Toast.makeText(getApplicationContext(), "fermo la registrazione", Toast.LENGTH_LONG).show();
+                    //Log.d("mo me fermo", "mo");
+                    aRecordingLogic();
+                } catch (Exception e) {
+                    Log.i("Error", e.getMessage());
+                }
+            }
+        }.start();
+    }
+
+
+    public void aRecordingLogic() {
         // TODO: here the start/stop logic must be triggered by a message from the p2p master instead of a user tapping
 
         // TODO: start/stop audio recording logic, when stopped send an intent with result data (see VideoRecordingActivity) and call finish()

@@ -2,7 +2,9 @@ package com.example.provaapp.useful_classes;
 
 import android.content.Context;
 import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +23,16 @@ import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class P2PWorkerNearby {
 
@@ -31,13 +41,13 @@ public class P2PWorkerNearby {
     public static String managerEndpointID;  //ESSENZIALE PER LE CHIAMATE A METODI DI CONDIVISIONE DATI!!!
     public static Context c;
     public static int videoN, audioN;
-    private static Payload incomingFile = null;
+    private static HashMap<String, Payload> incomingZipFile = new HashMap<>();
     private static HashMap<String, Payload> filePayloads = new HashMap<>();
 
     //qui devo METTERE TUTTO IL CODICE PER GESTIRE I VARI DATI IN INPUT, QUINDI SI PARLA DI BYTES O FILES!!!
     public static PayloadCallback workerCallback = new PayloadCallback() {
 
-        private boolean dataShared = false;
+        //private boolean dataShared = false;
 
         @Override
         public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
@@ -99,8 +109,7 @@ public class P2PWorkerNearby {
                         break;
 
                     case "STOPRECORDING":
-
-                        new CountDownTimer(Long.parseLong(in[1]) - System.currentTimeMillis(), 1000) {
+                        new CountDownTimer(Long.parseLong(in[1]) - System.currentTimeMillis(), 200) {
                             public void onTick(long millisUntilFinished) {
 
                             }
@@ -108,18 +117,17 @@ public class P2PWorkerNearby {
                             public void onFinish() {
 
                                 if (c instanceof VideoRecordingActivity) {              //se non è un video recorder allora è per forza un audio recorder(Worker)
-                                    ((VideoRecordingActivity) c).recordingLogic();
+                                    ((VideoRecordingActivity) c).vRecordingLogic();
                                 } else {
-                                    ((AudioRecordingActivity) c).recordingLogic();
+                                    ((AudioRecordingActivity) c).aRecordingLogic();
                                 }
                                 c = null;
                             }
                         }.start();
-
                         break;
 
-                    case "DATA":    //quando ricevo questo, devo inviare al master il mio file!!!
-
+                    case "DATA":
+                        //quando ricevo questo, devo inviare al master il mio file!!!
                         ParcelFileDescriptor pfd = null;
                         try {
                             pfd = c.getContentResolver().openFileDescriptor(Uri.fromFile(new File(FileShareActivity.filePath)), "r");
@@ -135,20 +143,21 @@ public class P2PWorkerNearby {
                             FileShareActivity.shareText.setText("Condivisione col Manager...");
                         }
                         c = null;
-
                         break;
 
                     case "AVAILABLE":
                         FileShareActivity.downloadText.setText("Pacchetto disponibile per Download!");
                         FileShareActivity.downloadBtn.setClickable(true);
-
                         break;
+
                 }
 
-                //qui verrà messo il codice per dare input di iniziare e stoppare la registrazione (in pratica quando il master comanda gli altri di iniziare e fermare le registrazioni!)
             } else if (payload.getType() == Payload.Type.FILE) {
                 Log.d("WORKER", "inizio condivisione pacchetto files da master");
-                incomingFile = payload;
+                incomingZipFile.put(managerEndpointID, payload);
+                FileShareActivity.downloadText.setText("Condivisione File... PLS wait");
+                FileShareActivity.finishShareBtn.setVisibility(View.INVISIBLE);
+                FileShareActivity.downloadPgrBar.setVisibility(View.VISIBLE);
             }
         }
 
@@ -156,31 +165,89 @@ public class P2PWorkerNearby {
         public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
 
             //BISOGNA FARE QUESTO CONTROLLO PERCHè QUESTO CODICE DEVE ESSERE CHIAMATO SOLO PER CONDIVISIONE FILE, COSì SI TRALASCIA IN CASO DI BYTES
-            if(filePayloads.get(s)!=null && filePayloads.get(s).getType() == Payload.Type.FILE) {
+            if (filePayloads.get(s) != null && filePayloads.get(s).getType() == Payload.Type.FILE) {
 
-                if (!dataShared) {
-                    //mettere roba per la progress bar... capire come usare l'incremento oppure lasciare senza
-                }
-
+                //mettere roba per la progress bar... capire come usare l'incremento oppure lasciare senza e che si veda solo indeterminate
 
                 if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                    //se ricado qui vuol dire che la condivisione del mio file al manager è finita!
+                    FileShareActivity.sharePgrBar.setVisibility(View.INVISIBLE);
+                    FileShareActivity.sharePgrBar.setIndeterminate(false);
+                    FileShareActivity.shareText.setText("Invio File al Manager Completato!");
+                    FileShareActivity.finishShareBtn.setClickable(true);
+                    FileShareActivity.finishShareBtn.setVisibility(View.VISIBLE);
+                }
+            }
+            if (incomingZipFile.get(s) != null) {
 
-                    if (!dataShared) {
-                        //se ricado qui vuol dire che la condivisione del mio file al manager è finita!
-                        FileShareActivity.sharePgrBar.setVisibility(View.INVISIBLE);
-                        FileShareActivity.sharePgrBar.setIndeterminate(false);
-                        FileShareActivity.shareText.setText("Invio File al Manager Completato!");
-                        FileShareActivity.finishShareBtn.setClickable(true);
-                        FileShareActivity.finishShareBtn.setVisibility(View.VISIBLE);
-                        dataShared = true;
+                int i = 0;
+                Log.e("TAG", "onPayloadTransferUpdate: " + i++);
+                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
 
-                    } else {
-                        //GESTIRE RICEZIONE FILE DAL MANAGER
+                    File payloadFile = incomingZipFile.get(s).asFile().asJavaFile();
+                    String zipFileName = room + ".zip";
+                    payloadFile.renameTo(new File(payloadFile.getParentFile(), zipFileName));
+
+                    FileShareActivity.downloadPgrBar.setVisibility(View.INVISIBLE);
+                    FileShareActivity.downloadPgrBar.setIndeterminate(false);
+                    FileShareActivity.downloadCompletedText.setVisibility(View.VISIBLE);
+                    FileShareActivity.downloadText.setText("Donwload Terminato!");
+
+                    //qui va il codice per quando si ha finito di ricevere il pacchetto
+                    //mettere il codice per estrarre spostare lo zip, estrarlo e eliminare quello vecchio
+                    P2PManagerNearby.moveFileFromDownload2Folder(room + ".zip",
+                            Environment.getExternalStorageDirectory() + "/Download/Nearby/" + room + ".zip",
+                            Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/" + room + "/");
+
+                    try {
+                        unzipFolderWorker(Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/" + room + "/" + room + ".zip",
+                                Environment.getExternalStorageDirectory() + "/DCIM/multi_rec/" + room + "/");
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
                 }
             }
         }
     };
 
+    //metodo per worker per unzippare il pacchetto ed eliminare lo zip che non serve più
+    private static void unzipFolderWorker(String zipPath, String folderPath) throws IOException {
+        String fileZip = zipPath;
+        File destDir = new File(folderPath);
+        byte[] buffer = new byte[1024];
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip));
+        ZipEntry zipEntry = zis.getNextEntry();
+        while (zipEntry != null) {
+            File newFile = newFile(destDir, zipEntry);
+            // write file content
+            FileOutputStream fos = new FileOutputStream(newFile);
+            int len;
+            while ((len = zis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+            fos.close();
+            zipEntry = zis.getNextEntry();
+        }
+        zis.closeEntry();
+        zis.close();
+
+        try {
+            Files.delete(Paths.get(zipPath));
+        } catch (FileNotFoundException e) {
+            Log.d("cannot delete Zip file -> ", e.getMessage());
+        }
+    }
+
+    public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+        File destFile = new File(destinationDir, zipEntry.getName());
+
+        String destDirPath = destinationDir.getCanonicalPath();
+        String destFilePath = destFile.getCanonicalPath();
+
+        if (!destFilePath.startsWith(destDirPath + File.separator)) {
+            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+        }
+
+        return destFile;
+    }
 }

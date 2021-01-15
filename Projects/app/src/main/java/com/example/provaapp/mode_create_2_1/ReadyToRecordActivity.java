@@ -54,7 +54,7 @@ public class ReadyToRecordActivity extends AppCompatActivity {
             Payload bytesPayload = Payload.fromBytes(("TIMESTAMP-" + ts).getBytes());
             Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
 
-            new CountDownTimer(tsLong - System.currentTimeMillis(), 1000) {
+            new CountDownTimer(tsLong - System.currentTimeMillis(), 200) {
 
                 public void onTick(long millisUntilFinished) {
                 }

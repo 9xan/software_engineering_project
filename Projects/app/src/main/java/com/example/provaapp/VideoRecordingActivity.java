@@ -2,8 +2,9 @@ package com.example.provaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.example.provaapp.useful_classes.EzCam;
 import com.example.provaapp.useful_classes.P2PManagerNearby;
 import com.example.provaapp.useful_classes.P2PWorkerNearby;
 import com.example.provaapp.useful_classes.Permissions;
+import com.example.provaapp.R;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
@@ -78,14 +80,14 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
         Log.d("sto fermando", "gg");
         stopRecordingButton.setClickable(false);
-        Payload bytesPayload = Payload.fromBytes(("STOPRECORDING-" + Long.toString(timeToWait)).getBytes());
+        Payload bytesPayload = Payload.fromBytes(("STOPRECORDING-" + timeToWait).getBytes());
         Nearby.getConnectionsClient(getApplicationContext()).sendPayload(P2PManagerNearby.endpoints, bytesPayload);
 
         //Toast.makeText(getApplicationContext(), "sono prima del countdown ma ho inviato", Toast.LENGTH_LONG).show();
 
         // myCamera.stopRecording();
 
-        new CountDownTimer(timeToWait - System.currentTimeMillis(), 1000) {
+        new CountDownTimer(timeToWait - System.currentTimeMillis(), 200) {
 
             public void onTick(long millisUntilFinished) {
             }
@@ -94,7 +96,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
                 try {
                     Toast.makeText(getApplicationContext(), "fermo la registrazione", Toast.LENGTH_LONG).show();
                     Log.d("mo me fermo", "mo");
-                    recordingLogic();
+                    vRecordingLogic();
                 } catch (Exception e) {
                     Log.i("Error", e.getMessage());
                 }
@@ -104,7 +106,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
     private void countDownStartRecording(long timeToWait) {
 
-        new CountDownTimer(timeToWait - System.currentTimeMillis(), 1000) {
+        new CountDownTimer(timeToWait - System.currentTimeMillis(), 200) {
 
             public void onTick(long millisUntilFinished) {
             }
@@ -115,7 +117,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
                 try {
                     Log.d("PRE START RECORDING", "STO PER CHIAMARE LA START RECORDING - 1");
-                    recordingLogic();
+                    vRecordingLogic();
                 } catch (Exception e) {
                     Log.i("Error", e.getMessage());
                 }
@@ -136,7 +138,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
     }
 */
 
-    public void recordingLogic() {
+    public void vRecordingLogic() {
         // TODO: here the start/stop logic must be triggered by a message from the p2p master instead of a user tapping
         if (!isRecording)
             myCamera.startRecording(
